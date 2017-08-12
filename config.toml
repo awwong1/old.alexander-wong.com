@@ -1,0 +1,43 @@
+baseURL = "http://alexander-wong.com/"
+languageCode = "en-us"
+title = "Alexander Wong"
+theme = "hugo-nuo"
+enableRobotsTXT = true
+pygmentsuseclasses = true
+PygmentsCodeFences = true
+canonifyurls = true
+
+# GitHub Pages
+publishDir = "docs"
+
+# Google Analytics UA number
+googleAnalytics = "UA-37311284-1"
+
+# Copyright of your post
+copyright = "© 2017 Alexander Wong"
+
+# Initial site menu, you can extend menu with content.
+[[menu.main]]
+  name = "Home"
+  weight = 10
+  identifier = "home"
+  url = "/"
+
+[[menu.main]]
+  name = "GitHub"
+  weight = 30
+  identifier = "github"
+  url = "https://github.com/awwong1"
+
+# Add your own params here
+[params]
+  author = "Alexander Wong"
+  avatar = "/img/avatar.png"
+  seotitle = "Alexander Wong Blog"
+  subtitle = "Incremental iterations towards meaning in life."
+  description = "Personal blog containing content about self journey (technology and otherwise)."
+  paginate = 10
+  email = "admin@alexander-wong.com"
+  github = "awwong1"
+  twitter = "FindingUdia"
+  linkedin = "awwong1"
