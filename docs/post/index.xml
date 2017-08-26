@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Alexander Wong</title>
-    <link>http://alexander-wong.com/post/</link>
+    <link>https://alexander-wong.com/post/</link>
     <description>Recent content in Posts on Alexander Wong</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
     <lastBuildDate>Sat, 12 Aug 2017 14:25:51 -0600</lastBuildDate>
     
-	<atom:link href="http://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Hello World</title>
-      <link>http://alexander-wong.com/post/hello-world/</link>
+      <link>https://alexander-wong.com/post/hello-world/</link>
       <pubDate>Sat, 12 Aug 2017 14:25:51 -0600</pubDate>
       
-      <guid>http://alexander-wong.com/post/hello-world/</guid>
+      <guid>https://alexander-wong.com/post/hello-world/</guid>
       <description>Although as individuals we are always in transition, I believe it is necesary to have static markers representing our current state in reference to the universe. We are mortal, we were born into this world, and inevitably we will eventually die. Consider this post to mark the beginning of a quarter life transition. I figure that the best way to measure and document this is to have an open, publicly available record of my goals and my journey in pursuing meaning in life.</description>
     </item>
     

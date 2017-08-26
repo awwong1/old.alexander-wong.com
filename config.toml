@@ -1,4 +1,4 @@
-baseURL = "http://alexander-wong.com/"
+baseURL = "https://alexander-wong.com/"
 languageCode = "en-us"
 title = "Alexander Wong"
 theme = "hugo-nuo"
