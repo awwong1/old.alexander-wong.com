@@ -78,4 +78,8 @@ kWOaBcXBgDCHUn754v+3MPEWkg==
 
 `3AG5RaLx6jN9yrj5buJPvoY1QozDpyNzGd`
 [![3AG5RaLx6jN9yrj5buJPvoY1QozDpyNzGd](/img/The_price_for_a_free_world.png)
-](bitcoin:3AG5RaLx6jN9yrj5buJPvoY1QozDpyNzGd?message=The%20price%20for%20a%20free%20world.&time=1503791385)
+](bitcoin:3AG5RaLx6jN9yrj5buJPvoY1QozDpyNzGd?message=The%20price%20for%20a%20free%20world)
+
+## ¯\\\_(ツ)\_/¯
+
+`¯\_(ツ)_/¯`
