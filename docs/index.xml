@@ -7,18 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 12 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Aug 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>About</title>
+      <title>Self</title>
       <link>https://alexander-wong.com/about/</link>
-      <pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 26 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>https://alexander-wong.com/about/</guid>
-      <description>My name is Alexander Wong. I am a software developer. Typically, I spend most of my time writing software and discussing philosophy. When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In the winter, I ski. I enjoy playing my guitar and listening to folk music.</description>
+      <description>About My name is Alexander Wong. I occasionally write software. I am the CEO of Udia Software Incorporated.
+When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In the winter, I ski. I enjoy playing my guitar and listening to folk music. Some of my long term goals include living out of a van to travel around the continent and building an earthship sustainable home.</description>
     </item>
     
     <item>
