@@ -23,12 +23,6 @@ copyright = "© 2017 Alexander Wong"
   identifier = "home"
   url = "/"
 
-[[menu.main]]
-  name = "GitHub"
-  weight = 30
-  identifier = "github"
-  url = "https://github.com/awwong1"
-
 # Add your own params here
 [params]
   author = "Alexander Wong"
