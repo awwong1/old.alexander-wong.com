@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 1</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 1" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week1/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item  is-active"><a href="https://alexander-wong.com/">Home</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">Self</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 1</h1>
+      <p class="post-meta">@Alexander Wong · Aug 31, 2017 · 7 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#what-is-machine-learning">What is Machine Learning</a></li>
+<li><a href="#supervised-learning">Supervised Learning</a></li>
+<li><a href="#unsupervised-learning">Unsupervised Learning</a></li>
+</ul></li>
+<li><a href="#linear-regression-with-one-variable">Linear Regression with One Variable</a>
+<ul>
+<li><a href="#model-representation">Model Representation</a></li>
+<li><a href="#cost-function-intuitions">Cost Function &amp; Intuitions</a></li>
+<li><a href="#gradient-descent">Gradient Descent</a></li>
+<li><a href="#gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week1/Lecture1.pdf">Lecture1</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week1/Lecture2.pdf">Lecture2</a></li>
+</ul></li>
+</ul>
+
+<h1 id="introduction">Introduction</h1>
+
+<h2 id="what-is-machine-learning">What is Machine Learning</h2>
+
+<ul>
+<li><strong>Arthur Samuel (1959)</strong>: The field of study that gives computers the ability to
+learn without explicitly programmed.</li>
+<li><strong>Tom Mitchell (1998)</strong>: Well-posed Learning Problem; A computer program is said to <em>learn</em> from experience <strong>E</strong> with respect to some task <strong>T</strong> and some performance measure <strong>P</strong> if its performance on <strong>T</strong>, as measured by <strong>P</strong>, improves with experience <strong>E</strong>.</li>
+</ul>
+
+<p>Example: playing checkers.</p>
+
+<ul>
+<li><strong>E</strong> = The experience of playing many games of checkers.</li>
+<li><strong>T</strong> = The task of playing checkers.</li>
+<li><strong>P</strong> = The probability that the program will win the next game.</li>
+</ul>
+
+<p>In general, any machine learning problem can be assigned to one of two broad classifications, Supervised learning and Unsupervised learning.</p>
+
+<h2 id="supervised-learning">Supervised Learning</h2>
+
+<p>In supervised learning, we have a data set and we already know what the correct output should look like. There is an idea that a relationship exists between the input and output.</p>
+
+<p>Supervised learning is categorized into <strong>regression</strong> and <strong>classification</strong> problems.</p>
+
+<ul>
+<li><strong>Regression</strong>: Results are within a continuous output. We are trying to map input variables to some continuous function.</li>
+<li><strong>Classification</strong>: Results are discrete. We are trying to map input variables into separate categories.</li>
+</ul>
+
+<p>Example 1:</p>
+
+<p>Given data about the sizes of houses on the real estate market, attempt to predict price. Price as a function of size is a continuous output, so this is a <em>regression</em> problem.</p>
+
+<p>Example 2:</p>
+
+<p>Given data about a patient with a tumor, predict whether or not the tumor is malignant or benign. The function does not produce a continuous output, only two categories are given, therefore this is a <em>classification</em> problem.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li>Given email labeled as spam/not spam, learn a spam filter</li>
+<li>Given a dataset of patients diagnosed as either having diabetes or not, learn to classify new patients as having diabetes or not.</li>
+</ul>
+
+<h2 id="unsupervised-learning">Unsupervised Learning</h2>
+
+<p>Unsupervised learning allows appraoches to problems with little or no idea what the results should look like. Structure is derived from data where we do not know the effect of the variables. This can be done by clustering the data based on relationships or variables within the data.</p>
+
+<p>With unsupervised learning, there is no feedback based on the preduction results.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li><strong>Clustering</strong>: Take a collection fo 1,000,000 differenge genes and find a way to automatically group these genes into groups that are somehow similar or related by different variables, such as lifespan, location, roles, etc.</li>
+
+<li><p><strong>Non-Clustering</strong>: The &ldquo;Cocktail Party Algorithm&rdquo; allows you to find structure in a chaotic environment (such as identifying individual voices and music from a mesh of sounds at a cocktail party).</p></li>
+
+<li><p>Given a set of news articles found on the web, group them into sets of articles about the same stories.</p></li>
+
+<li><p>Given a database of customer data, automatically discover market segments and group customers into different market segments.</p></li>
+</ul>
+
+<h1 id="linear-regression-with-one-variable">Linear Regression with One Variable</h1>
+
+<h2 id="model-representation">Model Representation</h2>
+
+<p>This is the notation we will use moving forward.</p>
+
+<ul>
+<li>Input variables (features) are denoted as $x^{(i)}$.</li>
+<li>Output variables are denoted as $y^{(i)}$.</li>
+<li>A pair $(x^{(i)}, y^{(i)})$ is called a training example.</li>
+<li>The dataset we&rsquo;ll be using to learn is a list of training examples is called a training set and is denoted as $(x^{(i)}, y^{(i)}); i = 1, &hellip;, m$</li>
+<li>The value $X$ is used to denote the space of input values and $Y$ is used to denote the space of output values.
+
+<ul>
+<li>$X = Y = \mathbb{R}$</li>
+</ul></li>
+<li>Note: The <em>(i)</em> is not exponentiation, but identifying.</li>
+</ul>
+
+<p>Given a training set, learn a function $h:X \rightarrow Y$ such that $h(x)$ is a <em>good</em> predictor for the corresponding value of $y$. For historical reasons, the function $h$ is called a hypothesis.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/hypothesis.png" alt="hypothesis" /></p>
+
+<h2 id="cost-function-intuitions">Cost Function &amp; Intuitions</h2>
+
+<p>We measure the accuracy of a hypothesis functions by using a <strong>cost function</strong>. This takes an average difference of all the results of the hypothesis with inputs from X and the outputs Y.</p>
+
+<p>The cost function we will be using for now is the <strong>Squared Error Function</strong>, also known as <strong>Mean Squared Error</strong>.</p>
+
+<p>$$ J(\theta_{0}, \theta_{1}) = \dfrac{1}{2m} \sum_{i=1}^m (\hat{y}_{i} - y_{i})^{2} = \dfrac{1}{2m} \sum_{i=1}^m (h_{\theta}(x_{i}) - y_{i})^{2}  $$</p>
+
+<p>Thinking about this in visual terms, training data set is scattered on the x,y plane. We are trying to make a straight line pass through these scattered points. We want the best possible line such that the average squared vertical distances of the scattered points from the line will be the least.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_1.png" alt="cost_function_1" />
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_2.png" alt="cost_function_2" />
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_3.png" alt="cost_function_3" />
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_4.png" alt="cost_function_4" /></p>
+
+<h2 id="gradient-descent">Gradient Descent</h2>
+
+<p>Gradient descent is a method of estimating the parameters in the hypothesis function using the cost function. Imagine that we graph the hypothesis function based on its fields $\theta_0, \theta_1$. We put these variables on the x and y axis and we plot the cost function on the vertical z axis. The points on the graph will be the result of the cost function using the hypothesis with those specific theta parameters.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_1.png" alt="gradient_descent_1" /></p>
+
+<p>We need to minimize our cost function by &ldquo;stepping&rdquo; down from the top to the bottom points of this graph. The red arrows show local minimums in the graph.</p>
+
+<p>This is done by taking the derivative (the tangential line to a function) of our cost function. The slope of the tangent is the derivative at that point and it will give us a direction to move towards. We make steps down the cost function in the direction with the steepest descent. The size of each step is determined by the parameter (alpha), which is the learning rate.</p>
+
+<p>The gradient descent algorithm is:</p>
+
+<p><em>repeat until convergence:</em>
+$$\theta_j := \theta_j - \alpha \dfrac{\partial}{\partial\theta_j} J(\theta_0,\theta_1)$$
+<em>where:</em> $j = 0,1$ represents the feature index number.</p>
+
+<p>At each iteration j, one should simultaneously update the parameters $\theta_1, \theta_2, \dots, \theta_n$. Updating a specific parameter prior to calculating another one on the $j^{(th)}$ iteration leads to a wrong implementation.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_2.png" alt="gradient_descent_2" /></p>
+
+<p>Regardless of the slope&rsquo;s sign for the derivative, $\theta_1$ eventually converges to its minimum value. The following figure shows that when the slope is negative, the value of $\theta_1$ increases. When the slope is positive, the value of $\theta_1$ decreases.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_3.png" alt="gradient_descent_3" /></p>
+
+<p>We must adjust the parameter alpha to ensure that the gradient descent algorithm converges in reasonable time. Failure to converge or too much time to obtain the minimum value implies that the step size is wrong.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_4.png" alt="gradient_descent_4" /></p>
+
+<p>Even with a fixed step size, gradient descent can converge. The reason is because as we approach the bottom of the convex function, the derivative approaches zero.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_5.png" alt="gradient_descent_5" /></p>
+
+<h2 id="gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</h2>
+
+<p>Applying the gradient descent algorithm to the cost functions defined earlier, we must calculate the necessary derivatives.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_linear_regression_1.png" alt="gradient_descent_linear_regression_1" /></p>
+
+<p>This gives us the new gradient descent algorithm:</p>
+
+<p><em>repeat until convergence:</em>
+$$\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}(h_\theta(x_{i}) - y_{i})$$
+$$\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}((h_\theta(x_{i}) - y_{i}) x_{i}$$</p>
+
+<p>If we start with a guess for our hypothesis function and we repeatedly apply the gradient descent equations, our hypothesis will become more and more accurate.</p>
+
+<p>This is simply gradient descent on the original cost function J. This method looks at every example in the entire training set at every step, therefore this is called <strong>batch gradient descent</strong>. Note: while gradient descent can be susceptible to local minima in general, the optimization problem we have posed here for linear regression has only one global, and no other local, optima. Thus, gradient descent here always converges (assuming alpha isn&rsquo;t too large) to the global minimum. J is a convex quadratic function.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_linear_regression_2.png" alt="gradient_descent_linear_regression_2" /></p>
+
+<p>The ellipses shown above are the contours of a quadratic function. Also shown is the trajectory taken by gradient descent, which was initialized at (48, 30). The x&rsquo;s in the figure represent each step in gradient descent as it converged to its minimum.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

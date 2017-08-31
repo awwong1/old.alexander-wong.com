@@ -23,6 +23,16 @@ When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In th
     </item>
     
     <item>
+      <title>Machine Learning, Week 1</title>
+      <link>https://alexander-wong.com/post/coursera-machine-learning-week1/</link>
+      <pubDate>Thu, 31 Aug 2017 10:25:51 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/coursera-machine-learning-week1/</guid>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed.</description>
+    </item>
+    
+    <item>
       <title>Hello World</title>
       <link>https://alexander-wong.com/post/hello-world/</link>
       <pubDate>Sat, 12 Aug 2017 14:25:51 -0600</pubDate>
