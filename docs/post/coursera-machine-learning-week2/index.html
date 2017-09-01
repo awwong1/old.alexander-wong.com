@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 2</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 1.
+Table of Contents  Linear Regression with Multiple Variables  Multivariate Linear Regression  Multiple Features Gradient Descent for Multiple Variables Gradient Descent in Practice - Feature Scaling &amp;amp; Mean Normalization Gradient Descent in Practice - Learning Rate Features and Polynomial Regression  Computing Parameters Analytically  Normal Equation Normal Equation Noninvertibility   Optional Octave/MatLab Tutorial  Octave Tutorial  Basic Operations Moving Data Around Computing on Data Plotting Data Functions &amp;amp; Control Statements: for, while, if/elseif/else Vectorization      Lecture notes:  Lecture4 Lecture5   Linear Regression with Multiple Variables Multivariate Linear Regression Multiple Features Linear regression with multiple variables is known as Multivariate Linear Regression." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 2" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 1.
+Table of Contents  Linear Regression with Multiple Variables  Multivariate Linear Regression  Multiple Features Gradient Descent for Multiple Variables Gradient Descent in Practice - Feature Scaling &amp;amp; Mean Normalization Gradient Descent in Practice - Learning Rate Features and Polynomial Regression  Computing Parameters Analytically  Normal Equation Normal Equation Noninvertibility   Optional Octave/MatLab Tutorial  Octave Tutorial  Basic Operations Moving Data Around Computing on Data Plotting Data Functions &amp;amp; Control Statements: for, while, if/elseif/else Vectorization      Lecture notes:  Lecture4 Lecture5   Linear Regression with Multiple Variables Multivariate Linear Regression Multiple Features Linear regression with multiple variables is known as Multivariate Linear Regression." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week2/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item  is-active"><a href="https://alexander-wong.com/">Home</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">Self</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 2</h1>
+      <p class="post-meta">@Alexander Wong · Aug 31, 2017 · 17 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week1/">Week 1</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#linear-regression-with-multiple-variables">Linear Regression with Multiple Variables</a>
+<ul>
+<li><a href="#multivariate-linear-regression">Multivariate Linear Regression</a>
+<ul>
+<li><a href="#multiple-features">Multiple Features</a></li>
+<li><a href="#gradient-descent-for-multiple-variables">Gradient Descent for Multiple Variables</a></li>
+<li><a href="#gradient-descent-in-practice-feature-scaling-mean-normalization">Gradient Descent in Practice - Feature Scaling &amp; Mean Normalization</a></li>
+<li><a href="#gradient-descent-in-practice-learning-rate">Gradient Descent in Practice - Learning Rate</a></li>
+<li><a href="#features-and-polynomial-regression">Features and Polynomial Regression</a></li>
+</ul></li>
+<li><a href="#computing-parameters-analytically">Computing Parameters Analytically</a>
+<ul>
+<li><a href="#normal-equation">Normal Equation</a></li>
+<li><a href="#normal-equation-noninvertibility">Normal Equation Noninvertibility</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#optional-octave-matlab-tutorial">Optional Octave/MatLab Tutorial</a>
+<ul>
+<li><a href="#octave-tutorial">Octave Tutorial</a>
+<ul>
+<li><a href="#basic-operations">Basic Operations</a></li>
+<li><a href="#moving-data-around">Moving Data Around</a></li>
+<li><a href="#computing-on-data">Computing on Data</a></li>
+<li><a href="#plotting-data">Plotting Data</a></li>
+<li><a href="#functions-control-statements-for-while-if-elseif-else">Functions &amp; Control Statements: for, while, if/elseif/else</a></li>
+<li><a href="#vectorization">Vectorization</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week2/Lecture4.pdf">Lecture4</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week2/Lecture5.pdf">Lecture5</a></li>
+</ul></li>
+</ul>
+
+<h1 id="linear-regression-with-multiple-variables">Linear Regression with Multiple Variables</h1>
+
+<h2 id="multivariate-linear-regression">Multivariate Linear Regression</h2>
+
+<h3 id="multiple-features">Multiple Features</h3>
+
+<p>Linear regression with multiple variables is known as <strong>Multivariate Linear Regression</strong>. We can now introduce the following notation for equations where we can have any number of input variables.</p>
+
+<ul>
+<li>$x_j^{(i)} = \text{value of the feature } j \text{ in the } i^{th} \text{ training example}$</li>
+<li>$x^{(i)} = \text{the input (features) of the } i^{th} \text{ training example}$</li>
+<li>$m = \text{the number of training examples}$</li>
+<li>$n = \text{the number of features}$</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/multiple_features_1.png" alt="multiple_features_1" /></p>
+
+<p>The multivariable form of the hypothesis function accommodating these multiple features is as follows:</p>
+
+<p>$$h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_3 + \dots +  + \theta_nx_n$$</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/multiple_features_2.png" alt="multiple_features_2" /></p>
+
+<p>The multivariate form of the hypothesis function can be concisely represented as theta transpose x.</p>
+
+<p>$$h_\theta(x) = \begin{bmatrix} \theta_0 \hspace{1em} \theta_1 \hspace{1em} \dots \hspace{1em} \theta_n \end{bmatrix} \begin{bmatrix} x_0 \newline x_1 \newline \vdots \newline x_n \end{bmatrix}= \theta^T x$$</p>
+
+<h3 id="gradient-descent-for-multiple-variables">Gradient Descent for Multiple Variables</h3>
+
+<p>The following image compares the old gradient descent formula with one variable, to gradient descent with multiple variables.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/gradient_descent_multiple_variables.png" alt="gradient_descent_multiple_variables" /></p>
+
+<p>Essentially, the new gradient descent equation is the same form, simply repeated for the <em>n</em> number of features:</p>
+
+<p><em>repeat until convergence:</em></p>
+
+<p>$\theta_0 := \theta_0 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}) \cdot x_0^{(i)}$</p>
+
+<p>$\theta_1 := \theta_1 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}) \cdot x_1^{(i)}$</p>
+
+<p>$\theta_2 := \theta_2 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}) \cdot x_2^{(i)}$</p>
+
+<p>$\vdots$</p>
+
+<p>$\theta_n := \theta_n - \alpha \dfrac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)}) \cdot x_n^{(i)}$</p>
+
+<p>Or, in other words:</p>
+
+<p><em>repeat until convergence:</em> $\theta_j := \theta_j - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m (h_\theta(x^{(i)})-y^{(i)}) \cdot x_j^{(i)}$ <em>for</em> $j := 0 \dots n$</p>
+
+<h3 id="gradient-descent-in-practice-feature-scaling-mean-normalization">Gradient Descent in Practice - Feature Scaling &amp; Mean Normalization</h3>
+
+<p>The idea is to make sure the inputs (features) are on a similar scale.</p>
+
+<p>Given the example of determining the price of a house, we have two features that we care about. $x_1 \text{ (size of the house)}$ and $x_2 \text{ (number of bedrooms)}$. Rather than using the raw values directly, it can be more efficient to scale the features such that the values are similar.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/feature_scaling.png" alt="feature_scaling" /></p>
+
+<p>When performing feature scaling, we want to get every feature into approximately a $ -1 \leq x_i \leq 1$ range. This is approximate, the range of values should be approximately around one order of magnitude of $\pm1$.</p>
+
+<p>In addition to feature scaling, one other way to normalize the inputs is to perform mean normalization.</p>
+
+<p>Replace $x_i$ with $x_i - \mu_i$ to make features have approximately zero mean. (Do not apply this to $x_0 = 1$).</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/mean_normalization.png" alt="mean_normalization" /></p>
+
+<p>Combining both feature scaling and mean normalization, one gets the following:</p>
+
+<p>$$ x_i := \dfrac{x_i - \mu_i}{s_i} $$
+$\mu_i = \text{ average value of } x_i \text{ and } s_i = \text{ range (max-min) or standard deviation of } x_i $</p>
+
+<p>Example:</p>
+
+<p>Suppose you are using a learning algorithm to estimate prices of houses in a city. One of our features, $x_i$ captures the age of the house. In the training set, the houses have an age between 12 and 50 years, with an average age of 42 years. The following would be an adequate use as features, assuming feature scaling and mean normalization is applied:</p>
+
+<p>$$x_i = \dfrac{\text{age of house} - 42}{38}$$</p>
+
+<h3 id="gradient-descent-in-practice-learning-rate">Gradient Descent in Practice - Learning Rate</h3>
+
+<p>The following is how to debug whether or not your gradient descent is working, as well as how to choose your learning rate $\alpha$.</p>
+
+<p>It may be useful to plot the value of $J(\theta)$ as you run gradient descent. The value of $\min\limits_\theta J(\theta)$ should decrease as you perform more iterations of gradient descent. If the value <strong>$J(\theta)$ is increasing</strong>, this is an indication that one should <strong>use a smaller $\alpha$ learning rate</strong>.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/learning_rate.png" alt="learning_rate" /></p>
+
+<p>For sufficiently small $\theta$, $J(\theta)$ should always decrease on every iteration. However, if $\alpha$ is too small, gradient descent can be slow to converge.</p>
+
+<p>To choose $\alpha$, try:
+$$\dots, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, \dots$$</p>
+
+<h3 id="features-and-polynomial-regression">Features and Polynomial Regression</h3>
+
+<p>Given a the problem of determining the price of a land given it&rsquo;s size, imagine we were given &ldquo;frontage&rdquo; and &ldquo;depth&rdquo; of the lot of land. Because we know that &ldquo;area&rdquo; of the house is more important than length/width, it might be more useful to use a calculated feature &ldquo;area&rdquo; instead.</p>
+
+<p>$$x_3 = x_1 * x_2$$
+$$\text{area} = \text{frontage} * \text{depth}$$</p>
+
+<p>It is important to choose the right hypothesis function to fit your data. Insight into the problem you are trying to solve is useful in this case. The hypothesis function should not be linear (a straight line) if this does not fit the data well.</p>
+
+<p>We can change the behavior or curve of the hypothesis function by making it quadratic, cubic, or square root (or any other form, really). For example, if the hypothesis function is $h_\theta(x) = \theta_0 + \theta_1x_1$ then we can create additional features based on $x_1$ to get the quadratic function $h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_1^2$ or the cubic function $h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_1^2 + \theta_3x_1^3$</p>
+
+<p>In the cubic version, we created two new features: $x_2 = x_1^2 \text{,} \hspace{1em} x_3 = x_1^3$.</p>
+
+<p>One important thing to keep in mind is, if features are chosen this way then feature scaling becomes much more important.</p>
+
+<p>$$\text{If } 1 \lt x_1 \lt 1000 \text{ then } 1 \lt x_1^2 \lt 1000000 \text{ then } 1 \lt x_1^3 \lt 1000000000$$</p>
+
+<p>Example:</p>
+
+<p>Suppose you want to predict a house&rsquo;s price as a function of its size. Your model is</p>
+
+<p>$$h_\theta(x) = \theta_0 + \theta_1(\text{size}) + \theta_2\sqrt{(\text{size})}$$</p>
+
+<p>Suppose size ranges from $1 \text{ to } 1000 \text{(feet}^2\text{)}$. You will implement this by fitting a model</p>
+
+<p>$$h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2$$</p>
+
+<p>Ignoring mean normalization, the following would be a valid choice for $x_1$ and $x_2$ ($\sqrt{1000} \approx 32$).</p>
+
+<p>$$x_1 = \dfrac{\text{size}}{1000} \text{,} \hspace{1em} x_2 = \dfrac{\sqrt{\text{size}}}{32}$$</p>
+
+<h2 id="computing-parameters-analytically">Computing Parameters Analytically</h2>
+
+<h3 id="normal-equation">Normal Equation</h3>
+
+<p>Gradient descent gives one way to minimize $J$. Another way of doing this is to perform the minimization explicitly without resorting to using an interative algorithm. In the <strong>Normal Equation</strong> method, we will minimize $J$ by explicitly taking its derivatives with respect to the $\thetaJ$&rsquo;s and setting them to zero. This allows us to compute the optimum theta without iteration.</p>
+
+<p>We first must create $X$, which is also known as the <em>design matrix</em>.
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week2/normal_equation_1.png" alt="normal_equation_1" /></p>
+
+<p>$$\theta = (X^TX)^{-1}X^Ty$$</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/normal_equation_2.png" alt="normal_equation_2" /></p>
+
+<p>The normal equation eliminates the need for feature scaling.</p>
+
+<p>The following is a comparison of gradient descent and the normal equation:</p>
+
+<table>
+<thead>
+<tr>
+<th>Gradient Descent</th>
+<th>Normal Equation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Con: Need to choose alpha</td>
+<td>Pro: No need to choose alpha</td>
+</tr>
+
+<tr>
+<td>Con: Needs many iterations</td>
+<td>Pro: No need to iterate</td>
+</tr>
+
+<tr>
+<td>Pro: $O(kn^2)$ complexity</td>
+<td>Con: $O(n^3)$ complexity</td>
+</tr>
+
+<tr>
+<td>Pro: Works well on large n</td>
+<td>Con: Slow if n is very large</td>
+</tr>
+</tbody>
+</table>
+
+<p>With normal equation, computing $(X^TX)^{-1}$ is very slow. In practice, when n exceeds 10,000 it recommended to use gradient descent.</p>
+
+<h3 id="normal-equation-noninvertibility">Normal Equation Noninvertibility</h3>
+
+<p>When computing $\theta = (X^TX)^{-1}X^Ty$, what if $X^TX$ is non-invertible? (singular/degenerate)</p>
+
+<p>Octave: <code>pinv(X'*X)*X'*y</code></p>
+
+<p>Usually, when the matrix is non-invertible, it is because of the following:</p>
+
+<ul>
+<li>Features are redundant.
+
+<ul>
+<li>Example $x_1 = \text{size in feet}^2 \text{, } x_2 = \text{size in m}^2$</li>
+<li>Solve by deleting the linearly dependent features</li>
+</ul></li>
+<li>Too many features ($m \geq n$)
+
+<ul>
+<li>Solve by deleting some features or use regularization</li>
+</ul></li>
+</ul>
+
+<h1 id="optional-octave-matlab-tutorial">Optional Octave/MatLab Tutorial</h1>
+
+<h2 id="octave-tutorial">Octave Tutorial</h2>
+
+<h3 id="basic-operations">Basic Operations</h3>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Basic Math operations</span>
+<span class="mi">5</span> <span class="o">+</span> <span class="mi">6</span>
+<span class="c">% ans =  11</span>
+<span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span>
+<span class="c">% ans =  1</span>
+<span class="mi">5</span> <span class="o">*</span> <span class="mi">8</span>
+<span class="c">% ans =  40</span>
+<span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
+<span class="c">% ans =  0.50000</span>
+<span class="mi">2</span>^<span class="mi">6</span>
+<span class="c">% ans =  64</span>
+
+<span class="c">% Basic Logic operations</span>
+<span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>   <span class="c">% does 1 equal 2, false</span>
+<span class="c">% ans = 0</span>
+<span class="mi">1</span> <span class="o">~=</span> <span class="mi">2</span>   <span class="c">% does 1 not equal 2, true</span>
+<span class="c">% ans = 1</span>
+<span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="mi">0</span>  <span class="c">% AND</span>
+<span class="c">% ans = 0</span>
+<span class="mi">1</span> <span class="o">||</span> <span class="mi">0</span>  <span class="c">% OR</span>
+<span class="c">% ans = 1</span>
+<span class="nb">xor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c">% ans = 1</span>
+</code></pre></div>
+
+<p>If using the terminal:</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">PS1</span><span class="p">(</span><span class="s">&#39;&gt;&gt; &#39;</span><span class="p">);</span>
+<span class="o">&gt;&gt;</span>
+
+<span class="c">% Variables</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">a</span> <span class="p">=</span> <span class="mi">3</span>
+<span class="n">a</span> <span class="p">=</span>  <span class="mi">3</span>
+<span class="o">&gt;&gt;</span> <span class="n">b</span> <span class="p">=</span> <span class="s">&#39;hi&#39;</span>
+<span class="n">b</span> <span class="p">=</span> <span class="n">hi</span>
+<span class="o">&gt;&gt;</span> <span class="n">c</span> <span class="p">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">c</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;</span> <span class="n">d</span> <span class="p">=</span> <span class="nb">pi</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="n">d</span>
+<span class="n">d</span> <span class="p">=</span>  <span class="mf">3.1416</span>
+<span class="o">&gt;&gt;</span> <span class="nb">disp</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+ <span class="mf">3.1416</span>
+<span class="o">&gt;&gt;</span> <span class="nb">disp</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&#39;2 decimals: %0.2f&#39;</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="mi">2</span> <span class="n">decimals</span><span class="p">:</span> <span class="mf">3.14</span>
+<span class="o">&gt;&gt;</span> <span class="nb">disp</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&#39;6 decimals: %0.6f&#39;</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="mi">6</span> <span class="n">decimals</span><span class="p">:</span> <span class="mf">3.141593</span>
+<span class="o">&gt;&gt;</span> <span class="n">d</span>
+<span class="n">d</span> <span class="p">=</span>  <span class="mf">3.1416</span>
+<span class="o">&gt;&gt;</span> <span class="n">format</span> <span class="n">long</span>
+<span class="o">&gt;&gt;</span> <span class="n">d</span>
+<span class="n">d</span> <span class="p">=</span>  <span class="mf">3.14159265358979</span>
+
+<span class="c">% Matrices</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">;]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span>
+<span class="o">&gt;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">;]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">;]</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">2</span>
+<span class="n">v</span> <span class="p">=</span>
+
+ <span class="n">Columns</span> <span class="mi">1</span> <span class="n">through</span> <span class="mi">4</span><span class="p">:</span>
+
+    <span class="mf">1.00000000000000</span>    <span class="mf">1.10000000000000</span>    <span class="mf">1.20000000000000</span>    <span class="mf">1.30000000000000</span>
+
+ <span class="n">Columns</span> <span class="mi">5</span> <span class="n">through</span> <span class="mi">8</span><span class="p">:</span>
+
+    <span class="mf">1.40000000000000</span>    <span class="mf">1.50000000000000</span>    <span class="mf">1.60000000000000</span>    <span class="mf">1.70000000000000</span>
+
+ <span class="n">Columns</span> <span class="mi">9</span> <span class="n">through</span> <span class="mi">11</span><span class="p">:</span>
+
+    <span class="mf">1.80000000000000</span>    <span class="mf">1.90000000000000</span>    <span class="mf">2.00000000000000</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">6</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>
+   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">C</span> <span class="p">=</span> <span class="mi">2</span><span class="o">*</span><span class="nb">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">C</span> <span class="p">=</span>
+
+   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>
+   <span class="mi">2</span>   <span class="mi">2</span>   <span class="mi">2</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="nb">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">w</span> <span class="p">=</span>
+
+   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">w</span> <span class="p">=</span>
+
+   <span class="mf">0.960581381809874</span>   <span class="mf">0.907561746558675</span>   <span class="mf">0.602424636369362</span>   <span class="mf">0.196393810472357</span>
+   <span class="mf">0.544523059767745</span>   <span class="mf">0.133228586828452</span>   <span class="mf">0.775156655765407</span>   <span class="mf">0.684458260545384</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="nb">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c">% gaussian random numbers</span>
+<span class="n">w</span> <span class="p">=</span>
+
+  <span class="o">-</span><span class="mf">0.0963175155034235</span>  <span class="o">-</span><span class="mf">1.8261350128469240</span>  <span class="o">-</span><span class="mf">0.8791045598544875</span>   <span class="mf">1.6757509151763539</span>
+  <span class="o">-</span><span class="mf">0.9677806051392197</span>   <span class="mf">0.9803503731745844</span>   <span class="mf">0.8030214909311352</span>  <span class="o">-</span><span class="mf">1.0019368744201753</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="nb">sqrt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nb">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">));</span>  <span class="c">% semicolon suppresses output to console</span>
+<span class="o">&gt;&gt;</span> <span class="nb">hist</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="c">% see below</span>
+<span class="o">&gt;&gt;</span> <span class="nb">hist</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="c">% see below</span>
+<span class="o">&gt;&gt;</span> <span class="nb">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c">% Identity function</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+<span class="n">Diagonal</span> <span class="n">Matrix</span>
+
+   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>
+   <span class="mi">0</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>
+   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">1</span>   <span class="mi">0</span>
+   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">1</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">help</span> <span class="nb">eye</span> <span class="c">% documentation for eye</span>
+<span class="o">&gt;&gt;</span> <span class="n">help</span> <span class="c">% general octave help</span>
+</code></pre></div>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_basic_operations_1.png" alt="octave_basic_operations_1" />
+Output of <code>hist(w)</code>, see how the random numbers generated follow gaussian distribution?</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_basic_operations_2.png" alt="octave_basic_operations_2" />
+Output of <code>hist(w, 50)</code>, more buckets.</p>
+
+<h3 id="moving-data-around">Moving Data Around</h3>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="o">&gt;&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">;]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">3</span>   <span class="mi">2</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">sz</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">sz</span> <span class="p">=</span>
+
+   <span class="mi">3</span>   <span class="mi">2</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">size</span><span class="p">(</span><span class="n">sz</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">3</span>
+<span class="o">&gt;&gt;</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">2</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">6</span>
+<span class="o">&gt;&gt;</span> <span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">3</span>
+
+<span class="c">% Moving around the filesystem</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">pwd</span>
+<span class="n">ans</span> <span class="p">=</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">udia</span><span class="o">/</span><span class="n">sandbox</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">awwong1</span><span class="o">/</span><span class="n">alexander</span><span class="o">-</span><span class="n">wong</span><span class="p">.</span><span class="n">com</span>
+<span class="o">&gt;&gt;</span> <span class="n">cd</span> <span class="o">~</span>
+<span class="o">&gt;&gt;</span> <span class="nb">pwd</span>
+<span class="n">ans</span> <span class="p">=</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">udia</span>
+<span class="o">&gt;&gt;</span> <span class="n">ls</span>
+<span class="n">Applications</span>				<span class="n">Music</span>
+<span class="n">Creative</span> <span class="n">Cloud</span> <span class="n">Files</span>			<span class="n">Pictures</span>
+<span class="n">Desktop</span>					<span class="n">Public</span>
+<span class="n">Documents</span>				<span class="n">VirtualBox</span> <span class="n">VMs</span>
+<span class="n">Downloads</span>				<span class="n">anaconda</span>
+<span class="n">Library</span>
+
+<span class="c">% Loading data</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">load</span> <span class="n">featuresX</span><span class="p">.</span><span class="n">dat</span>
+<span class="o">&gt;&gt;</span> <span class="nb">load</span><span class="p">(</span><span class="s">&#39;featuresX.dat&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="nb">who</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">2</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">3</span><span class="o">&gt;</span> <span class="nb">who</span>
+<span class="n">Variables</span> <span class="n">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">scope</span><span class="p">:</span>
+
+<span class="n">A</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">4</span><span class="o">&gt;</span> <span class="nb">whos</span>
+<span class="n">Variables</span> <span class="n">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">scope</span><span class="p">:</span>
+
+   <span class="n">Attr</span> <span class="n">Name</span>        <span class="n">Size</span>                     <span class="n">Bytes</span>  <span class="n">Class</span>
+   <span class="o">====</span> <span class="o">====</span>        <span class="o">====</span>                     <span class="o">====</span><span class="p">=</span>  <span class="o">====</span><span class="p">=</span>
+        <span class="n">A</span>           <span class="mi">3</span><span class="n">x1</span>                         <span class="mi">24</span>  <span class="nb">double</span>
+
+<span class="n">Total</span> <span class="n">is</span> <span class="mi">3</span> <span class="n">elements</span> <span class="n">using</span> <span class="mi">24</span> <span class="n">bytes</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">clear</span> <span class="n">A</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">6</span><span class="o">&gt;</span> <span class="nb">whos</span> <span class="c">% displays nothing</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">7</span><span class="o">&gt;</span> <span class="n">w</span> <span class="p">=</span> <span class="o">-</span><span class="mi">6</span> <span class="o">+</span> <span class="nb">sqrt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nb">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">));</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;</span> <span class="nb">whos</span>
+<span class="n">Variables</span> <span class="n">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">scope</span><span class="p">:</span>
+
+   <span class="n">Attr</span> <span class="n">Name</span>        <span class="n">Size</span>                     <span class="n">Bytes</span>  <span class="n">Class</span>
+   <span class="o">====</span> <span class="o">====</span>        <span class="o">====</span>                     <span class="o">====</span><span class="p">=</span>  <span class="o">====</span><span class="p">=</span>
+        <span class="n">w</span>           <span class="mi">1</span><span class="n">x10000</span>                  <span class="mi">80000</span>  <span class="nb">double</span>
+
+<span class="n">Total</span> <span class="n">is</span> <span class="mi">10000</span> <span class="n">elements</span> <span class="n">using</span> <span class="mi">80000</span> <span class="n">bytes</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">9</span><span class="o">&gt;</span> <span class="n">save</span> <span class="n">dist</span><span class="p">.</span><span class="n">dat</span> <span class="n">w</span><span class="p">;</span>  <span class="c">% saves the data as binary format to dist.dat</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">10</span><span class="o">&gt;</span> <span class="n">ls</span>
+<span class="n">LICENSE</span>		<span class="n">config</span><span class="p">.</span><span class="n">toml</span>	<span class="n">dist</span><span class="p">.</span><span class="n">dat</span>	<span class="k">static</span>
+<span class="n">README</span><span class="p">.</span><span class="n">md</span>	<span class="n">content</span>		<span class="n">docs</span>		<span class="n">themes</span>
+<span class="n">archetypes</span>	<span class="n">data</span>		<span class="n">layouts</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">11</span><span class="o">&gt;</span> <span class="n">clear</span> <span class="n">w</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">12</span><span class="o">&gt;</span> <span class="nb">whos</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">13</span><span class="o">&gt;</span> <span class="nb">load</span> <span class="n">dist</span><span class="p">.</span><span class="n">dat</span> <span class="n">w</span><span class="p">;</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">14</span><span class="o">&gt;</span> <span class="nb">whos</span>
+<span class="n">Variables</span> <span class="n">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">scope</span><span class="p">:</span>
+
+   <span class="n">Attr</span> <span class="n">Name</span>        <span class="n">Size</span>                     <span class="n">Bytes</span>  <span class="n">Class</span>
+   <span class="o">====</span> <span class="o">====</span>        <span class="o">====</span>                     <span class="o">====</span><span class="p">=</span>  <span class="o">====</span><span class="p">=</span>
+        <span class="n">w</span>           <span class="mi">1</span><span class="n">x10000</span>                  <span class="mi">80000</span>  <span class="nb">double</span>
+
+<span class="n">Total</span> <span class="n">is</span> <span class="mi">10000</span> <span class="n">elements</span> <span class="n">using</span> <span class="mi">80000</span> <span class="n">bytes</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">15</span><span class="o">&gt;</span> <span class="n">save</span> <span class="n">data</span><span class="p">.</span><span class="n">txt</span> <span class="n">w</span> <span class="o">-</span><span class="nb">ascii</span>  <span class="c">% saves the data as ascii format to dist.txt</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">16</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">17</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">6</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">18</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">:)</span> <span class="c">% &quot;:&quot; means every element along that row/column</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">3</span>   <span class="mi">4</span>
+  
+<span class="n">octave</span><span class="p">:</span><span class="mi">19</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">2</span>
+   <span class="mi">4</span>
+   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">20</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">([</span><span class="mi">1</span> <span class="mi">3</span><span class="p">],</span> <span class="p">:)</span> <span class="c">% Get the entire row of the first and third rows</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">21</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">)</span> <span class="p">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">;</span> <span class="mi">11</span><span class="p">;</span> <span class="mi">12</span><span class="p">]</span> <span class="c">% assign 10, 11, 12 to the second column of A</span>
+<span class="n">A</span> <span class="p">=</span>
+
+    <span class="mi">1</span>   <span class="mi">10</span>
+    <span class="mi">3</span>   <span class="mi">11</span>
+    <span class="mi">5</span>   <span class="mi">12</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">22</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">;</span> <span class="mi">101</span><span class="p">;</span> <span class="mi">102</span><span class="p">;]]</span> <span class="c">% Append the column 100, 101, 102 to the right of A</span>
+<span class="n">A</span> <span class="p">=</span>
+
+     <span class="mi">1</span>    <span class="mi">10</span>   <span class="mi">100</span>
+     <span class="mi">3</span>    <span class="mi">11</span>   <span class="mi">101</span>
+     <span class="mi">5</span>    <span class="mi">12</span>   <span class="mi">102</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">23</span><span class="o">&gt;</span> <span class="n">A</span><span class="p">(:)</span> <span class="c">% Put all elements of A into a single vector</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+     <span class="mi">1</span>
+     <span class="mi">3</span>
+     <span class="mi">5</span>
+    <span class="mi">10</span>
+    <span class="mi">11</span>
+    <span class="mi">12</span>
+   <span class="mi">100</span>
+   <span class="mi">101</span>
+   <span class="mi">102</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">24</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">;]</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">25</span><span class="o">&gt;</span> <span class="n">B</span> <span class="p">=</span> <span class="p">[</span><span class="mi">11</span> <span class="mi">12</span><span class="p">;</span> <span class="mi">13</span> <span class="mi">14</span><span class="p">;</span> <span class="mi">15</span> <span class="mi">16</span><span class="p">]</span>
+<span class="n">B</span> <span class="p">=</span>
+
+   <span class="mi">11</span>   <span class="mi">12</span>
+   <span class="mi">13</span>   <span class="mi">14</span>
+   <span class="mi">15</span>   <span class="mi">16</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">26</span><span class="o">&gt;</span> <span class="n">C</span> <span class="p">=</span> <span class="p">[</span><span class="n">A</span> <span class="n">B</span><span class="p">]</span>  <span class="c">% Concatenate matrices together (left-right)</span>
+<span class="n">C</span> <span class="p">=</span>
+
+    <span class="mi">1</span>    <span class="mi">2</span>   <span class="mi">11</span>   <span class="mi">12</span>
+    <span class="mi">3</span>    <span class="mi">4</span>   <span class="mi">13</span>   <span class="mi">14</span>
+    <span class="mi">5</span>    <span class="mi">6</span>   <span class="mi">15</span>   <span class="mi">16</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">27</span><span class="o">&gt;</span> <span class="n">C</span> <span class="p">=</span> <span class="p">[</span><span class="n">A</span><span class="p">;</span> <span class="n">B</span><span class="p">]</span> <span class="c">% Concatenate matrices together (top-bottom)</span>
+<span class="n">C</span> <span class="p">=</span>
+
+    <span class="mi">1</span>    <span class="mi">2</span>
+    <span class="mi">3</span>    <span class="mi">4</span>
+    <span class="mi">5</span>    <span class="mi">6</span>
+   <span class="mi">11</span>   <span class="mi">12</span>
+   <span class="mi">13</span>   <span class="mi">14</span>
+   <span class="mi">15</span>   <span class="mi">16</span>
+</code></pre></div>
+
+<h3 id="computing-on-data">Computing on Data</h3>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">];</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">2</span><span class="o">&gt;</span> <span class="n">B</span> <span class="p">=</span> <span class="p">[</span><span class="mi">11</span> <span class="mi">12</span><span class="p">;</span> <span class="mi">13</span> <span class="mi">14</span><span class="p">;</span> <span class="mi">15</span> <span class="mi">16</span><span class="p">];</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">3</span><span class="o">&gt;</span> <span class="n">C</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">2</span> <span class="mi">2</span><span class="p">];</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">4</span><span class="o">&gt;</span> <span class="n">A</span> <span class="o">*</span> <span class="n">C</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+    <span class="mi">5</span>    <span class="mi">5</span>
+   <span class="mi">11</span>   <span class="mi">11</span>
+   <span class="mi">17</span>   <span class="mi">17</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">A</span> <span class="o">.*</span> <span class="n">B</span> <span class="c">% element-wise multiplication</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">11</span>   <span class="mi">24</span>
+   <span class="mi">39</span>   <span class="mi">56</span>
+   <span class="mi">75</span>   <span class="mi">96</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">6</span><span class="o">&gt;</span> <span class="n">A</span> <span class="o">.^</span> <span class="mi">2</span> <span class="c">% element-wise squaring</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+    <span class="mi">1</span>    <span class="mi">4</span>
+    <span class="mi">9</span>   <span class="mi">16</span>
+   <span class="mi">25</span>   <span class="mi">36</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">7</span><span class="o">&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;</span> <span class="mi">1</span> <span class="o">./</span><span class="n">v</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">1.00000</span>
+   <span class="mf">0.50000</span>
+   <span class="mf">0.33333</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">9</span><span class="o">&gt;</span> <span class="mi">1</span> <span class="o">./</span> <span class="n">A</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">1.00000</span>   <span class="mf">0.50000</span>
+   <span class="mf">0.33333</span>   <span class="mf">0.25000</span>
+   <span class="mf">0.20000</span>   <span class="mf">0.16667</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">10</span><span class="o">&gt;</span> <span class="nb">log</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">0.00000</span>
+   <span class="mf">0.69315</span>
+   <span class="mf">1.09861</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">11</span><span class="o">&gt;</span> <span class="nb">exp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+    <span class="mf">2.7183</span>
+    <span class="mf">7.3891</span>
+   <span class="mf">20.0855</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">12</span><span class="o">&gt;</span> <span class="nb">abs</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">13</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">v</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+  <span class="o">-</span><span class="mi">1</span>
+  <span class="o">-</span><span class="mi">2</span>
+  <span class="o">-</span><span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">14</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">+</span> <span class="nb">ones</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+   <span class="mi">4</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">15</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+   <span class="mi">4</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">16</span><span class="o">&gt;</span> <span class="n">A</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">3</span>   <span class="mi">4</span>
+   <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">17</span><span class="o">&gt;</span> <span class="n">A</span><span class="o">&#39;</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">3</span>   <span class="mi">5</span>
+   <span class="mi">2</span>   <span class="mi">4</span>   <span class="mi">6</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">18</span><span class="o">&gt;</span> <span class="n">a</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">15</span> <span class="mi">2</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="n">a</span> <span class="p">=</span>
+
+    <span class="mf">1.00000</span>   <span class="mf">15.00000</span>    <span class="mf">2.00000</span>    <span class="mf">0.50000</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">19</span><span class="o">&gt;</span> <span class="n">val</span> <span class="p">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">val</span> <span class="p">=</span>  <span class="mi">15</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">20</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">val</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span> <span class="p">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">val</span> <span class="p">=</span>  <span class="mi">15</span>
+<span class="n">ind</span> <span class="p">=</span>  <span class="mi">2</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">21</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">3</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">1</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">22</span><span class="o">&gt;</span> <span class="nb">find</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">3</span>   <span class="mi">4</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">23</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="nb">magic</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c">% magic function returns magic squares. mathematical property that all rows, columns, diagonals sum up to the same thing</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">8</span>   <span class="mi">1</span>   <span class="mi">6</span>
+   <span class="mi">3</span>   <span class="mi">5</span>   <span class="mi">7</span>
+   <span class="mi">4</span>   <span class="mi">9</span>   <span class="mi">2</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">24</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="p">=</span> <span class="nb">find</span><span class="p">(</span><span class="n">A</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">r</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">3</span>
+   <span class="mi">2</span>
+
+<span class="n">c</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">25</span><span class="o">&gt;</span> <span class="n">a</span>
+<span class="n">a</span> <span class="p">=</span>
+
+    <span class="mf">1.00000</span>   <span class="mf">15.00000</span>    <span class="mf">2.00000</span>    <span class="mf">0.50000</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">26</span><span class="o">&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mf">18.500</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">27</span><span class="o">&gt;</span> <span class="nb">prod</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">15</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">28</span><span class="o">&gt;</span> <span class="nb">floor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+    <span class="mi">1</span>   <span class="mi">15</span>    <span class="mi">2</span>    <span class="mi">0</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">29</span><span class="o">&gt;</span> <span class="nb">ceil</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+    <span class="mi">1</span>   <span class="mi">15</span>    <span class="mi">2</span>    <span class="mi">1</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">30</span><span class="o">&gt;</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">0.353560</span>   <span class="mf">0.209441</span>   <span class="mf">0.277491</span>
+   <span class="mf">0.976008</span>   <span class="mf">0.349771</span>   <span class="mf">0.147595</span>
+   <span class="mf">0.087618</span>   <span class="mf">0.057337</span>   <span class="mf">0.111061</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">31</span><span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="c">% element wise max of two 3 by 3 matrices</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">0.99776</span>   <span class="mf">0.67772</span>   <span class="mf">0.72626</span>
+   <span class="mf">0.82404</span>   <span class="mf">0.99913</span>   <span class="mf">0.97748</span>
+   <span class="mf">0.59569</span>   <span class="mf">0.99710</span>   <span class="mf">0.78396</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">33</span><span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">1</span><span class="p">)</span> <span class="c">% take the maximum per row</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">8</span>   <span class="mi">9</span>   <span class="mi">7</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">34</span><span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">2</span><span class="p">)</span> <span class="c">% take the maximum per column</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">8</span>
+   <span class="mi">7</span>
+   <span class="mi">9</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">35</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="nb">magic</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">17</span>   <span class="mi">24</span>    <span class="mi">1</span>    <span class="mi">8</span>   <span class="mi">15</span>
+   <span class="mi">23</span>    <span class="mi">5</span>    <span class="mi">7</span>   <span class="mi">14</span>   <span class="mi">16</span>
+    <span class="mi">4</span>    <span class="mi">6</span>   <span class="mi">13</span>   <span class="mi">20</span>   <span class="mi">22</span>
+   <span class="mi">10</span>   <span class="mi">12</span>   <span class="mi">19</span>   <span class="mi">21</span>    <span class="mi">3</span>
+   <span class="mi">11</span>   <span class="mi">18</span>   <span class="mi">25</span>    <span class="mi">2</span>    <span class="mi">9</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">36</span><span class="o">&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c">% sum the columns</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">65</span>   <span class="mi">65</span>   <span class="mi">65</span>   <span class="mi">65</span>   <span class="mi">65</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">37</span><span class="o">&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c">% sum the rows</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mi">65</span>
+   <span class="mi">65</span>
+   <span class="mi">65</span>
+   <span class="mi">65</span>
+   <span class="mi">65</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">38</span><span class="o">&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span> <span class="o">.*</span> <span class="nb">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">)))</span> <span class="c">% sum the diagonals from top left to bottom right</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">65</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">39</span><span class="o">&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span> <span class="o">.*</span> <span class="nb">flipud</span><span class="p">(</span><span class="nb">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">))))</span> <span class="c">% sum the diagonals from the top right to bottom left</span>
+<span class="n">ans</span> <span class="p">=</span>  <span class="mi">65</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">40</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="nb">magic</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">8</span>   <span class="mi">1</span>   <span class="mi">6</span>
+   <span class="mi">3</span>   <span class="mi">5</span>   <span class="mi">7</span>
+   <span class="mi">4</span>   <span class="mi">9</span>   <span class="mi">2</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">41</span><span class="o">&gt;</span> <span class="nb">pinv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">0.147222</span>  <span class="o">-</span><span class="mf">0.144444</span>   <span class="mf">0.063889</span>
+  <span class="o">-</span><span class="mf">0.061111</span>   <span class="mf">0.022222</span>   <span class="mf">0.105556</span>
+  <span class="o">-</span><span class="mf">0.019444</span>   <span class="mf">0.188889</span>  <span class="o">-</span><span class="mf">0.102778</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">42</span><span class="o">&gt;</span> <span class="n">A</span> <span class="o">*</span> <span class="nb">pinv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span>
+
+   <span class="mf">1.0000e+00</span>  <span class="o">-</span><span class="mf">1.2323e-14</span>   <span class="mf">6.6613e-15</span>
+  <span class="o">-</span><span class="mf">6.9389e-17</span>   <span class="mf">1.0000e+00</span>   <span class="mf">2.2204e-16</span>
+  <span class="o">-</span><span class="mf">5.8564e-15</span>   <span class="mf">1.2434e-14</span>   <span class="mf">1.0000e+00</span>
+</code></pre></div>
+
+<h3 id="plotting-data">Plotting Data</h3>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">t</span><span class="p">=[</span><span class="mi">0</span><span class="p">:</span><span class="mf">0.01</span><span class="p">:</span><span class="mf">0.98</span><span class="p">];</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">2</span><span class="o">&gt;</span> <span class="n">y1</span> <span class="p">=</span> <span class="nb">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="n">t</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">3</span><span class="o">&gt;</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+</code></pre></div>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_plotting_data_1.png" alt="octave_plotting_data_1" />
+Horizontal axis is the <code>t</code> variable, the vertical axis is <code>y1</code></p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">4</span><span class="o">&gt;</span> <span class="n">y2</span> <span class="p">=</span> <span class="nb">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="n">t</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">5</span><span class="o">&gt;</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">6</span><span class="o">&gt;</span> <span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">7</span><span class="o">&gt;</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;</span> <span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">9</span><span class="o">&gt;</span> <span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">10</span><span class="o">&gt;</span> <span class="nb">legend</span><span class="p">(</span><span class="s">&#39;sin&#39;</span><span class="p">,</span> <span class="s">&#39;cos&#39;</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">11</span><span class="o">&gt;</span> <span class="nb">title</span><span class="p">(</span><span class="s">&#39;my plot&#39;</span><span class="p">)</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">12</span><span class="o">&gt;</span> <span class="nb">print</span> <span class="o">-</span><span class="n">dpng</span> <span class="s">&#39;myPlot.png&#39;</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">13</span><span class="o">&gt;</span> <span class="nb">close</span>
+</code></pre></div>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_my_plot.png" alt="octave_my_plot" />
+Observe the labels, legends, title.</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">14</span><span class="o">&gt;</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">15</span><span class="o">&gt;</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">16</span><span class="o">&gt;</span> <span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c">% divides plot into a 1x2 grid, accessing the fist element</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">17</span><span class="o">&gt;</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">18</span><span class="o">&gt;</span> <span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">19</span><span class="o">&gt;</span> <span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">20</span><span class="o">&gt;</span> <span class="nb">close</span>
+</code></pre></div>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_plotting_data_2.png" alt="octave_plotting_data_2" />
+Subplot allows showing two plots side by side</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">21</span><span class="o">&gt;</span> <span class="nb">axis</span><span class="p">([</span><span class="mf">0.5</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">1</span><span class="p">])</span> <span class="c">% change the x and y axis</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">22</span><span class="o">&gt;</span> <span class="nb">clf</span> <span class="c">% clear the plot screen</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">23</span><span class="o">&gt;</span> <span class="n">A</span> <span class="p">=</span> <span class="nb">magic</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">A</span> <span class="p">=</span>
+
+   <span class="mi">17</span>   <span class="mi">24</span>    <span class="mi">1</span>    <span class="mi">8</span>   <span class="mi">15</span>
+   <span class="mi">23</span>    <span class="mi">5</span>    <span class="mi">7</span>   <span class="mi">14</span>   <span class="mi">16</span>
+    <span class="mi">4</span>    <span class="mi">6</span>   <span class="mi">13</span>   <span class="mi">20</span>   <span class="mi">22</span>
+   <span class="mi">10</span>   <span class="mi">12</span>   <span class="mi">19</span>   <span class="mi">21</span>    <span class="mi">3</span>
+   <span class="mi">11</span>   <span class="mi">18</span>   <span class="mi">25</span>    <span class="mi">2</span>    <span class="mi">9</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">24</span><span class="o">&gt;</span> <span class="nb">imagesc</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">25</span><span class="o">&gt;</span> <span class="nb">clf</span><span class="p">;</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">26</span><span class="o">&gt;</span> <span class="nb">imagesc</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">octave</span><span class="p">:</span><span class="mi">27</span><span class="o">&gt;</span> <span class="nb">imagesc</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="nb">colorbar</span><span class="p">,</span> <span class="nb">colormap</span> <span class="nb">gray</span><span class="p">;</span>
+</code></pre></div>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week2/octave_plotting_data_3.png" alt="octave_plotting_data_3" /></p>
+
+<h3 id="functions-control-statements-for-while-if-elseif-else">Functions &amp; Control Statements: for, while, if/elseif/else</h3>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">PS1</span><span class="p">(</span><span class="s">&#39;&gt;&gt; &#39;</span><span class="p">);</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">v</span> <span class="p">=</span>
+
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+
+<span class="c">% for loop</span>
+<span class="o">&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+<span class="o">&gt;</span>   <span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="mi">2</span>^<span class="n">i</span><span class="p">;</span>
+<span class="o">&gt;</span>  <span class="k">end</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="p">=</span>
+
+      <span class="mi">2</span>
+      <span class="mi">4</span>
+      <span class="mi">8</span>
+     <span class="mi">16</span>
+     <span class="mi">32</span>
+     <span class="mi">64</span>
+    <span class="mi">128</span>
+    <span class="mi">256</span>
+    <span class="mi">512</span>
+   <span class="mi">1024</span>
+
+<span class="c">% while loop</span>
+<span class="o">&gt;&gt;</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span><span class="p">=</span> <span class="mi">5</span><span class="p">,</span>
+<span class="o">&gt;</span>   <span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="o">&gt;</span>   <span class="n">i</span> <span class="p">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">&gt;</span>  <span class="k">end</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="p">=</span>
+
+    <span class="mi">100</span>
+    <span class="mi">100</span>
+    <span class="mi">100</span>
+    <span class="mi">100</span>
+    <span class="mi">100</span>
+     <span class="mi">64</span>
+    <span class="mi">128</span>
+    <span class="mi">256</span>
+    <span class="mi">512</span>
+   <span class="mi">1024</span>
+
+<span class="c">% while loop with an if statement break</span>
+<span class="o">&gt;&gt;</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="k">while</span> <span class="nb">true</span><span class="p">,</span>
+<span class="o">&gt;</span>   <span class="n">v</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="mi">999</span><span class="p">;</span>
+<span class="o">&gt;</span>   <span class="n">i</span> <span class="p">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="o">&gt;</span>   <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">,</span>
+<span class="o">&gt;</span>     <span class="k">break</span><span class="p">;</span>
+<span class="o">&gt;</span>   <span class="k">end</span><span class="p">;</span>
+<span class="o">&gt;</span>  <span class="k">end</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span>
+<span class="n">v</span> <span class="p">=</span>
+
+    <span class="mi">999</span>
+    <span class="mi">999</span>
+    <span class="mi">999</span>
+    <span class="mi">999</span>
+    <span class="mi">999</span>
+     <span class="mi">64</span>
+    <span class="mi">128</span>
+    <span class="mi">256</span>
+    <span class="mi">512</span>
+   <span class="mi">1024</span>
+
+<span class="c">% If statement, with elseif and else</span>
+<span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="o">&gt;&gt;</span> <span class="k">if</span> <span class="n">v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+<span class="o">&gt;</span>   <span class="nb">disp</span><span class="p">(</span><span class="s">&#39;The value is one&#39;</span><span class="p">);</span>
+<span class="o">&gt;</span>  <span class="k">elseif</span> <span class="n">v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span>
+<span class="o">&gt;</span>   <span class="nb">disp</span><span class="p">(</span><span class="s">&#39;The value is two&#39;</span><span class="p">);</span>
+<span class="o">&gt;</span>  <span class="k">else</span>
+<span class="o">&gt;</span>   <span class="nb">disp</span><span class="p">(</span><span class="s">&#39;The value is not one or two.&#39;</span><span class="p">);</span>
+<span class="o">&gt;</span>  <span class="k">end</span><span class="p">;</span>
+<span class="n">The</span> <span class="n">value</span> <span class="n">is</span> <span class="n">two</span>
+</code></pre></div>
+
+<p>Functions in octave are defined by creating a file. For example, consider a file named <code>squareThisNumber.m</code> with the following:</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% contents of squareThisNumber.m</span>
+<span class="k">function</span><span class="w"> </span>y <span class="p">=</span><span class="w"> </span><span class="nf">squareThisNumber</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="c">% Return one variable &#39;y&#39;, has one input variable &#39;x&#39;</span>
+
+<span class="n">y</span> <span class="p">=</span> <span class="n">x</span>^<span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="o">&gt;&gt;</span> <span class="n">cd</span> <span class="o">\</span><span class="p">..</span><span class="o">.\</span> <span class="c">%where directory contains squareThisNumber.m</span>
+<span class="o">&gt;&gt;</span> <span class="n">squareThisNumber</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ans</span> <span class="p">=</span> <span class="mi">25</span>
+</code></pre></div>
+
+<p>Consider a file named <code>squareAndCubeThisNumber.m</code> with the following:</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% contents of squareAndCubeThisNumber.m</span>
+<span class="k">function</span><span class="w"> </span>[y1, y2] <span class="p">=</span><span class="w"> </span><span class="nf">squareAndCubeThisNumber</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="c">% Return two variables &#39;y1&#39;, &#39;y2&#39;; has one input variable &#39;x&#39;</span>
+
+<span class="n">y1</span> <span class="p">=</span> <span class="n">x</span>^<span class="mi">2</span><span class="p">;</span>
+<span class="n">y2</span> <span class="p">=</span> <span class="n">x</span>^<span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="o">&gt;&gt;</span> <span class="n">cd</span> <span class="o">\</span><span class="p">..</span><span class="o">.\</span> <span class="c">%where directory contains squareAndCubeThisNumber.m</span>
+<span class="o">&gt;&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span> <span class="p">=</span> <span class="n">squareAndCubeThisNumber</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="n">a</span>
+<span class="n">a</span> <span class="p">=</span> <span class="mi">25</span>
+<span class="o">&gt;&gt;</span> <span class="n">b</span>
+<span class="n">b</span> <span class="p">=</span> <span class="mi">125</span>
+</code></pre></div>
+
+<p>Example:</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% costFunctionJ.m</span>
+<span class="k">function</span><span class="w"> </span>J <span class="p">=</span><span class="w"> </span><span class="nf">costFunctionJ</span><span class="p">(</span>X, y, theta<span class="p">)</span><span class="w"></span>
+
+<span class="c">% X is the &quot;design matrix&quot; containing the training examples.</span>
+<span class="c">% y is the class labels</span>
+
+<span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>          <span class="c">% number of training examples</span>
+<span class="n">predictions</span> <span class="p">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">theta</span><span class="p">;</span> <span class="c">% predictions of hypothesis on all m examples</span>
+<span class="n">sqrErrors</span> <span class="p">=</span> <span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">.^</span> <span class="mi">2</span> <span class="c">% squared errors</span>
+
+<span class="n">J</span> <span class="p">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sqrErrors</span><span class="p">);</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">octave</span><span class="p">:</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">X</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">1</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">X</span> <span class="p">=</span>
+
+   <span class="mi">1</span>   <span class="mi">1</span>
+   <span class="mi">1</span>   <span class="mi">2</span>
+   <span class="mi">1</span>   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">2</span><span class="o">&gt;</span> <span class="n">y</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">y</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">2</span>
+   <span class="mi">3</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">3</span><span class="o">&gt;</span> <span class="n">theta</span> <span class="p">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">theta</span> <span class="p">=</span>
+
+   <span class="mi">0</span>
+   <span class="mi">1</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">4</span><span class="o">&gt;</span> <span class="n">j</span> <span class="p">=</span> <span class="n">costFunctionJ</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+<span class="n">sqrErrors</span> <span class="p">=</span>
+
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+   <span class="mi">0</span>
+
+<span class="n">j</span> <span class="p">=</span> <span class="mi">0</span>
+
+<span class="n">octave</span><span class="p">:</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">j</span> <span class="p">=</span> <span class="n">costFunctionJ</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">;</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">sqrErrors</span> <span class="p">=</span>
+
+   <span class="mi">1</span>
+   <span class="mi">4</span>
+   <span class="mi">9</span>
+
+<span class="n">j</span> <span class="p">=</span>  <span class="mf">2.3333</span>
+</code></pre></div>
+
+<h3 id="vectorization">Vectorization</h3>
+
+<p>Example 1:</p>
+
+<p>Consider the following hypothesis function</p>
+
+<p>$$ h_\theta(x) = \sum\limits_{j=0}^n\theta_jx_j = \theta^Tx $$</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Unvectorized implementation</span>
+<span class="n">prediction</span> <span class="p">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">j</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+  <span class="n">prediction</span> <span class="p">=</span> <span class="n">prediction</span> <span class="o">+</span> <span class="n">theta</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<span class="k">end</span><span class="p">;</span>
+
+<span class="c">% Vectorized implementation</span>
+<span class="n">prediction</span> <span class="p">=</span> <span class="n">theta</span><span class="o">&#39;</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Example 2:</p>
+
+<p>Recall the gradient descent algorithm</p>
+
+<p>$$ \theta_j := \theta_j - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})\cdot x_j^{(i)} \hspace{2em} \text{(for all } j \text{)}$$</p>
+
+<p><em>Unvectorized naive approach</em></p>
+
+<p>$$ \theta_0 := \theta_0 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})\cdot x_0^{(i)} $$
+$$ \theta_1 := \theta_1 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})\cdot x_1^{(i)} $$
+$$ \theta_2 := \theta_2 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})\cdot x_2^{(i)} $$
+$$ \vdots $$
+$$ \theta_n := \theta_n - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})\cdot x_n^{(i)} $$</p>
+
+<p><em>Vectorized approach</em></p>
+
+<p>$$ \text{Simply} \hspace{2em} \Theta := \Theta - \alpha\delta $$
+$$ \Theta \leftarrow \mathbb{R}^{n+1} $$
+$$ \alpha \leftarrow \mathbb{R} $$
+$$ \delta \leftarrow \mathbb{R}^{n+1} $$
+$$ \text{where} \hspace{2em} \delta = \dfrac{1}{m} \sum\limits_{i=1}^m (h_\theta(x^{(i)})-y^{(i)}) \cdot x^{(i)} $$
+$$ (h_\theta(x^{(i)}) - y^{(i)}) \leftarrow \mathbb{R} $$
+$$ x^{(i)} \leftarrow \mathbb{R}^{n+1} $$</p>
+
+<p>Recall that $ \mathbb{R} $ means a scalar number and $\mathbb{R}^{n+1}$ is a vector of scalar numbers.</p>
+
+<hr />
+
+<p>Week 3 tbd.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

@@ -2,7 +2,7 @@
 title: "Machine Learning, Week 2"
 date: 2017-08-31T14:05:35-06:00
 tags: ["Machine Learning"]
-draft: true
+draft: false
 ---
 
 Taking the [Coursera Machine Learning](https://www.coursera.org/learn/machine-learning) course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by [Andrew Ng](http://www.andrewng.org/).
