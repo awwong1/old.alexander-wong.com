@@ -15,16 +15,16 @@
 
   
   <meta name="author" content="Alexander Wong" />
-  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
-Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  Machine Learning  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression   Optional Linear Algebra  Linear Algebra Review  Matrices and Vectors Matrix Addition and Scalar Operations Matrix-Vector Multiplication Matrix-Matrix Multiplication Matrix Multiplication Properties Inverse and Transpose      Lecture notes:  Lecture1 Lecture2 Lecture3   Introduction Machine Learning What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@FindingUdia" />
     <meta name="twitter:title" content="Machine Learning, Week 1" />
-    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
-Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  Machine Learning  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression   Optional Linear Algebra  Linear Algebra Review  Matrices and Vectors Matrix Addition and Scalar Operations Matrix-Vector Multiplication Matrix-Matrix Multiplication Matrix Multiplication Properties Inverse and Transpose      Lecture notes:  Lecture1 Lecture2 Lecture3   Introduction Machine Learning What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed." />
     <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
   
 
@@ -192,16 +192,18 @@ Table of Contents  Introduction  What is Machine Learning Supervised Learning Un
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Machine Learning, Week 1</h1>
-      <p class="post-meta">@Alexander Wong · Aug 31, 2017 · 7 min read</p>
+      <p class="post-meta">@Alexander Wong · Aug 31, 2017 · 13 min read</p>
     </header>
     <article class="post-content">
 
-<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
 
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
 <ul>
 <li><a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#machine-learning">Machine Learning</a>
 <ul>
 <li><a href="#what-is-machine-learning">What is Machine Learning</a></li>
 <li><a href="#supervised-learning">Supervised Learning</a></li>
@@ -214,6 +216,19 @@ Table of Contents  Introduction  What is Machine Learning Supervised Learning Un
 <li><a href="#gradient-descent">Gradient Descent</a></li>
 <li><a href="#gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#optional-linear-algebra">Optional Linear Algebra</a>
+<ul>
+<li><a href="#linear-algebra-review">Linear Algebra Review</a>
+<ul>
+<li><a href="#matrices-and-vectors">Matrices and Vectors</a></li>
+<li><a href="#matrix-addition-and-scalar-operations">Matrix Addition and Scalar Operations</a></li>
+<li><a href="#matrix-vector-multiplication">Matrix-Vector Multiplication</a></li>
+<li><a href="#matrix-matrix-multiplication">Matrix-Matrix Multiplication</a></li>
+<li><a href="#matrix-multiplication-properties">Matrix Multiplication Properties</a></li>
+<li><a href="#inverse-and-transpose">Inverse and Transpose</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </nav>
 
@@ -224,12 +239,15 @@ Table of Contents  Introduction  What is Machine Learning Supervised Learning Un
 <ul>
 <li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week1/Lecture1.pdf">Lecture1</a></li>
 <li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week1/Lecture2.pdf">Lecture2</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week1/Lecture3.pdf">Lecture3</a></li>
 </ul></li>
 </ul>
 
 <h1 id="introduction">Introduction</h1>
 
-<h2 id="what-is-machine-learning">What is Machine Learning</h2>
+<h2 id="machine-learning">Machine Learning</h2>
+
+<h3 id="what-is-machine-learning">What is Machine Learning</h3>
 
 <ul>
 <li><strong>Arthur Samuel (1959)</strong>: The field of study that gives computers the ability to
@@ -247,7 +265,7 @@ learn without explicitly programmed.</li>
 
 <p>In general, any machine learning problem can be assigned to one of two broad classifications, Supervised learning and Unsupervised learning.</p>
 
-<h2 id="supervised-learning">Supervised Learning</h2>
+<h3 id="supervised-learning">Supervised Learning</h3>
 
 <p>In supervised learning, we have a data set and we already know what the correct output should look like. There is an idea that a relationship exists between the input and output.</p>
 
@@ -273,16 +291,16 @@ learn without explicitly programmed.</li>
 <li>Given a dataset of patients diagnosed as either having diabetes or not, learn to classify new patients as having diabetes or not.</li>
 </ul>
 
-<h2 id="unsupervised-learning">Unsupervised Learning</h2>
+<h3 id="unsupervised-learning">Unsupervised Learning</h3>
 
-<p>Unsupervised learning allows appraoches to problems with little or no idea what the results should look like. Structure is derived from data where we do not know the effect of the variables. This can be done by clustering the data based on relationships or variables within the data.</p>
+<p>Unsupervised learning allows approaches to problems with little or no idea what the results should look like. Structure is derived from data where we do not know the effect of the variables. This can be done by clustering the data based on relationships or variables within the data.</p>
 
-<p>With unsupervised learning, there is no feedback based on the preduction results.</p>
+<p>With unsupervised learning, there is no feedback based on the prediction results.</p>
 
 <p>Examples:</p>
 
 <ul>
-<li><strong>Clustering</strong>: Take a collection fo 1,000,000 differenge genes and find a way to automatically group these genes into groups that are somehow similar or related by different variables, such as lifespan, location, roles, etc.</li>
+<li><strong>Clustering</strong>: Take a collection fo 1,000,000 different genes and find a way to automatically group these genes into groups that are somehow similar or related by different variables, such as lifespan, location, roles, etc.</li>
 
 <li><p><strong>Non-Clustering</strong>: The &ldquo;Cocktail Party Algorithm&rdquo; allows you to find structure in a chaotic environment (such as identifying individual voices and music from a mesh of sounds at a cocktail party).</p></li>
 
@@ -291,9 +309,9 @@ learn without explicitly programmed.</li>
 <li><p>Given a database of customer data, automatically discover market segments and group customers into different market segments.</p></li>
 </ul>
 
-<h1 id="linear-regression-with-one-variable">Linear Regression with One Variable</h1>
+<h2 id="linear-regression-with-one-variable">Linear Regression with One Variable</h2>
 
-<h2 id="model-representation">Model Representation</h2>
+<h3 id="model-representation">Model Representation</h3>
 
 <p>This is the notation we will use moving forward.</p>
 
@@ -314,7 +332,7 @@ learn without explicitly programmed.</li>
 
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/hypothesis.png" alt="hypothesis" /></p>
 
-<h2 id="cost-function-intuitions">Cost Function &amp; Intuitions</h2>
+<h3 id="cost-function-intuitions">Cost Function &amp; Intuitions</h3>
 
 <p>We measure the accuracy of a hypothesis functions by using a <strong>cost function</strong>. This takes an average difference of all the results of the hypothesis with inputs from X and the outputs Y.</p>
 
@@ -329,7 +347,7 @@ learn without explicitly programmed.</li>
 <img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_3.png" alt="cost_function_3" />
 <img src="https://alexander-wong.com/img/coursera-machine-learning-week1/cost_function_4.png" alt="cost_function_4" /></p>
 
-<h2 id="gradient-descent">Gradient Descent</h2>
+<h3 id="gradient-descent">Gradient Descent</h3>
 
 <p>Gradient descent is a method of estimating the parameters in the hypothesis function using the cost function. Imagine that we graph the hypothesis function based on its fields $\theta_0, \theta_1$. We put these variables on the x and y axis and we plot the cost function on the vertical z axis. The points on the graph will be the result of the cost function using the hypothesis with those specific theta parameters.</p>
 
@@ -361,7 +379,7 @@ $$\theta_j := \theta_j - \alpha \dfrac{\partial}{\partial\theta_j} J(\theta_0,\t
 
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_5.png" alt="gradient_descent_5" /></p>
 
-<h2 id="gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</h2>
+<h3 id="gradient-descent-for-linear-regression">Gradient Descent for Linear Regression</h3>
 
 <p>Applying the gradient descent algorithm to the cost functions defined earlier, we must calculate the necessary derivatives.</p>
 
@@ -380,6 +398,325 @@ $$\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}((h_\theta(x_{i
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/gradient_descent_linear_regression_2.png" alt="gradient_descent_linear_regression_2" /></p>
 
 <p>The ellipses shown above are the contours of a quadratic function. Also shown is the trajectory taken by gradient descent, which was initialized at (48, 30). The x&rsquo;s in the figure represent each step in gradient descent as it converged to its minimum.</p>
+
+<h1 id="optional-linear-algebra">Optional Linear Algebra</h1>
+
+<h2 id="linear-algebra-review">Linear Algebra Review</h2>
+
+<h3 id="matrices-and-vectors">Matrices and Vectors</h3>
+
+<p>Matrices are 2-dimensional arrays:</p>
+
+<p>$$\begin{bmatrix} a &amp; b &amp; c \newline d &amp; e &amp; f \newline g &amp; h &amp; i \newline j &amp; k &amp; l\end{bmatrix}$$</p>
+
+<p>The above matrix has four rows and three columns, therefore it is a 4 x 3 matrix.</p>
+
+<p>A vector is a matrix with one column and many rows:</p>
+
+<p>$$\begin{bmatrix} w \newline x \newline y \newline z \end{bmatrix}$$</p>
+
+<p>Vectors are a subset of matrices. The above vector is a 4 x 1 matrix.</p>
+
+<p><strong>Notation and terms:</strong></p>
+
+<ul>
+<li>$A_{ij}$ refers to the element in the ith row and jth column of matrix A.</li>
+<li>A vector with &lsquo;n&rsquo; rows is referred to as an &lsquo;n&rsquo;-dimensional vector.</li>
+<li>$v_i$ refers to the element in the ith row of the vector.</li>
+<li>In general, all vectors and matrices will be 1-indexed from the top left corner.</li>
+<li>Matrices are usually denoted by uppercase names while vectors are lowercase.</li>
+<li>&ldquo;Scalar&rdquo; means that an object is a single value, not a vector or matrix.</li>
+<li>$\mathbb{R}$ refers to the set of scalar real numbers.</li>
+<li>$\mathbb{R}^\mathbb{n}$ refers to the set of n-dimensional vectors of real numbers.</li>
+</ul>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% The ; denotes we are going back to a new row.</span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">;</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">;</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">;</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+
+<span class="c">% Initialize a vector </span>
+<span class="n">v</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span><span class="mi">2</span><span class="p">;</span><span class="mi">3</span><span class="p">]</span> 
+
+<span class="c">% Get the dimension of the matrix A where m = rows and n = columns</span>
+<span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">]</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c">% You could also store it this way</span>
+<span class="n">dim_A</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c">% Get the dimension of the vector v </span>
+<span class="n">dim_v</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="c">% Now let&#39;s index into the 2nd row 3rd column of matrix A</span>
+<span class="n">A_23</span> <span class="p">=</span> <span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+    1    2    3
+    4    5    6
+    7    8    9
+   10   11   12
+
+v =
+
+   1
+   2
+   3
+
+m =  4
+n =  3
+dim_A =
+
+   4   3
+
+dim_v =
+
+   3   1
+
+A_23 =  6
+</code></pre></div>
+
+<h3 id="matrix-addition-and-scalar-operations">Matrix Addition and Scalar Operations</h3>
+
+<p>Addition and Subtraction occur <strong>element-wise</strong>, simply add or subtract each corresponding element.</p>
+
+<p>$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline \end{bmatrix} +\begin{bmatrix} w &amp; x \newline y &amp; z \newline \end{bmatrix} =\begin{bmatrix} a+w &amp; b+x \newline c+y &amp; d+z \newline \end{bmatrix}$$
+$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline \end{bmatrix} - \begin{bmatrix} w &amp; x \newline y &amp; z \newline \end{bmatrix} =\begin{bmatrix} a-w &amp; b-x \newline c-y &amp; d-z \newline \end{bmatrix}$$</p>
+
+<p>To add or subtract two matrices, their dimensions must be <strong>the same</strong>.</p>
+
+<p>In scalar multiplication and division, we simply multiply or divide every element by the scalar value.</p>
+
+<p>$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline \end{bmatrix} * x =\begin{bmatrix} a*x &amp; b*x \newline c*x &amp; d*x \newline \end{bmatrix}$$
+$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline \end{bmatrix} / x =\begin{bmatrix} a /x &amp; b/x \newline c /x &amp; d /x \newline \end{bmatrix}$$</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Initialize matrix A and B </span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">;</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c">% Initialize constant s </span>
+<span class="n">s</span> <span class="p">=</span> <span class="mi">2</span>
+
+<span class="c">% What happens if we have a Matrix + scalar?</span>
+<span class="n">add_As</span> <span class="p">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">s</span>
+
+<span class="n">sub_As</span> <span class="p">=</span> <span class="n">A</span> <span class="o">-</span> <span class="n">s</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+   1   2   4
+   5   3   2
+
+s =  2
+add_As =
+
+   3   4   6
+   7   5   4
+
+sub_As =
+
+  -1   0   2
+   3   1   0
+</code></pre></div>
+
+<h3 id="matrix-vector-multiplication">Matrix-Vector Multiplication</h3>
+
+<p>When multiplying a matrix with a vector, we map the column of the vector onto each row of the matrix, multiplying each element and summing the result.</p>
+
+<p>$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline e &amp; f \end{bmatrix} *\begin{bmatrix} x \newline y \newline \end{bmatrix} =\begin{bmatrix} a*x + b*y \newline c*x + d*y \newline e*x + f*y\end{bmatrix}$$</p>
+
+<p>An <strong>m x n matrix</strong> multiplied by an <strong>n x 1 vector</strong> results in an <strong>m x 1 vector</strong>.</p>
+
+<p>The result is a <strong>vector</strong>. The number of <strong>columns of the matrix</strong> must equal the number of <strong>rows in the vector</strong>.</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Initialize matrix A </span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">;</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">;</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">;</span> <span class="mi">434</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> 
+
+<span class="c">% Initialize vector v </span>
+<span class="n">v</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;</span> <span class="mi">1</span><span class="p">;]</span> 
+
+<span class="c">% Multiply A * v</span>
+<span class="n">Av</span> <span class="p">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">v</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+     1     2     3
+     4     5     6
+     7     8     9
+   434    54     3
+
+v =
+
+   1
+   1
+   1
+
+Av =
+
+     6
+    15
+    24
+   491
+</code></pre></div>
+
+<h3 id="matrix-matrix-multiplication">Matrix-Matrix Multiplication</h3>
+
+<p>Two matrices are multiplied by breaking it into several vector multiplications and concatenating the result.</p>
+
+<p>$$\begin{bmatrix} a &amp; b \newline c &amp; d \newline e &amp; f \end{bmatrix} *\begin{bmatrix} w &amp; x \newline y &amp; z \newline \end{bmatrix} =\begin{bmatrix} a*w + b*y &amp; a*x + b*z \newline c*w + d*y &amp; c*x + d*z \newline e*w + f*y &amp; e*x + f*z\end{bmatrix}$$</p>
+
+<p>An <strong>m x n matrix</strong> multiplied by an <strong>n x o matrix</strong> results in an <strong>m x o matrix</strong>. In the above example, a 3 x 2 matrix multiplied by a 2 x 2 matrix resulted in a 3 x 2 matrix.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/matrix_matrix_multiplication.png" alt="matrix_matrix_multiplication" /></p>
+
+<p>To multiply two matrices, the number of <strong>columns</strong> of the first matrix must equal the number of <strong>rows</strong> of the second matrix.</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Initialize a 3 by 2 matrix </span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">;</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+<span class="c">% Initialize a 2 by 1 matrix </span>
+<span class="n">B</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">]</span> 
+
+<span class="c">% We expect a resulting matrix of (3 by 2)*(2 by 1) = (3 by 1) </span>
+<span class="n">mult_AB</span> <span class="p">=</span> <span class="n">A</span><span class="o">*</span><span class="n">B</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+   1   2
+   3   4
+   5   6
+
+B =
+
+   1
+   2
+
+mult_AB =
+
+    5
+   11
+   17
+</code></pre></div>
+
+<h3 id="matrix-multiplication-properties">Matrix Multiplication Properties</h3>
+
+<p>Matrices are <strong>not commutative</strong>, that is $A * B \neq B * A$. Matrices are <strong>associative</strong>, that is $(A * B) * C = A * (B * C)$</p>
+
+<p>Identity Matrices, when multiplied by any matrix of the same dimensions, returns the original matrix. Identity matrices have ones along the diagonals and zeros everywhere else. They are <strong>n x n</strong> dimensioned.</p>
+
+<p>$$\begin{bmatrix} 1 &amp; 0 &amp; 0 \newline 0 &amp; 1 &amp; 0 \newline 0 &amp; 0 &amp; 1 \newline \end{bmatrix}$$</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week1/identity_matrix.png" alt="identity_matrix" /></p>
+
+<p>Note, the identity matrix $I$ does not have the same dimensions in $A * I$ and $I * A$, as the dimensions of $I$ are implicit from the context of $A$.</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Initialize random matrices A and B </span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">;</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">B</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c">% Initialize a 2 by 2 identity matrix</span>
+<span class="no">I</span> <span class="p">=</span> <span class="nb">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c">% The above notation is the same as I = [1,0;0,1]</span>
+
+<span class="c">% What happens when we multiply I*A ? </span>
+<span class="n">IA</span> <span class="p">=</span> <span class="no">I</span><span class="o">*</span><span class="n">A</span> 
+
+<span class="c">% How about A*I ? </span>
+<span class="n">AI</span> <span class="p">=</span> <span class="n">A</span><span class="o">*</span><span class="no">I</span> 
+
+<span class="c">% Compute A*B </span>
+<span class="n">AB</span> <span class="p">=</span> <span class="n">A</span><span class="o">*</span><span class="n">B</span> 
+
+<span class="c">% Is it equal to B*A? </span>
+<span class="n">BA</span> <span class="p">=</span> <span class="n">B</span><span class="o">*</span><span class="n">A</span> 
+
+<span class="c">% Note that IA = AI but AB != BA</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+   1   2
+   4   5
+
+B =
+
+   1   1
+   0   2
+
+I =
+
+Diagonal Matrix
+
+   1   0
+   0   1
+
+IA =
+
+   1   2
+   4   5
+
+AI =
+
+   1   2
+   4   5
+
+AB =
+
+    1    5
+    4   14
+
+BA =
+
+    5    7
+    8   10
+</code></pre></div>
+
+<h3 id="inverse-and-transpose">Inverse and Transpose</h3>
+
+<p>When a matrix is multiplied by its inverse, you get the identity. The <strong>inverse</strong> of a matrix $A$ is denoted $A^{-1}$.</p>
+
+<p>$$ A * A^{-1} = I $$</p>
+
+<p>A non square matrix does not have an inverse matrix. We can compute inverses of matrices in octave with the <code>pinv(A)</code> function, and in Matlab with the <code>inv(A)</code> function. Matrices that do not have an inverse are <em>singular</em> or <em>degenerate</em>.</p>
+
+<p>The <strong>transposition</strong> of a matrix is like the result of rotating the matrix $90^\circ$ in a clockwise direction then reversing it. This can be computed in octave with <code>A'</code> or in Matlab with the <code>transpose(A)</code> function.</p>
+
+<p>$$A = \begin{bmatrix} a &amp; b \newline c &amp; d \newline e &amp; f \end{bmatrix}$$
+$$A^T = \begin{bmatrix} a &amp; c &amp; e \newline b &amp; d &amp; f \newline \end{bmatrix}$$</p>
+
+<p>In other words: $A_{ij} = A^T_{ji}$</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="c">% Initialize matrix A </span>
+<span class="n">A</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">;</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+
+<span class="c">% Transpose A </span>
+<span class="n">A_trans</span> <span class="p">=</span> <span class="n">A</span><span class="o">&#39;</span> 
+
+<span class="c">% Take the inverse of A </span>
+<span class="n">A_inv</span> <span class="p">=</span> <span class="nb">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c">% What is A^(-1)*A? </span>
+<span class="n">A_invA</span> <span class="p">=</span> <span class="nb">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="n">A</span>
+</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>A =
+
+   1   2   0
+   0   5   6
+   7   0   9
+
+A_trans =
+
+   1   0   7
+   2   5   0
+   0   6   9
+
+A_inv =
+
+   0.348837  -0.139535   0.093023
+   0.325581   0.069767  -0.046512
+  -0.271318   0.108527   0.038760
+
+A_invA =
+
+   1.00000  -0.00000   0.00000
+   0.00000   1.00000  -0.00000
+  -0.00000   0.00000   1.00000
+</code></pre></div>
+
+<hr />
+
+<p>Move on to <a href="">Week 2</a>.</p>
 </article>
     <footer class="post-footer">
       

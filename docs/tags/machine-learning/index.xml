@@ -18,8 +18,8 @@
       <pubDate>Thu, 31 Aug 2017 10:25:51 -0600</pubDate>
       
       <guid>https://alexander-wong.com/post/coursera-machine-learning-week1/</guid>
-      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free coursera course, taught by Andrew Ng.
-Table of Contents  Introduction  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression     Lecture notes:  Lecture1 Lecture2   Introduction What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed.</description>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Table of Contents  Introduction  Machine Learning  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression   Optional Linear Algebra  Linear Algebra Review  Matrices and Vectors Matrix Addition and Scalar Operations Matrix-Vector Multiplication Matrix-Matrix Multiplication Matrix Multiplication Properties Inverse and Transpose      Lecture notes:  Lecture1 Lecture2 Lecture3   Introduction Machine Learning What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed.</description>
     </item>
     
   </channel>
