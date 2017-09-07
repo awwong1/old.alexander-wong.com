@@ -11,7 +11,7 @@ Github hosted page for https://alexander-wong.com.
 
 * Ensure you have `hugo` installed
 * Adding content:
-  *  `hugo new posts/my-first-post.md`
+  *  `hugo new post/my-first-post.md`
 * Serving locally:
   * `hugo server -D`
 * Generating deployable public files

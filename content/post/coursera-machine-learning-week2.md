@@ -1073,4 +1073,4 @@ Recall that $ \mathbb{R} $ means a scalar number and $\mathbb{R}^{n+1}$ is a vec
 
 ---
 
-Week 3 tbd.
+Move on to [Week 3]({{% relref "coursera-machine-learning-week3.md" %}}).
