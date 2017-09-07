@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 3</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 2.
+Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size)." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 3" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 2.
+Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size)." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week3/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item  is-active"><a href="https://alexander-wong.com/">Home</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">Self</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 3</h1>
+      <p class="post-meta">@Alexander Wong · Sep 7, 2017 · 12 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week2/">Week 2</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#logistic-regression">Logistic Regression</a>
+<ul>
+<li><a href="#classification-and-representation">Classification and Representation</a>
+<ul>
+<li><a href="#classification">Classification</a></li>
+<li><a href="#hypothesis-representation">Hypothesis Representation</a></li>
+<li><a href="#decision-boundary">Decision Boundary</a></li>
+</ul></li>
+<li><a href="#logistic-regression-model">Logistic Regression Model</a>
+<ul>
+<li><a href="#cost-function">Cost Function</a></li>
+<li><a href="#simplified-cost-function-and-gradient-descent">Simplified Cost Function and Gradient Descent</a></li>
+<li><a href="#advanced-optimization">Advanced Optimization</a></li>
+</ul></li>
+<li><a href="#multiclass-classification">Multiclass Classification</a>
+<ul>
+<li><a href="#multiclass-classification-one-vs-all">Multiclass Classification: One-vs-all</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#regularization">Regularization</a>
+<ul>
+<li><a href="#solving-the-problem-of-overfitting">Solving the Problem of Overfitting</a>
+<ul>
+<li><a href="#the-problem-of-overfitting">The Problem of Overfitting</a></li>
+<li><a href="#cost-function-1">Cost Function</a></li>
+<li><a href="#regularized-linear-regression">Regularized Linear Regression</a></li>
+<li><a href="#regularized-logistic-regression">Regularized Logistic Regression</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week3/Lecture6.pdf">Lecture6</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week3/Lecture7.pdf">Lecture7</a></li>
+</ul></li>
+</ul>
+
+<h1 id="logistic-regression">Logistic Regression</h1>
+
+<h2 id="classification-and-representation">Classification and Representation</h2>
+
+<h3 id="classification">Classification</h3>
+
+<p>Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size).</p>
+
+<p>To attempt classification, one option is to use linear regression and map all the predictions greater than or equal 0.5 as a 1, and all of the values less than 0.5 as a 0. However, this method does not work well because classification is not actually a linear function.</p>
+
+<p>The classification problem is similar to the regression problem, except the values we now predict can only be a small number of discrete values.</p>
+
+<p>The <strong>binary classification problem</strong> is when y can take on two values, 0 and 1.</p>
+
+<p>Example: When trying to build a spam classifier, then $x^{(i)}$ may be features of a piece of email, and $y$ can be 1 if it&rsquo;s spam or $y$ can be zero otherwise. Hence, $y \in \{0, 1\}$. The negative class here is 0, and the positive class here is 1. Given $x^{(i)}$, the corresponding $y^{(i)}$ is also called the label for the training example.</p>
+
+<h3 id="hypothesis-representation">Hypothesis Representation</h3>
+
+<p>We want to change the model of our hypothesis function to fit the use case where answers can either be 0 or 1. One representation of this hypothesis function is the <strong>Sigmoid Function</strong> or the <strong>Logistic Function</strong>.</p>
+
+<p>$$ h_\theta(x) = g(\theta^Tx) $$
+$$ z = \theta^Tx $$
+$$ g(z) = \dfrac{1}{1 + e^{-z}} $$</p>
+
+<p>This is what the above function looks like:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/sigmoid_function.png" alt="sigmoid_function" /></p>
+
+<p>The function $g(z)$ maps any real number to the (0, 1) interval. This is useful in transforming an arbitrary valued function into a function suited for classification.</p>
+
+<p>The hypothesis function $h_\theta(x)$ gives us the probability that our output is 1. For example, $h_\theta(x) = 0.7$ tells us that input x is 70% likely to output as a 1. The probability that the prediction is 0 is the compliment (in this case it is 30%).</p>
+
+<p>$$ h_\theta(x) = P(y = 1|x;\theta) = 1 - P(y = 0|x; \theta) $$
+$$ P(y = 0|x; \theta) + P(y = 1|x; \theta) = 1 $$</p>
+
+<h3 id="decision-boundary">Decision Boundary</h3>
+
+<p>In order to classify discretely into 0 or 1, we translate the output of the hypothesis function as follows:</p>
+
+<p>$$ h_\theta(x) \geq 0.5 \rightarrow y = 1 $$
+$$ h_\theta(x) \lt 0.5 \rightarrow y = 0 $$</p>
+
+<p>The way the logistic function $g$ behaves is that when its input is greater than or equal to zero, its output is greater than or equal to 0.5.</p>
+
+<p>$$ g(z) \geq 0.5 $$
+$$ \text{when } z \geq 0 $$</p>
+
+<p>Recall, from the definition of the sigmoid function:</p>
+
+<p>$$ z=0, e^0-1 \Rightarrow g(z)=1 / 2 $$
+$$ z \rightarrow \infty, e^{-\infty} \rightarrow 0 \Rightarrow g(z) = 1 $$
+$$ z \rightarrow -\infty, e^{\infty} \rightarrow \infty \Rightarrow g(z) = 0 $$</p>
+
+<p>If the input to $g$ is $\theta^TX$ then:</p>
+
+<p>$$ h_\theta(x) = g(\theta^Tx) \geq 0.5 $$
+$$ \text{when } \theta^Tx \geq 0 $$</p>
+
+<p>Combining the two above statements, we can now say:</p>
+
+<p>$$ \theta^Tx \geq 0 \Rightarrow y = 1 $$
+$$ \theta^Tx \lt 0 \Rightarrow y = 0 $$</p>
+
+<p>This function is our <strong>decision boundary</strong>. It separates the area where $y = 0$ and where $y = 1$. It is created by the hypothesis function.</p>
+
+<p>Example:</p>
+
+<p>$$ \theta = \begin{bmatrix} 5 \newline -1 \newline 0 \end{bmatrix} $$
+$$ y = 1 \text{ if } 5 + (-1)x_1 + 0x_2 \geq 0 $$
+$$ 5 - x_1 \geq 0 $$
+$$ -x_1 \geq -5 $$
+$$ x_1 \leq 5 $$</p>
+
+<p>In this example, the decision boundary is a straight vertical line placed on the graph where $x_1 = 5$. Everything to the left of this line denotes $y = 1$ while everything to the right of this line denotes $y = 0$.</p>
+
+<p>Note: The input to the sigmoid function $g(z)$ does not need to be linear. A valid input function could be $z = \theta_0 + \theta_1x_1^2 + \theta_2x_2^2 $ which describes a circle. We can use any arbitrary function which fits our data.</p>
+
+<h2 id="logistic-regression-model">Logistic Regression Model</h2>
+
+<h3 id="cost-function">Cost Function</h3>
+
+<p>We cannot use the same cost function that we use for linear regression because the logistic function will cause the output to be wavy, causing many local optima. We want our function to be convex.</p>
+
+<p>For logistic regression, the cost function looks like this:</p>
+
+<p>$$ J(\theta) = \dfrac{1}{m} \sum\limits_{i=1}^m \text{ Cost}(h_\theta(x^{(i)}), y^{(i)}) $$
+$$ \text{Cost}(h_\theta(x), y) = -\log(h_\theta(x)) \hspace{1em} \text{if} \hspace{1em} y = 1 $$
+$$ \text{Cost}(h_\theta(x), y) = -\log(1 - h_\theta(x)) \hspace{1em} \text{if} \hspace{1em} y = 0 $$</p>
+
+<p>When y = 1, we get the following plot for $J(\theta)$ vs $h_\theta(x)$:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_1.png" alt="logistic_regression_cost_function_y_eq_1" /></p>
+
+<p>When y = 0, we get the following plot for $J(\theta)$ vs $h_\theta(x)$:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_0.png" alt="logistic_regression_cost_function_y_eq_0" /></p>
+
+<p>This is equivalent to the following:</p>
+
+<p>$$ \text{Cost}(h_\theta(x), y) = 0 \text{ if } h_\theta(x) = y $$
+$$ \text{Cost}(h_\theta(x), y) \rightarrow \infty \text{ if } y = 0 \text{ and } h_\theta(x) \rightarrow 1 $$
+$$ \text{Cost}(h_\theta(x), y) \rightarrow \infty \text{ if } y = 1 \text{ and } h_\theta(x) \rightarrow 0 $$</p>
+
+<p>If the correct answer &lsquo;y&rsquo; is 0, then the cost function will be 0 if our hypothesis function also outputs a 0. If the hypothesis approaches 1, then the cost function will approach infinity.</p>
+
+<p>If the correct answer &lsquo;y&rsquo; is 1, then the cost function will be 0 if our hypothesis function also outputs a 1. If the hypothesis approaches 0, then the cost function will approach infinity.</p>
+
+<p>Writing the cost function in this way guarantees that $J(\theta)$ is convex for logistic regression.</p>
+
+<h3 id="simplified-cost-function-and-gradient-descent">Simplified Cost Function and Gradient Descent</h3>
+
+<p>The two conditional cases of the cost function can be compressed into one case:</p>
+
+<p>$$ \text{Cost}(h_\theta(x), y) \hspace{1em} = \hspace{1em} -y \log(h_\theta(x)) \hspace{1em} - \hspace{1em} (1 - y)\log(1 - h_\theta(x)) $$</p>
+
+<p>Notice! When y is equal to 1, then the second term $(1 - y)\log(1 - h_\theta(x))$ will equal zero and will not effect the result. If y is equal to 0 then the first term $-y\log(h_\theta(x))$ will be zero and will not effect the result.</p>
+
+<p>We can fully write this entire cost function as the following:</p>
+
+<p>$$ J(\theta) = - \dfrac{1}{m} \sum\limits_{i=1}^m[y^{(i)}\log(h_\theta(x^{(i)})) + (1 - y^{(i)})\log(1 - h_\theta(x^{(i)}))] $$</p>
+
+<p>This is equivalent to the following vectorized form:</p>
+
+<p>$$ h = g(X\theta) $$
+$$ J(\theta) = \dfrac{1}{m} \cdot (-y^T \log(h) - (1 - y)^T \log(1-h))$$</p>
+
+<p>Recall that in Gradient descent, the general form is the following:</p>
+
+<p><em>Repeat</em>
+$$ \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial\theta_j}J(\theta) $$</p>
+
+<p>Calculating the derivative, we get:</p>
+
+<p><em>Repeat</em>
+$$ \theta_j := \theta_j - \dfrac{\alpha}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)}) \cdot x^{(i)} $$</p>
+
+<p>This is cosmetically the same algorithm we used in linear regression, however in linear regression the value $h_\theta(x) = \theta^Tx$ but in logistic regression, the value $h_\theta(x) = \dfrac{1}{1 + e^{-\theta^Tx}}$. We still must update all values in theta.</p>
+
+<p>Vectorized approach is $\theta := \theta - \dfrac{\alpha}{m}X^T(g(X\theta) - \overrightarrow{y}) $</p>
+
+<h3 id="advanced-optimization">Advanced Optimization</h3>
+
+<p>There exist many algorithms, like &ldquo;Conjugate Gradient, BFGS, L-BFGS&rdquo; that are more sophisticated, faster ways to optimize $\theta$ instead of gradient descent. (It&rsquo;s suggested not to write these algorithms yourself, but instead use the libraries provided by Octave.)</p>
+
+<p>We first provide a function that evaluates the following two functions for a given input value $\theta$:</p>
+
+<p>$$J(\theta)$$
+$$\dfrac{\partial}{\partial\theta_j}J(\theta)$$</p>
+
+<p>We can then write a single function that returns both of these:</p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">jVal</span> <span class="p">=</span> <span class="p">[...</span> <span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span>
+  <span class="nb">gradient</span> <span class="p">=</span> <span class="p">[...</span><span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span>
+<span class="k">end</span>
+</code></pre></div>
+
+<p>The we can use octave&rsquo;s <code>fminfunc()</code> optimizatino algorithm with the <code>optimset()</code> function that creates an object containing the options we want to send to <code>fminunc()</code></p>
+<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">options</span> <span class="p">=</span> <span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;GradObj&#39;</span><span class="p">,</span> <span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;MaxIter&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">initialTheta</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">[</span><span class="n">optTheta</span><span class="p">,</span> <span class="n">functionVal</span><span class="p">,</span> <span class="n">exitFlag</span><span class="p">]</span> <span class="p">=</span> <span class="n">fminunc</span><span class="p">(@</span><span class="n">costFunction</span><span class="p">,</span> <span class="n">initialTheta</span><span class="p">,</span> <span class="n">options</span><span class="p">);</span>
+</code></pre></div>
+
+<p>The function <code>fminunc()</code> is given our cost function, initial theta values, and the options object we created beforehand.</p>
+
+<h2 id="multiclass-classification">Multiclass Classification</h2>
+
+<h3 id="multiclass-classification-one-vs-all">Multiclass Classification: One-vs-all</h3>
+
+<p>The logistic regression classifier is extended to work in the case with more than two categories. Instead of $y = { 0, 1 }$ we will expand our definition such that $y = { 0, 1, &hellip;, n }$.</p>
+
+<p>Since $y = { 0, 1, &hellip;, n }$ we divide our problem into $n + 1$ (Add 1 because the index starts at 0) binary classification problems. In each one of these problems, predict the probability that $y$ is a member of one of the classes.</p>
+
+<p>$$y \in { 0, 1, &hellip;, n } $$
+$$ h_\theta^{(0)}(x) = P(y = 0|x;\theta) $$
+$$ h_\theta^{(1)}(x) = P(y = 1|x;\theta) $$
+$$ \vdots $$
+$$ h_\theta^{(n)}(x) = P(y = n|x;\theta) $$
+$$ \text{prediction } = \max\limits_i(h_\theta^{(i)}(x)) $$</p>
+
+<p>We are choosing one class and lumping all others into a single second class. This is done repeatedly by applying binary logistic regression to each case, then use the hypothesis that returned the highest value as our prediction.</p>
+
+<p>This image shows an example for how one could classify three classes:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/multiclass_classification_one_vs_all.png" alt="multiclass_classification_one_vs_all" /></p>
+
+<p><strong>Summary:</strong>
+Train a logistic regression classifier $h_\theta(x)$ for each class to predict the probability that $y = i$. To make a prediction on a new x, pick the class that maximizes $h_\theta(x)$.</p>
+
+<h1 id="regularization">Regularization</h1>
+
+<h2 id="solving-the-problem-of-overfitting">Solving the Problem of Overfitting</h2>
+
+<h3 id="the-problem-of-overfitting">The Problem of Overfitting</h3>
+
+<p>Consider the problem of predicting $y \text{ from } x \in \mathbb{R}$.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/overfitting_example.png" alt="overfitting_example" /></p>
+
+<ul>
+<li>The left most figure shows the result of fitting the straight line. $y = \theta_0 + \theta_1x$ to a dataset. The data doesn&rsquo;t really lie on a straight line, we can see the fit is not good. This figure is <strong>underfitting</strong> because the data clearly shows structure not captured by the model.</li>
+<li>The middle figure looks like an accurate fit to our dataset.</li>
+<li>The right most figure shows the result of fitting a $5^{\text{th}}$ order polynomial $y = \sum_{j=0}^{5} \theta_jx^j$. The curve passes through the data perfectly, but we would not expect this to be a good predictor for housing prices (y) for different living areas (x). This figure is <strong>overfitting</strong>.</li>
+</ul>
+
+<p>Underfitting (high bias) is when the hypothesis function h maps poorly to the trend of the data. It is caused by a function that is too simple or uses too few features. Overfitting (high variance) is caused by a hypothesis function that fits the available data but does not generalize well to predict new data. This is caused by a complicated function that creates a lot of unnecessary curves and angles unrelated to the data.</p>
+
+<p>This terminology is applied to both logistic and linear regression. There are two main options to address the issue of overfitting.</p>
+
+<p>1) Reduce the number of features</p>
+
+<ul>
+<li>Manually select which features to keep</li>
+<li>Use a model selection algorithm (later in course)</li>
+</ul>
+
+<p>2) Regularization</p>
+
+<ul>
+<li>Keep all of the features, but reduce the magnitude of parameters $\theta_j$</li>
+<li>Regularization works well when we have many slightly useful features.</li>
+</ul>
+
+<h3 id="cost-function-1">Cost Function</h3>
+
+<p>We can reduce the weight that some of the terms in our function carry by increasing their cost in order to reduce overfitting from our hypothesis function.</p>
+
+<p>Let&rsquo;s say we wanted to make the following function more quadratic:</p>
+
+<p>$$ \theta_0 + \theta_1x + \theta_2x^2 + \theta_3x^3 + \theta_4x^4 $$</p>
+
+<p>We will want to eliminate the influence of $\theta_3x^3$ and $\theta_4x^4$. Without getting rid of these features or changing the form of our hypothesis, we can instead modify the <em>cost function</em>:</p>
+
+<p>$$ \min_\theta \dfrac{1}{2m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})^2 + 1000 \cdot \theta_3^2 + 1000 \cdot \theta_4^2 $$</p>
+
+<p>We add two extra terms at the end of the cost function to inflate the cost of $\theta_3$ and $\theta_4$. Now, in order for the cost function to get close to zero, we will need to reduce the values of $\theta_3$ and $\theta_4$ to near zero. This in return reduces the values of $\theta_3x^3$ and $\theta_4x^4$ in the hypothesis function. As seen below, the new hypothesis denoted by the pink curve looks like a quadratic function and fits the data better due to the small terms $\theta_3x^3$ and $\theta_4x^4$.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/cost_function_regularization.png" alt="cost_function_regularization" /></p>
+
+<p>We can also regularize all of our theta parameters in a single summation.</p>
+
+<p>$$ \min_\theta \dfrac{1}{2m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})^2 + \lambda \sum\limits_{j=1}^n\theta_j^2 $$</p>
+
+<p>Note, we don&rsquo;t regularize $\theta_0$, although in practice it usually doesn&rsquo;t matter.</p>
+
+<p>The lambda ($\lambda$) is the <strong>regularization parameter</strong>. It determines how much theta parameter costs are inflated. We can use this to smooth the output of the hypothesis function to reduce overfitting. However, if lambda is too large, it may smooth out the function too much and cause underfitting (make the hypothesis appear to be a straight horizontal line). If the lambda is too small, we will not penalize costs enough and the problem of overfitting remains.</p>
+
+<h3 id="regularized-linear-regression">Regularized Linear Regression</h3>
+
+<p>We will modify the gradient descent function to separate out $\theta_0$ from the rest of the parameters because we do not want to penalize $\theta_0$.</p>
+
+<p><em>Repeat {</em>
+$$ \theta_0 := \theta_0 - \alpha \dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)}) \cdot x_0^{(i)} $$
+$$ \theta_j := \theta_j - \alpha[(\dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)})-y^{(i)}) \cdot x_j^{(i)}) + \dfrac{\lambda}{m}\theta_j] \hspace{2em} j \in { 1, 2, \dots, n }$$
+<em>}</em></p>
+
+<p>The term $\dfrac{\lambda}{m}\theta_j$ performs the regularization. With some manipulation, the update rule can also be represented as:</p>
+
+<p>$$ \theta_j := \theta_j(1 - \alpha\dfrac{\lambda}{m}) - \alpha\dfrac{1}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)})-y^{(i)}) \cdot x_j^{(i)} $$
+The term in the above question $1 - \alpha\dfrac{\lambda}{m}$ will always be less than 1. Intuitively it is reducing the value of $\theta_j$ by some amount every update. The second term remains unchanged.</p>
+
+<p><strong>Normal Equation</strong></p>
+
+<p>To approach regularization using the alternate method of the non-iterative normal equation, we add another term inside the parenthesis:</p>
+
+<p>$$\theta = (X^TX + \lambda \cdot L)^{-1}X^Ty $$
+$$\text{where } L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &amp; &amp; &amp; \newline &amp; &amp; 1 &amp; &amp; \newline &amp; &amp; &amp; \ddots &amp; \newline &amp; &amp; &amp; &amp; 1 \end{bmatrix} $$</p>
+
+<p>L is a matrix with a 0 at the top left and 1&rsquo;s down the diagonal with 0s everywhere else. It should have dimension $(n+1) \text{ x } (n+1)$. Intuitively this is the identity matrix, excluding $x_0$, multiplied by a single real number $\lambda$.</p>
+
+<p>Recall that if $m &lt; n$ then $X^TX$ is non invertible. However, when we add the term $\lambda \cdot L$ then $X^TX + \lambda \cdot L$ becomes invertible.</p>
+
+<h3 id="regularized-logistic-regression">Regularized Logistic Regression</h3>
+
+<p>We can regularize logistic regression in a similar way to how we regularize linear regression. The following image shows how the regularized function (dentoted by the pink line) is less likely to overfit than the non-regularized function represented by the blue line.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/regularized_logistic_regression.png" alt="regularized_logistic_regression" /></p>
+
+<p>Recall that the cost function for logistic regression was:</p>
+
+<p>$$ J(\theta) = - \dfrac{1}{m}\sum\limits_{i=1}^m[y^{(i)} \log(h_\theta(x^{(i)})) + (1-y^{(i)}) \log(1-h_\theta(x^{(i)}))] $$</p>
+
+<p>This can be regularized by adding a regularization term to the end:</p>
+
+<p>$$ J(\theta) = - \dfrac{1}{m}\sum\limits_{i=1}^m[y^{(i)} \log(h_\theta(x^{(i)})) + (1-y^{(i)}) \log(1-h_\theta(x^{(i)}))] + \dfrac{\lambda}{2m} \sum\limits_{j=1}^n\theta_j^2 $$</p>
+
+<p>This second sum $\sum\limits_{j=1}^n\theta_j^2$ <strong>explicitly excludes $\theta_0$</strong>, the bias term. The $\theta$ vector is indexed from 0 to n (length of n+1, $\theta_0$ through to $\theta_n$). Thus, when computing the equation, we should continuously update the two following equations:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/gradient_descent_regularized_logistic_regression.png" alt="gradient_descent_regularized_logistic_regression" /></p>
+
+<hr />
+
+<p>Week 4 tbd.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
