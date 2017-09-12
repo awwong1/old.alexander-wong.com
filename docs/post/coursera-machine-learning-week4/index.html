@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 4</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 3.
+Table of Contents  Neural Networks: Representation  Motivations  Non-linear Hypothesis Neurons and the Brain  Neural Networks  Model Representation I Model Representation II  Applications  Examples and Intuitions I Examples and Intuitions II Multiclass Classification      Lecture notes:  Lecture8   Neural Networks: Representation Motivations Non-linear Hypothesis Neural networks are another learning algorithm that exist in addition to linear regression and logistic regression." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 4" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 3.
+Table of Contents  Neural Networks: Representation  Motivations  Non-linear Hypothesis Neurons and the Brain  Neural Networks  Model Representation I Model Representation II  Applications  Examples and Intuitions I Examples and Intuitions II Multiclass Classification      Lecture notes:  Lecture8   Neural Networks: Representation Motivations Non-linear Hypothesis Neural networks are another learning algorithm that exist in addition to linear regression and logistic regression." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week4/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item  is-active"><a href="https://alexander-wong.com/">Home</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">Self</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 4</h1>
+      <p class="post-meta">@Alexander Wong · Sep 12, 2017 · 9 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week3/">Week 3</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#neural-networks-representation">Neural Networks: Representation</a>
+<ul>
+<li><a href="#motivations">Motivations</a>
+<ul>
+<li><a href="#non-linear-hypothesis">Non-linear Hypothesis</a></li>
+<li><a href="#neurons-and-the-brain">Neurons and the Brain</a></li>
+</ul></li>
+<li><a href="#neural-networks">Neural Networks</a>
+<ul>
+<li><a href="#model-representation-i">Model Representation I</a></li>
+<li><a href="#model-representation-ii">Model Representation II</a></li>
+</ul></li>
+<li><a href="#applications">Applications</a>
+<ul>
+<li><a href="#examples-and-intuitions-i">Examples and Intuitions I</a></li>
+<li><a href="#examples-and-intuitions-ii">Examples and Intuitions II</a></li>
+<li><a href="#multiclass-classification">Multiclass Classification</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week4/Lecture8.pdf">Lecture8</a></li>
+</ul></li>
+</ul>
+
+<h1 id="neural-networks-representation">Neural Networks: Representation</h1>
+
+<h2 id="motivations">Motivations</h2>
+
+<h3 id="non-linear-hypothesis">Non-linear Hypothesis</h3>
+
+<p>Neural networks are another learning algorithm that exist in addition to linear regression and logistic regression. They are designed to mimic the way the human brain works.</p>
+
+<p>In a vision problem, it is very difficult to perform logistic regression from pixel data input, as the number of possible features grows exponentially for higher order polynomials. Neural Networks are used to tackle these types of problems when <strong>n</strong> is very large.</p>
+
+<h3 id="neurons-and-the-brain">Neurons and the Brain</h3>
+
+<ul>
+<li>Origins: Algorithms that try to mimic the brain. Was very widely used in the 80s and early 90s, popularity diminished in late 90s.</li>
+<li>Recent resurgence: State-of-the-art technique for many applications.</li>
+</ul>
+
+<p><strong>The &ldquo;one learning algorithm&rdquo; hypothesis</strong></p>
+
+<ul>
+<li>Neuroscience experiment cut the neurons between an animal&rsquo;s ear and the auditory cortext, and instead attached the neurons for the animal&rsquo;s eye
+
+<ul>
+<li>Result was the auditory cortex learned to see</li>
+<li>Neuro rewiring experiments</li>
+</ul></li>
+</ul>
+
+<p>Many experiments have been done by connecting sensors to brains and measuring how the brain adapts to use these sensors.</p>
+
+<h2 id="neural-networks">Neural Networks</h2>
+
+<h3 id="model-representation-i">Model Representation I</h3>
+
+<p>Neurons are basically computational units that take inputs (<strong>dendrites</strong>) as electrical inputs (called &ldquo;spikes&rdquo;) that are channeled to outputs (<strong>axons</strong>). In our model, the dendrites are like the input features $x_1 \dots x_n$ and the output is the result of the hypothesis function. In this model our $x_0$ node is sometimes called the <em>bias unit</em>. It is always equal to 1. In neural networks, we use the same logistic function as in classification, $\dfrac{1}{1 + e^{-\theta^T}}$. This is sometimes called a sigmoid (logistic) <strong>activation</strong> function.  In this situation, the &ldquo;theta&rdquo; parameters are sometimes called &ldquo;weights&rdquo;.</p>
+
+<p>A visually simplistic representation looks like:
+$$ \begin{bmatrix} x_0 \newline x_1 \newline x_2 \end{bmatrix} \rightarrow \begin{bmatrix} &amp; \end{bmatrix} \rightarrow h_\theta(x) $$</p>
+
+<p>Our input notes (layer 1), also known as the &ldquo;input layer&rdquo;, go to another node (layer 2), which finally outputs the hypothesis function, known as the &ldquo;output layer&rdquo;.</p>
+
+<p>We can have intermediate layers of nodes between the input and output layers called &ldquo;hidden layers&rdquo;.</p>
+
+<p>In this example, we label these intermediate or &ldquo;hidden&rdquo; layer nodes $a_0^2 \dots a_n^2$ and call them &ldquo;activation units&rdquo;.</p>
+
+<p>$$ a_i^{(j)} = \text{ &ldquo;activation&rdquo; of unit } i \text{ in layer } j $$
+$$ \Theta^{(j)} = \text{ matrix of weights controlling function mapping from layer } j \text{ to layer } j + 1 $$</p>
+
+<p>If one hidden layer exists, it may look like:</p>
+
+<p>$$ \begin{bmatrix} x_0 \newline x_1 \newline x_2 \newline x_3 \end{bmatrix} \rightarrow \begin{bmatrix} a_1^{(2)} \newline a_2^{(2)} \newline a_3^{(2)} \end{bmatrix} \rightarrow h_\theta(x) $$</p>
+
+<p>The values for each of the &ldquo;activation&rdquo; nodes is obtained by the following:</p>
+
+<p>$$ a_1^{(2)} = g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$
+$$ a_2^{(2)} = g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$
+$$ a_3^{(2)} = g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$
+$$ h_\Theta(x) = a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) $$</p>
+
+<p>We compute the activation nodes by using a 3 x 4 matrix of parameters. We apply each row of the parameters to the inputs to obtain the value of one activation node. The hypothesis output is the logistic function applied to the sum of the values of the activation nodes, which have been multiplied by another parameter matrix $\Theta^{(2)}$ containing weights for our second layer of nodes.</p>
+
+<p>Each layer gets its own matrix of weights, $\Theta^{(j)}$.</p>
+
+<p>$$ \text{If network has } s_j \text{ units in layer }j \text{ and } s_{j+1} \text{ units in layer } j + 1 \text{, then } \Theta^{(j)} \text{ will be of dimension } s_{j+1} \times (s_j + 1) \text{.} $$</p>
+
+<p>The $+1$ comes from the addition in $\Theta^{(j)}$ of the &ldquo;bias nodes&rdquo;, $x_0$ and $\Theta_0^{(j)}$. The output nodes will not include the bias nodes while the inputs will. The following images summarizes the model representation:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week4/neural_network_representation.png" alt="neural_network_representation" /></p>
+
+<p>Example: If layer 1 has 2 input nodes and layer 2 has 4 activation nodes, dimension of $\Theta^{(1)}$ is going to be $4\times3$ where $s_j = 2$ and $s_{j + 1} = 4$ so $s_{j + 1} \times (s_j + 1) = 4 \times 3$.</p>
+
+<h3 id="model-representation-ii">Model Representation II</h3>
+
+<p>To reiterate, the following is an example of one layer of a sample neural network:</p>
+
+<p>$$ a_1^{(2)} = g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$
+$$ a_2^{(2)} = g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$
+$$ a_3^{(2)} = g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$
+$$ h_{\Theta}(x) = a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) $$</p>
+
+<p>In this section, we&rsquo;ll do a vectorized implementation of the above functions. Define a new variable $z_k^{(j)}$ that encompasses the parameters inside the $g$ function. If we perform the replacement in our above function, we get the following:</p>
+
+<p>$$ a_1^{(2)} = g(z_1^{(2)}) $$
+$$ a_2^{(2)} = g(z_2^{(2)}) $$
+$$ a_3^{(2)} = g(z_3^{(2)}) $$</p>
+
+<p>In other words, for layer $j = 2$ and node $k$, the variable $z$ will be:</p>
+
+<p>$$ z_k^{(2)} = \Theta_{k,0}^{(1)}x_0 + \Theta_{k,1}^{(1)}x_1 + \dots + \Theta_{k,n}^{(1)}x_n $$</p>
+
+<p>The vector representation of $x$ and $z^j$ is:</p>
+
+<p>$$ x = \begin{bmatrix} x_0 \newline x_1 \newline \vdots \newline x_n \end{bmatrix} \hspace{1em} z^{(j)} = \begin{bmatrix} z_1^{(j)} \newline z_2^{(j)} \newline \vdots \newline z_n^{(j)} \end{bmatrix} $$</p>
+
+<p>Setting $x = a^{(1)} $, the equation can be rewritten as:</p>
+
+<p>$$ z^{(j)} = \Theta^{(j - 1)}a^{(j - 1)} $$</p>
+
+<p>We&rsquo;re multiplying the matrix $\Theta^{(j-1)}$ with dimensions $s_j \times (n + 1)$ (where $s_j$ is the number of our activation nodes) by our vector $a^{(j-1)}$ with height $(n+1)$. This gives us our vector $z^{(j)}$ with height $s_j$. Now, we can get a vector of our activation nodes for layer j as the following:</p>
+
+<p>$$ a^{(j)} = g(z^{(j)}) $$</p>
+
+<p>The function g can be applied element-wise to the vector $z^{(j)}$.</p>
+
+<p>We can add a bais unit, equal to 1, to layer $j$ after $a^{(j)}$ is computed. This will be element $a_0^{(j)}$ and will be equal to 1. To compute the final hypothesis, let&rsquo;s compute another z vector:</p>
+
+<p>$$ z^{(j+1)} = \Theta^{(j)}a^{(j)} $$</p>
+
+<p>We obtain this final z vector by multiplying the next theta matrix after $\Theta^{(j-1)}$ with the values of all the activation nodes we just got. This last theta matrix $\Theta^{(j)}$ will have only <strong>one row</strong> which is multiplied by one column $a^{(j)}$ so that our result is a single number. The final result is calculated with:</p>
+
+<p>$$ h_\Theta(x) = a^{(j+1)} = g(z^{(j+1)}) $$</p>
+
+<p>Note that in the last step, between layer $j$ and layer $j+1$, we are doing the same thing we did in logistic regression. Adding all of the intermediate layers in the neural networks allows us to more elegantly produce interesting and more complex non-linear hypothesis.</p>
+
+<h2 id="applications">Applications</h2>
+
+<h3 id="examples-and-intuitions-i">Examples and Intuitions I</h3>
+
+<p>This is how we would use neural networks to compute simple binary operations, like AND &amp; OR. The graph of our functions will look like:</p>
+
+<p>$$ \begin{bmatrix} x_0 \newline x_1 \newline x_2 \end{bmatrix} \rightarrow \begin{bmatrix} g(x^{(2)}) \end{bmatrix} \rightarrow h_\Theta(x) $$</p>
+
+<p>Recall that $x_0$ is our bias variable and is always equal to 1.</p>
+
+<p>Let&rsquo;s set our first theta matrix as:</p>
+
+<p>$$ \Theta^{(1)} = \begin{bmatrix} -30 \hspace{1em} 20 \hspace{1em} 20 \end{bmatrix} $$</p>
+
+<p>This causes the output of our hypothesis to be positive only if both $x_1$ and $x_2$ are 1. In other words:</p>
+
+<p>$$ h_\Theta(x) = g(-30 + 20x_1 + 20x_2) $$
+$$ x_1 = 0 \text{ and } x_2 = 0 \text{ then } g(-30) \approx 0 $$
+$$ x_1 = 0 \text{ and } x_2 = 1 \text{ then } g(-10) \approx 0 $$
+$$ x_1 = 1 \text{ and } x_2 = 0 \text{ then } g(-10) \approx 0 $$
+$$ x_1 = 1 \text{ and } x_2 = 1 \text{ then } g(10) \approx 1 $$</p>
+
+<p>We have constructed one of the fundamental operations in computers by using a small neural network rather than using an actual AND gate. Neural networks can be used to simulate all other logical gates. The following example is for logical OR, meaning either $x_1$ is true or $x_2$ is true, or both:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week4/neural_network_or_example.png" alt="neural_network_or_example" /></p>
+
+<p>Recall that $g(z)$ is defined as the following:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week4/g_of_z_plot.png" alt="g_of_z_plot" /></p>
+
+<h3 id="examples-and-intuitions-ii">Examples and Intuitions II</h3>
+
+<p>The $\Theta^{(1)}$ matrices for AND, NOR, and OR are:</p>
+
+<p>$$ \text{AND: } \Theta^{(1)} = \begin{bmatrix} -30 &amp; 20 &amp; 20 \end{bmatrix} $$
+$$ \text{NOR: } \Theta^{(1)} = \begin{bmatrix} -10 &amp; -20 &amp; -20 \end{bmatrix} $$
+$$ \text{OR: } \Theta^{(1)} = \begin{bmatrix} -10 &amp; 20 &amp; 20 \end{bmatrix} $$</p>
+
+<p>We can combine these to get the XNOR logical operator (which gives us 1 if $x_1$ and $x_2$ are both 0 or both 1).</p>
+
+<p>$$ \begin{bmatrix} x_0 \newline x_1 \newline x_2 \end{bmatrix} \rightarrow \begin{bmatrix} a_1^{(2)} \newline a_2^{(2)} \end{bmatrix} \rightarrow \begin{bmatrix} a^{(3)} \end{bmatrix} \rightarrow h_\Theta(x) $$</p>
+
+<p>For the transition between the first and second layer, we will use a $\Theta^{(1)}$ matrix hat combines the values for AND and NOR:</p>
+
+<p>$$ \Theta^{(1)} = \begin{bmatrix} -30 &amp; 20 &amp; 20 \newline 10 &amp; -20 &amp; -20 \end{bmatrix} $$</p>
+
+<p>For the transition between the second and third layer, we will use $\Theta^{(2)}$ matrix that uses the value for OR:</p>
+
+<p>$$ \Theta^{(2)} = \begin{bmatrix} -10 &amp; 20 &amp; 20 \end{bmatrix} $$</p>
+
+<p>Let&rsquo;s write out the values for all our nodes:</p>
+
+<p>$$ a^{(2)} = g(\Theta^{(1)} \cdot x) $$
+$$ a^{(3)} = g(\Theta^{(2)} \cdot a^{(2)}) $$
+$$ h_\Theta(x) = a^{(3)} $$</p>
+
+<p>This is the XNOR operator using a hidden layer with two nodes! The following image summarizes the above algorithm:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week4/neural_network_xnor_example.png" alt="neural_network_xnor_example" /></p>
+
+<h3 id="multiclass-classification">Multiclass Classification</h3>
+
+<p>To classify data into multiple classes, the hypothesis should return a vector of values. For example, let&rsquo;s say we wanted to classify our data into one of four categories. We use the following example to see how this classification is done. The algorithm takes an image as input and classifies it accordingly:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week4/neural_network_multiclass_classification.png" alt="neural_network_multiclass_classification" /></p>
+
+<p>We can define our set of resulting classes as $y$:</p>
+
+<p>$$ y^{(i)} = \begin{bmatrix} 1 \newline 0 \newline 0 \newline 0 \end{bmatrix}, \begin{bmatrix} 0 \newline 1 \newline 0 \newline 0 \end{bmatrix}, \begin{bmatrix} 0 \newline 0 \newline 1 \newline 0 \end{bmatrix}, \begin{bmatrix} 0 \newline 0 \newline 0 \newline 1 \end{bmatrix} $$</p>
+
+<p>Each $y^{(i)}$ represents a different image corresponding to either a pedestrian, car, motorcycle, or truck. The inner layers each provide us with some new information which leads to our final hypothesis function. The setup looks like:</p>
+
+<p>$$ \begin{bmatrix} x_0 \newline x_1 \newline x_2 \newline \vdots \newline x_n \end{bmatrix} \rightarrow \begin{bmatrix} a_0^{(2)} \newline a_1^{(2)} \newline a_2^{(2)} \newline \vdots \newline a_n^{(2)} \end{bmatrix} \rightarrow \begin{bmatrix} a_0^{(3)} \newline a_1^{(3)} \newline a_2^{(3)} \newline \vdots \newline a_n^{(3)} \end{bmatrix} \rightarrow \dots \rightarrow \begin{bmatrix} h_\Theta(x)_1 \newline h_\Theta(x)_2 \newline h_\Theta(x)_3 \newline h_\Theta(x)_4 \end{bmatrix} $$</p>
+
+<p>Our resulting hypothesis for one set of inputs may look like:</p>
+
+<p>$$ h_\Theta(x) = \begin{bmatrix} 0 \newline 0 \newline 1 \newline 0 \end{bmatrix} $$</p>
+
+<p>In this case, our resulting class is $h_\Theta(x)_3 $, which represents the motorcycle.</p>
+
+<hr />
+
+<p>Week 5 tbd.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

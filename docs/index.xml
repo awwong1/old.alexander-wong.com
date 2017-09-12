@@ -23,6 +23,17 @@ When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In th
     </item>
     
     <item>
+      <title>Machine Learning, Week 4</title>
+      <link>https://alexander-wong.com/post/coursera-machine-learning-week4/</link>
+      <pubDate>Tue, 12 Sep 2017 12:47:44 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/coursera-machine-learning-week4/</guid>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 3.
+Table of Contents  Neural Networks: Representation  Motivations  Non-linear Hypothesis Neurons and the Brain  Neural Networks  Model Representation I Model Representation II  Applications  Examples and Intuitions I Examples and Intuitions II Multiclass Classification      Lecture notes:  Lecture8   Neural Networks: Representation Motivations Non-linear Hypothesis Neural networks are another learning algorithm that exist in addition to linear regression and logistic regression.</description>
+    </item>
+    
+    <item>
       <title>Machine Learning, Week 3</title>
       <link>https://alexander-wong.com/post/coursera-machine-learning-week3/</link>
       <pubDate>Thu, 07 Sep 2017 00:04:44 -0600</pubDate>
