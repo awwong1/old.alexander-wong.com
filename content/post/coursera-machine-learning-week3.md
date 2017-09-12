@@ -306,4 +306,4 @@ This second sum $\sum\limits\_{j=1}^n\theta\_j^2$ **explicitly excludes $\theta\
 
 ---
 
-Week 4 tbd.
+Move on to [Week 4]({{% relref "coursera-machine-learning-week4.md" %}}).
