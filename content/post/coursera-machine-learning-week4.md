@@ -203,4 +203,5 @@ $$ h\_\Theta(x) = \begin{bmatrix} 0 \newline 0 \newline 1 \newline 0 \end{bmatri
 In this case, our resulting class is $h\_\Theta(x)\_3 $, which represents the motorcycle.
 
 ---
- Week 5 tbd.
+
+Move on to [Week 5]({{% relref "coursera-machine-learning-week5.md" %}}).
