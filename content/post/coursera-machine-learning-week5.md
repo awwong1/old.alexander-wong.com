@@ -89,7 +89,7 @@ The capital-delta matrix $D$ is used as an "accumulator" to add up our values as
 
 Recall the cost function for a neural network:
 
-$$ J(\Theta) = - \dfrac{1}{m} \sum\limits\_{t=1}^{m} \sum\limits\_{k=1}^{K} [y\_k^{(t)} \log(h\_\Theta (x^{(t)}))\_k + (1-y\_k^{(t)}) \log(1-h\_\Theta(x^{(t)})\_k) ] + \dfrac{\lambda}{2m} \sum\limits\_{l=1}^{L-1} \sum\limits\_{i=1}^{s\_l} \sum\limits\_{j=1}^{s\_l+1} (\Theta\_{j,i}^{(l)})^2 $$
+$$ J(\Theta) = - \dfrac{1}{m} \sum\limits\_{t=1}^{m} \sum\limits\_{k=1}^{K} [y\_k^{(t)} \log(h\_\Theta (x^{(t)}))\_k + (1-y\_k^{(t)}) \log(1-h\_\Theta(x^{(t)})\_k) ] + \dfrac{\lambda}{2m} \sum\limits\_{l=1}^{L-1} \sum\limits\_{i=1}^{s\_l} \sum\limits\_{j=1}^{s\_{l+1}} (\Theta\_{j,i}^{(l)})^2 $$
 
 Considering the simple non-multiclass classification $ (k = 1) $ and disregarding regularization, the cost is computed with:
 
@@ -179,6 +179,9 @@ Theta3 = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
 
 The `rand(x,y)` function will initialize a matrix of random real numbers between 0 and 1.
 The `INIT_EPSILON` value is unrelated to the epsilon from Gradient Checking.
+
+
+One effective strategy for choosing $ \epsilon\_{\text{init}} $ is to base it on the number of units in the network. A good choice of $ \epsilon\_{\text{init}} $ is $ \epsilon\_{\text{init}} = \dfrac{\sqrt{6}}{\sqrt{L\_\text{in} + L\_\text{out}}} $ , where $ L\_\text{in} = s\_l $ and $ L\_\text{out} = s\_{l+1} $ are the number of units in the layers adjacent to $\Theta^{(l)}$.
 
 ### Putting it Together
 
