@@ -320,7 +320,7 @@ Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation 
 
 <p>Recall the cost function for a neural network:</p>
 
-<p>$$ J(\Theta) = - \dfrac{1}{m} \sum\limits_{t=1}^{m} \sum\limits_{k=1}^{K} [y_k^{(t)} \log(h_\Theta (x^{(t)}))_k + (1-y_k^{(t)}) \log(1-h_\Theta(x^{(t)})_k) ] + \dfrac{\lambda}{2m} \sum\limits_{l=1}^{L-1} \sum\limits_{i=1}^{s_l} \sum\limits_{j=1}^{s_l+1} (\Theta_{j,i}^{(l)})^2 $$</p>
+<p>$$ J(\Theta) = - \dfrac{1}{m} \sum\limits_{t=1}^{m} \sum\limits_{k=1}^{K} [y_k^{(t)} \log(h_\Theta (x^{(t)}))_k + (1-y_k^{(t)}) \log(1-h_\Theta(x^{(t)})_k) ] + \dfrac{\lambda}{2m} \sum\limits_{l=1}^{L-1} \sum\limits_{i=1}^{s_l} \sum\limits_{j=1}^{s_{l+1}} (\Theta_{j,i}^{(l)})^2 $$</p>
 
 <p>Considering the simple non-multiclass classification $ (k = 1) $ and disregarding regularization, the cost is computed with:</p>
 
@@ -402,6 +402,8 @@ $$ D^{(1)}, D^{(2)}, D^{(3)}, \dots $$</p>
 
 <p>The <code>rand(x,y)</code> function will initialize a matrix of random real numbers between 0 and 1.
 The <code>INIT_EPSILON</code> value is unrelated to the epsilon from Gradient Checking.</p>
+
+<p>One effective strategy for choosing $ \epsilon_{\text{init}} $ is to base it on the number of units in the network. A good choice of $ \epsilon_{\text{init}} $ is $ \epsilon_{\text{init}} = \dfrac{\sqrt{6}}{\sqrt{L_\text{in} + L_\text{out}}} $ , where $ L_\text{in} = s_l $ and $ L_\text{out} = s_{l+1} $ are the number of units in the layers adjacent to $\Theta^{(l)}$.</p>
 
 <h3 id="putting-it-together">Putting it Together</h3>
 
