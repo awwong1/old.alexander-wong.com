@@ -224,4 +224,4 @@ See Dean Pomerleau (Carnagie Mellon) autonomous driving neural network. (This wa
 
 ---
 
-Week 6 tbd
+Move on to [Week 6]({{% relref "coursera-machine-learning-week6.md" %}}).
