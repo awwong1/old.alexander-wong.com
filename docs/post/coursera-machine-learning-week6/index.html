@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 6</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 5.
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next      Lecture notes:  Lecture10   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 6" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 5.
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next      Lecture notes:  Lecture10   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week6/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item  is-active"><a href="https://alexander-wong.com/">Home</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">Self</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 6</h1>
+      <p class="post-meta">@Alexander Wong · Sep 20, 2017 · 6 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week5/">Week 5</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#advice-for-applying-machine-learning">Advice for Applying Machine Learning</a>
+<ul>
+<li><a href="#evaluating-a-learning-algorithm">Evaluating a Learning Algorithm</a>
+<ul>
+<li><a href="#evaluating-a-hypothesis">Evaluating a Hypothesis</a></li>
+<li><a href="#model-selection-and-train-validation-test-sets">Model Selection and Train/Validation/Test Sets</a></li>
+<li><a href="#diagnosing-bias-versus-variance">Diagnosing Bias versus Variance</a></li>
+<li><a href="#regularization-and-bias-variance">Regularization and Bias/Variance</a></li>
+<li><a href="#learning-curves">Learning Curves</a></li>
+<li><a href="#deciding-what-to-do-next">Deciding What to Do Next</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week6/Lecture10.pdf">Lecture10</a></li>
+</ul></li>
+</ul>
+
+<h1 id="advice-for-applying-machine-learning">Advice for Applying Machine Learning</h1>
+
+<h2 id="evaluating-a-learning-algorithm">Evaluating a Learning Algorithm</h2>
+
+<h3 id="evaluating-a-hypothesis">Evaluating a Hypothesis</h3>
+
+<p>Once we have done some trouble shooting for errors in our predictions by:</p>
+
+<ul>
+<li>Getting more training examples</li>
+<li>Trying out smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying polynomial features</li>
+<li>Increasing or decreasing $\lambda$</li>
+</ul>
+
+<p>We can move on to evaluating our new hypothesis.</p>
+
+<p>A hypothesis may have a low error for the training data but still be inaccurate, due to overfitting. One way to evaluate a hypothesis, given a dataset of training examples, is to split the data up into two sets: a <strong>training set</strong> and a <strong>test set</strong>.
+Typically, the training set consists of 70% of the data and the test set is the remaining 30%. The data should be randomized so the 70% and 30% do not reflect any sort of ordering.</p>
+
+<p>The new procedure using the two sets is:</p>
+
+<ol>
+<li>Learn $\Theta$ and minimize $J_\text{train}(\Theta)$ using the training set</li>
+<li>Compute the test set error $J_\text{test}(\Theta)$.</li>
+</ol>
+
+<p>The test set error for linear regression is:</p>
+
+<p>$$ J_\text{test}(\Theta) = \dfrac{1}{2m_\text{test}} \sum\limits_{i=1}^{m_\text{test}} (h_\Theta(x_\text{test}^{(i)}) - y_\text{test}^{(i)})^2 $$</p>
+
+<p>For classification, we use the following to determine misclassification error:</p>
+
+<p>$$ \text{err}(h_\Theta(x),y) = \begin{matrix} 1 &amp; \mbox{if } h_\Theta(x) \geq 0.5\ \text{and}\ y = 0\ \text{or}\ h_\Theta(x) &lt; 0.5\ \text{and}\ y = 1 \newline 0 &amp; \mbox{otherwise} \end{matrix} $$</p>
+
+<p>This gives us a binary 0 or 1 error result based on a misclassification. The average test error for the test set is:</p>
+
+<p>$$ \text{Test Error} = \dfrac{1}{m_\text{test}} \sum\limits_{i=1}^{m_\text{test}} \text{err}(h_\Theta(x_\text{test}^{(i)}), y_\text{test}^{(i)}) $$</p>
+
+<p>That tells us the proportion of the test data that was misclassified.</p>
+
+<h3 id="model-selection-and-train-validation-test-sets">Model Selection and Train/Validation/Test Sets</h3>
+
+<p>Simply because a learning algorithm fits the training set well, does not mean that it is a good hypothesis. It could over fit and as a result your predictions on the test set would be poor. The error of your hypothesis as measured on the data set with which you trained the parameters will be lower than the error on any other data set/</p>
+
+<p>Given many models with different polynomial degrees, we can use a systematic approach to identify the &lsquo;best&rsquo; function. In order to choose the model of your hypothesis, you can test each degree of polynomial and look at the error result.</p>
+
+<p>One way to partition our dataset into three sets is:</p>
+
+<ul>
+<li>Training Set : 60%</li>
+<li>Cross Validation Set: 20%</li>
+<li>Test Set: 20%</li>
+</ul>
+
+<p>We can now calculate three separate error values for the three sets using the following method:</p>
+
+<ol>
+<li>Optimize the parameters in $\Theta$ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree <em>d</em> with the least error using the cross validation set.</li>
+<li>Estimate the generalization error using the test set with $ J_\text{test}(\Theta^{(d)}) $, where d is the theta from the polynomial with the lowest error.</li>
+</ol>
+
+<p>This way, the degree of the polynomial d has not been trained using the test set.</p>
+
+<h3 id="diagnosing-bias-versus-variance">Diagnosing Bias versus Variance</h3>
+
+<p>In this section, we examine the relationship between the degree of the polynomial <em>d</em> and the underfitting or the overfitting of our hypothesis.</p>
+
+<ul>
+<li>We need to distinguish whether <strong>bias</strong> or <strong>variance</strong> is the problem contributing to bad predictions.</li>
+<li>High bias is underfitting and high variance is overfitting. We should find a value that minimizes both.</li>
+</ul>
+
+<p>The training error tends to <strong>decrease</strong> as we increase the degree <em>d</em> of the polynomial.</p>
+
+<p>At the same time, the cross validation error will tend to <strong>decrease</strong> as we increase <em>d</em> up to a certain point, then it will <strong>increase</strong> as <em>d</em> increased, forming a convex curve.</p>
+
+<p><strong>High bias (underfitting)</strong> Both $J_\text{train}(\Theta)$ and $J_\text{CV}(\Theta)$ will be high. Also, $J_\text{CV}(\Theta) \approx J_\text{train}(\Theta)$.</p>
+
+<p><strong>High variance (overfitting)</strong>: $J_\text{train}(\Theta)$ will be low and $J_\text{CV}(\Theta)$ will be much greater than $J_\text{train}(\Theta)$.</p>
+
+<p>This is the summarized figure:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/underfitting_overfitting_costs.png" alt="underfitting_overfitting_costs" /></p>
+
+<h3 id="regularization-and-bias-variance">Regularization and Bias/Variance</h3>
+
+<p>Given the following equations, we get the following plots:</p>
+
+<p>$$ h_\theta(x) = \theta_0 + \theta_1x + \theta_2x^2 + \theta_3x^3 + \theta_4x^4 $$
+$$ J(\theta) = \dfrac{1}{2m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)})^2 + \dfrac{\lambda}{2m} \sum\limits_{j=1}^{n} \theta_j^2 $$
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week6/regularization_in_bias_and_variance.png" alt="regularization_in_bias_and_variance" /></p>
+
+<p>In the figure above, as $\lambda$ increases, our fit becomes more rigid. On the otherhand, as $\lambda$ approaches 0, we tend to overfit the data. How do we choose our parameter $\lambda$ to get it &lsquo;just right&rsquo;? In order to choose the model and the regularization term $\lambda$, we need to:</p>
+
+<ol>
+<li>Create a list of lambdas, for example increment by powers of 2 from 0.01:
+$$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
+<li>Create a set of models with different degrees or any other variants.</li>
+<li>Iterate through the $\lambda$s and for each $\lambda$ go through all the models to learn some $\Theta$.</li>
+<li>Compute the cross validation error using the learned $\Theta$ (computed with $\lambda$) on the $J_\text{CV}(\Theta)$ <strong>without</strong> regularization.</li>
+<li>Select the best combo that produces the lowest error on the cross validation set.</li>
+<li>Using the best combo $\Theta$ and $\lambda$, apply it on $J_\text{test}(\Theta)$ to see if it has a good generalization of the problem.</li>
+</ol>
+
+<h3 id="learning-curves">Learning Curves</h3>
+
+<p>Training an algorithm on a very few number of data points will easily have 0 errors because we can always find a quadratic curve that touches exactly those number of points. Therefore:</p>
+
+<ul>
+<li>As the training set gets larger, the error for a quadratic function increases.</li>
+<li>The error value will plateau out after a certain m, or training set size.</li>
+</ul>
+
+<p><strong>Experiencing High Bias:</strong></p>
+
+<ul>
+<li>Small training set size causes $J_\text{train}(\Theta)$ to be low and $J_\text{CV}(\Theta)$ to be high.</li>
+<li>Large training set size causes $J_\text{train}(\Theta)$ and $J_\text{CV}(\Theta)$ to be high with $J_\text{train}(\Theta) \approx J_\text{CV}(\Theta)$.</li>
+</ul>
+
+<p>If a learning algorithm is suffering from high bias, getting more training data will not (by itself) help much.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/high_bias.png" alt="high_bias" /></p>
+
+<p><strong>Experiencing High Variance:</strong></p>
+
+<ul>
+<li>Small training set size will have $J_\text{train}(\Theta)$ be low and $J_\text{CV}(\Theta)$ be high.</li>
+<li>Large training set size will have $J_\text{train}(\Theta)$ increase with training set size and $J_\text{CV}(\Theta)$ continue to decrease without leveling off. $J_\text{train}(\Theta) \lt J_\text{CV}(\Theta)$ but the difference between the two remains significant.</li>
+</ul>
+
+<p>If a learning algorithm is suffering from high variance, getting more training data is likely to help.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/high_variance.png" alt="high_variance" /></p>
+
+<h3 id="deciding-what-to-do-next">Deciding What to Do Next</h3>
+
+<p>Our decision process can be broken down as follows:</p>
+
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Fix</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Getting more training examples</td>
+<td>Fixes high variance</td>
+</tr>
+
+<tr>
+<td>Trying smaller sets of features</td>
+<td>Fixes high variance</td>
+</tr>
+
+<tr>
+<td>Adding features</td>
+<td>Fixes high bias</td>
+</tr>
+
+<tr>
+<td>Adding polynomial features</td>
+<td>Fixes high bias</td>
+</tr>
+
+<tr>
+<td>Decreasing $\lambda$</td>
+<td>Fixes high bias</td>
+</tr>
+
+<tr>
+<td>Increasing $\lambda$</td>
+<td>Fixes high variance</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Diagnosing Neural Networks</strong></p>
+
+<ul>
+<li>A neural network with fewer parameters is <strong>prone to underfitting</strong>. It is also computationally cheaper.</li>
+<li>A large neural network with more parameters is <strong>prone to overfitting</strong>. It is also computationally expensive. In this case, you can use regularization (increase $\lambda$) to address the overfitting.</li>
+</ul>
+
+<p>Using a single hidden layer is a good starting default. You can train the neural network on a number of hidden layers using your cross validation set. You can then select the one that performs best.</p>
+
+<p><strong>Model Complexity Effects:</strong></p>
+
+<ul>
+<li>Lower-order polynomials (lower model complexity) have high bias and low variance. In this case, the model fits poorly consistently.</li>
+<li>Higher-order polynomials (high model complexity) fit the training data extremely well and the test data extremely poorly. These have low bias but high variance.</li>
+<li>In reality, we want to choose a model in between that generalizes well and also fits the data reasonably well.</li>
+</ul>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
