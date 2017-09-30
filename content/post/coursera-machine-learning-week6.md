@@ -14,6 +14,7 @@ Assumes you have knowledge of [Week 5]({{% relref "coursera-machine-learning-wee
 
 * Lecture notes:
   * [Lecture10](/docs/coursera-machine-learning-week6/Lecture10.pdf)
+  * [Lecture11](/docs/coursera-machine-learning-week6/Lecture11.pdf)
 
 # Advice for Applying Machine Learning
 
@@ -160,3 +161,66 @@ Using a single hidden layer is a good starting default. You can train the neural
 * Lower-order polynomials (lower model complexity) have high bias and low variance. In this case, the model fits poorly consistently.
 * Higher-order polynomials (high model complexity) fit the training data extremely well and the test data extremely poorly. These have low bias but high variance.
 * In reality, we want to choose a model in between that generalizes well and also fits the data reasonably well.
+
+# Machine Learning System Design
+
+## Building a Spam Classifier
+
+### Prioritizing What to Work On
+
+**System Design Example:**
+
+Given a data set of emails, one could construct a vector for each email. An entry in this vector represents a word. The vector contains 10,000-50,000 entries gathered by finding the most frequently used words in the dataset. If a word is found in the email, we assign its entry as a 1, otherwise the entry would be 0. Once we have our X vectors ready, we train the algorithm and use it to classify if an email is spam or not.
+
+![spam_classifier](/img/coursera-machine-learning-week6/spam_classifier.png)
+
+There are many ways to improve the accuracy of the this classifier.
+
+* Collect lots of data (ex: honeypot project, but this doesn't always work)
+* Develop more sophisticated features (ex: using email header data in spam emails)
+* Develop algorithms to process input in different ways (recognize mispellings in spam)
+
+It is difficult to tell which of the options will be most helpful.
+
+### Error Analysis
+
+The recommended approach to solving a machine learning problem is to:
+
+* Start with a simple algorithm that you can implement quickly and test it early on your cross validation data.
+* Plot learning curves to decide if more data, more features, etc. are likely to help.
+* Manually examine the examples (in cross validation set) that your algorithm made errors on. See if you can spot systematic trends in what type of examples it is making errors on.
+
+For example, assume that we have 500 emails and the algorithm misclassifies 100 of them. Manually analyze the 100 emails and categorize them based on what type of emails they are. Then one could try to come up with new cues and features that woudl help classify these 100 emails correctly. For example, if most of the misclassified emails are those which try to steal passwords, we could find some features that are particular to those emails and add them to our model. We can also see how classifying each word according to its root changes our error rate.
+
+![numerical_evaluation](/img/coursera-machine-learning-week6/numerical_evaluation.png)
+
+It is important to get error results as a single, numerical value. Otherwise, it is difficult to assess the algorithm's performance.
+
+## Machine Learning Practical Tips
+
+### How to Handle Skewed Data
+
+**Precision/Recall:**
+
+The following metric is useful for datasets with very skewed data:
+
+![precision_recall](/img/coursera-machine-learning-week6/precision_recall.png)
+
+Trade off precision and recall depending on the use case of your classifier. You can compare various precision/recall numbers using a value called an $\text{F}\_1$ score. 
+
+![f_score](/img/coursera-machine-learning-week6/f_score.png)
+
+### When to Utilize Large Data Sets
+
+Large data rationale; assume features $x \in \mathbb{R}^{n+1}$ has sufficient information to predict $y$ accurately.
+
+* Useful test: Given the input $x$, can a human expert confidently predict $y$?
+
+Use a learning algorithm with many parameters (eg logistic/linear regression with many features; neural network with many hidden units). Low bias algorithms
+
+$$ J\_{\text{train}}(\Theta) \text{will be small.} $$
+
+Use a very large training set (unlikely to overfit).
+
+$$ J\_{\text{train}}(\Theta) \approx J\_{\text{test}}(\Theta) $$
+
