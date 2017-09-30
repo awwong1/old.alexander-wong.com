@@ -17,7 +17,7 @@
   <meta name="author" content="Alexander Wong" />
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 5.
-Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next      Lecture notes:  Lecture10   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
 
   
   
@@ -26,7 +26,7 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
     <meta name="twitter:title" content="Machine Learning, Week 6" />
     <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 5.
-Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next      Lecture notes:  Lecture10   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
     <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
   
 
@@ -194,7 +194,7 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">Machine Learning, Week 6</h1>
-      <p class="post-meta">@Alexander Wong · Sep 20, 2017 · 6 min read</p>
+      <p class="post-meta">@Alexander Wong · Sep 20, 2017 · 9 min read</p>
     </header>
     <article class="post-content">
 
@@ -217,6 +217,19 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
 <li><a href="#deciding-what-to-do-next">Deciding What to Do Next</a></li>
 </ul></li>
 </ul></li>
+<li><a href="#machine-learning-system-design">Machine Learning System Design</a>
+<ul>
+<li><a href="#building-a-spam-classifier">Building a Spam Classifier</a>
+<ul>
+<li><a href="#prioritizing-what-to-work-on">Prioritizing What to Work On</a></li>
+<li><a href="#error-analysis">Error Analysis</a></li>
+</ul></li>
+<li><a href="#machine-learning-practical-tips">Machine Learning Practical Tips</a>
+<ul>
+<li><a href="#how-to-handle-skewed-data">How to Handle Skewed Data</a></li>
+<li><a href="#when-to-utilize-large-data-sets">When to Utilize Large Data Sets</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </nav>
 
@@ -226,6 +239,7 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
 
 <ul>
 <li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week6/Lecture10.pdf">Lecture10</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week6/Lecture11.pdf">Lecture11</a></li>
 </ul></li>
 </ul>
 
@@ -428,6 +442,74 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 <li>Higher-order polynomials (high model complexity) fit the training data extremely well and the test data extremely poorly. These have low bias but high variance.</li>
 <li>In reality, we want to choose a model in between that generalizes well and also fits the data reasonably well.</li>
 </ul>
+
+<h1 id="machine-learning-system-design">Machine Learning System Design</h1>
+
+<h2 id="building-a-spam-classifier">Building a Spam Classifier</h2>
+
+<h3 id="prioritizing-what-to-work-on">Prioritizing What to Work On</h3>
+
+<p><strong>System Design Example:</strong></p>
+
+<p>Given a data set of emails, one could construct a vector for each email. An entry in this vector represents a word. The vector contains 10,000-50,000 entries gathered by finding the most frequently used words in the dataset. If a word is found in the email, we assign its entry as a 1, otherwise the entry would be 0. Once we have our X vectors ready, we train the algorithm and use it to classify if an email is spam or not.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/spam_classifier.png" alt="spam_classifier" /></p>
+
+<p>There are many ways to improve the accuracy of the this classifier.</p>
+
+<ul>
+<li>Collect lots of data (ex: honeypot project, but this doesn&rsquo;t always work)</li>
+<li>Develop more sophisticated features (ex: using email header data in spam emails)</li>
+<li>Develop algorithms to process input in different ways (recognize mispellings in spam)</li>
+</ul>
+
+<p>It is difficult to tell which of the options will be most helpful.</p>
+
+<h3 id="error-analysis">Error Analysis</h3>
+
+<p>The recommended approach to solving a machine learning problem is to:</p>
+
+<ul>
+<li>Start with a simple algorithm that you can implement quickly and test it early on your cross validation data.</li>
+<li>Plot learning curves to decide if more data, more features, etc. are likely to help.</li>
+<li>Manually examine the examples (in cross validation set) that your algorithm made errors on. See if you can spot systematic trends in what type of examples it is making errors on.</li>
+</ul>
+
+<p>For example, assume that we have 500 emails and the algorithm misclassifies 100 of them. Manually analyze the 100 emails and categorize them based on what type of emails they are. Then one could try to come up with new cues and features that woudl help classify these 100 emails correctly. For example, if most of the misclassified emails are those which try to steal passwords, we could find some features that are particular to those emails and add them to our model. We can also see how classifying each word according to its root changes our error rate.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/numerical_evaluation.png" alt="numerical_evaluation" /></p>
+
+<p>It is important to get error results as a single, numerical value. Otherwise, it is difficult to assess the algorithm&rsquo;s performance.</p>
+
+<h2 id="machine-learning-practical-tips">Machine Learning Practical Tips</h2>
+
+<h3 id="how-to-handle-skewed-data">How to Handle Skewed Data</h3>
+
+<p><strong>Precision/Recall:</strong></p>
+
+<p>The following metric is useful for datasets with very skewed data:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/precision_recall.png" alt="precision_recall" /></p>
+
+<p>Trade off precision and recall depending on the use case of your classifier. You can compare various precision/recall numbers using a value called an $\text{F}_1$ score.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/f_score.png" alt="f_score" /></p>
+
+<h3 id="when-to-utilize-large-data-sets">When to Utilize Large Data Sets</h3>
+
+<p>Large data rationale; assume features $x \in \mathbb{R}^{n+1}$ has sufficient information to predict $y$ accurately.</p>
+
+<ul>
+<li>Useful test: Given the input $x$, can a human expert confidently predict $y$?</li>
+</ul>
+
+<p>Use a learning algorithm with many parameters (eg logistic/linear regression with many features; neural network with many hidden units). Low bias algorithms</p>
+
+<p>$$ J_{\text{train}}(\Theta) \text{will be small.} $$</p>
+
+<p>Use a very large training set (unlikely to overfit).</p>
+
+<p>$$ J_{\text{train}}(\Theta) \approx J_{\text{test}}(\Theta) $$</p>
 </article>
     <footer class="post-footer">
       
