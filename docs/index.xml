@@ -7,19 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 26 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Self</title>
+      <title>Projects</title>
+      <link>https://alexander-wong.com/projects/</link>
+      <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://alexander-wong.com/projects/</guid>
+      <description>Udia Tasks (2017)  Task and Goal tracking application.  JavaScript (ReactJS, Redux, Redux-Saga) Python (Django, Django Rest Framework, Django Allauth)  Demo, Github (server), Github (client)  Atlas (2016)  Hackathon project for AngularAttack 2016. Visualize and interact with World Data Bank api.  TypeScript (AngularJS, NodeJS, C3.js)  Github  Picknic (2016)  Hackathon project for HackED 2016. MEAN stack application for finding good picnic spots.  JavaScript (NodeJS, AngularJS, Express) MongoDB  Github  MapCore (2016)  Hadoop application for storing and generating real time traffic data  Java Cloudera Hadoop  Github  SocialButterfly (2015)  Real time chat application with user authentication  JavaScript (Meteor.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
       <link>https://alexander-wong.com/about/</link>
       <pubDate>Sat, 26 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>https://alexander-wong.com/about/</guid>
-      <description>About My name is Alexander Wong. I occasionally write software. I am the CEO of Udia Software Incorporated.
-When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In the winter, I ski. I enjoy playing my guitar and listening to folk music. Some of my long term goals include living out of a van to travel around the continent and building an earthship sustainable home.</description>
+      <description>My name is Alexander Wong. I occasionally write software. I am the CEO of Udia Software Incorporated.
+When I&amp;rsquo;m not working on Udia, I spend my time running or hiking. In the winter, I ski. I enjoy playing my guitar and listening to folk music. Some of my long term goals include living out of a van to travel around the continent and building an earthship sustainable home.
+I believe that pursuit of meaning in life is noble and that this is an automatable task.</description>
     </item>
     
     <item>
