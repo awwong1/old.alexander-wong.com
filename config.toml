@@ -18,18 +18,18 @@ copyright = "© 2017 Alexander Wong"
 
 # Initial site menu, you can extend menu with content.
 [[menu.main]]
-  name = "Home"
+  name = "Blog"
   weight = 10
-  identifier = "home"
+  identifier = "blog"
   url = "/"
 
 # Add your own params here
 [params]
   author = "Alexander Wong"
   avatar = "/img/avatar.png"
-  seotitle = "Alexander Wong Blog"
+  seotitle = "Alexander Wong"
   subtitle = "Incremental iterations towards meaning in life."
-  description = "Personal blog containing content about self journey (technology and otherwise)."
+  description = "Personal site containing content about self journey (technology and otherwise)."
   paginate = 10
   email = "admin@alexander-wong.com"
   github = "awwong1"

@@ -1,12 +1,10 @@
 ---
-title: "Self"
+title: "About"
 date: "2017-08-26"
 layout: "about"
 menu: "main"
 weight: 20
 ---
-
-## About
 
 My name is Alexander Wong. I [occasionally write software](https://github.com/awwong1). I am the CEO of [Udia Software Incorporated](https://www.udia.ca).
 
