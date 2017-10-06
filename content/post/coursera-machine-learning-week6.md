@@ -224,3 +224,6 @@ Use a very large training set (unlikely to overfit).
 
 $$ J\_{\text{train}}(\Theta) \approx J\_{\text{test}}(\Theta) $$
 
+---
+
+Move on to [Week 7]({{% relref "coursera-machine-learning-week7.md" %}}).
