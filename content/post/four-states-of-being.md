@@ -4,7 +4,7 @@ author: "Alexander Wong"
 cover: "/img/avatar.png"
 tags: ["UDIA", "Personal"]
 date: 2017-10-05T21:12:55-06:00
-draft: true
+draft: false
 ---
 
 There are only four states of being, or identity. Awareness, I (self), Dream (other), Universe (all).
