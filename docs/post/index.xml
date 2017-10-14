@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Thu, 05 Oct 2017 21:12:55 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 14 Oct 2017 09:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Machine Learning, Week 8</title>
+      <link>https://alexander-wong.com/post/coursera-machine-learning-week8/</link>
+      <pubDate>Sat, 14 Oct 2017 09:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/coursera-machine-learning-week8/</guid>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 7.
+Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.</description>
+    </item>
     
     <item>
       <title>Four States of Being</title>
