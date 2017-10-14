@@ -112,3 +112,7 @@ The kernels that you choose must satisfy a technical condition called "Mercer's 
   * Create/add more features, then use logistic regression or SVM without a kernel.
 
 Neural networks are likely to work well for msot of these settings, but may be slower to train.
+
+---
+
+Move on to [Week 8]({{% relref "coursera-machine-learning-week8.md" %}}).
