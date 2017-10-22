@@ -230,4 +230,4 @@ Do not unnecessarily run PCA. It is valid to run your learning algorithms using 
 
 ---
 
-Week 9 TBD
+Move on to [Week 9]({{% relref "coursera-machine-learning-week9.md" %}}).
