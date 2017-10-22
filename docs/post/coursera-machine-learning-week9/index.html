@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 9</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 8.
+Table of Contents  Anomoly Detection  Density Estimation  Problem Motivation Gaussian Distribution Algorithm  Building an Anomaly Detection System  Developing and Evaluating an Anomaly Detection System Anomaly Detection vs. Supervised Learning Choosing What Features to Use  Multivariate Gaussian Distribution  Algorithm   Reccomender Systems  Predicting Movie Ratings  Problem Forumulation Content Based Recommendations  Collaborative Filtering  Collaborative Filtering Algorithm  Low Rank Matrix Factorization  Vectorization: Low Rank Matrix Factorization Implementational Detail: Mean Normalization      Lecture notes:  Lecture15 Lecture16   Anomoly Detection Density Estimation Problem Motivation Imagine being a manufacturor of aircraft engines." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 9" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 8.
+Table of Contents  Anomoly Detection  Density Estimation  Problem Motivation Gaussian Distribution Algorithm  Building an Anomaly Detection System  Developing and Evaluating an Anomaly Detection System Anomaly Detection vs. Supervised Learning Choosing What Features to Use  Multivariate Gaussian Distribution  Algorithm   Reccomender Systems  Predicting Movie Ratings  Problem Forumulation Content Based Recommendations  Collaborative Filtering  Collaborative Filtering Algorithm  Low Rank Matrix Factorization  Vectorization: Low Rank Matrix Factorization Implementational Detail: Mean Normalization      Lecture notes:  Lecture15 Lecture16   Anomoly Detection Density Estimation Problem Motivation Imagine being a manufacturor of aircraft engines." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week9/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 9</h1>
+      <p class="post-meta">@Alexander Wong · Oct 22, 2017 · 7 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week8/">Week 8</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#anomoly-detection">Anomoly Detection</a>
+<ul>
+<li><a href="#density-estimation">Density Estimation</a>
+<ul>
+<li><a href="#problem-motivation">Problem Motivation</a></li>
+<li><a href="#gaussian-distribution">Gaussian Distribution</a></li>
+<li><a href="#algorithm">Algorithm</a></li>
+</ul></li>
+<li><a href="#building-an-anomaly-detection-system">Building an Anomaly Detection System</a>
+<ul>
+<li><a href="#developing-and-evaluating-an-anomaly-detection-system">Developing and Evaluating an Anomaly Detection System</a></li>
+<li><a href="#anomaly-detection-vs-supervised-learning">Anomaly Detection vs. Supervised Learning</a></li>
+<li><a href="#choosing-what-features-to-use">Choosing What Features to Use</a></li>
+</ul></li>
+<li><a href="#multivariate-gaussian-distribution">Multivariate Gaussian Distribution</a>
+<ul>
+<li><a href="#algorithm-1">Algorithm</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#reccomender-systems">Reccomender Systems</a>
+<ul>
+<li><a href="#predicting-movie-ratings">Predicting Movie Ratings</a>
+<ul>
+<li><a href="#problem-forumulation">Problem Forumulation</a></li>
+<li><a href="#content-based-recommendations">Content Based Recommendations</a></li>
+</ul></li>
+<li><a href="#collaborative-filtering">Collaborative Filtering</a>
+<ul>
+<li><a href="#collaborative-filtering-algorithm">Collaborative Filtering Algorithm</a></li>
+</ul></li>
+<li><a href="#low-rank-matrix-factorization">Low Rank Matrix Factorization</a>
+<ul>
+<li><a href="#vectorization-low-rank-matrix-factorization">Vectorization: Low Rank Matrix Factorization</a></li>
+<li><a href="#implementational-detail-mean-normalization">Implementational Detail: Mean Normalization</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week9/Lecture15.pdf">Lecture15</a></li>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week9/Lecture16.pdf">Lecture16</a></li>
+</ul></li>
+</ul>
+
+<h1 id="anomoly-detection">Anomoly Detection</h1>
+
+<h2 id="density-estimation">Density Estimation</h2>
+
+<h3 id="problem-motivation">Problem Motivation</h3>
+
+<p>Imagine being a manufacturor of aircraft engines. Measure heat generated, vibration intensity, etc. You know have a dataset of these features which you can plot. Anomoly detection would be determining if a new aircraft engine $x_{\text{test}}$ is anomolous in relation to the previously measured engine features.</p>
+
+<p>Given a dataset $x^{(1)}, x^{(2)}, \dots, x^{(m)}$, is $x_{\text{test}}$ anomalous? Check if $p(x) \gt \epsilon$ for given test set.</p>
+
+<p>Some useful cases include fraud detection, manufacturing, monitoring computers in a data center, etc.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/anomoly_detection.png" alt="anomoly_detection" /></p>
+
+<p>Suppose the anomaly detection system flags $x$ as anomalous whenever $p(x) \leq \epsilon$. It is flagging too many things as anomalous that are not actually so. The corrective step in this case would be to decrease the value of $\epsilon$.</p>
+
+<h3 id="gaussian-distribution">Gaussian Distribution</h3>
+
+<p>The Gaussian Distribution (Normal Distribution), where $ x \in \mathbb{R}$, has mean $\mu$ and variance $\sigma^2$:</p>
+
+<p>$$ x \thicksim \mathcal{N}(\mu, \sigma^2) $$ (The tilde means &ldquo;distributed as&rdquo;, Script &lsquo;N&rsquo; stands for normal distribution</p>
+
+<p>$$ p(x;\mu, \sigma^2) = \dfrac{1}{\sqrt{2\pi}\sigma} \times \exp{(-\dfrac{(x-\mu)^2}{2\sigma^2})} $$</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/gaussian_distribution.png" alt="gaussian_distribution" /></p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/gaussian_distribution_examples.png" alt="gaussian_distribution_examples" /></p>
+
+<p>Red shaded area is equal to 1.</p>
+
+<p>To calculate the average $\mu$ and variance $\sigma^2$ we use the following formulae:</p>
+
+<p>$$ \mu = \dfrac{1}{m} \sum\limits_{i=1}^{m}x^{(i)} $$
+$$ \sigma^2 = \dfrac{1}{m} \sum\limits_{i=1}^{m}(x^{(i)} - \mu)^2 $$</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/average_variance_formulae.png" alt="average_variance_formulae" /></p>
+
+<h3 id="algorithm">Algorithm</h3>
+
+<p>Algorithm for density estimation. Given a training set {$x^{(1)}, \dots, x^{(m)} $} where each example is $x \in \mathbb{R}^n$</p>
+
+<p>$$p(x) = p(x_1;\mu_1,\sigma^2_1)p(x_2;\mu_2,\sigma^2_2)p(x_3;\mu_3,\sigma^2_3)\dots p(x_n;\mu_n,\sigma^2_n)$$</p>
+
+<p>where $ x_1 \thicksim \mathcal{N}(\mu_1, \sigma^2_1) $,$ x_2 \thicksim \mathcal{N}(\mu_2, \sigma^2_2) $, and so on.</p>
+
+<p>More conscicely, this algorithm can be written as:</p>
+
+<p>$$ p(x) = \prod\limits_{j=1}^n p(x_j;\mu_j, \sigma^2_j) $$</p>
+
+<p>The capital $\Pi$ is the product symbol, it is similar to the $\sum$ function except rather than adding, it performs multiplication.</p>
+
+<ol>
+<li><p>Choose features $x_i$ that you think might be indicative of anomalous examples.</p></li>
+
+<li><p>Fit parameters $\mu_1, \mu_2, \dots, \mu_n; \sigma_1^2, \sigma_2^2, \dots, \sigma_n^2$</p></li>
+
+<li><p>Given new example $x$, compute $p(x)$. The example is an anomaly if $p(x) &lt; \epsilon $.</p></li>
+</ol>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/anomaly_detection_example.png" alt="anomaly_detection_example" /></p>
+
+<h2 id="building-an-anomaly-detection-system">Building an Anomaly Detection System</h2>
+
+<h3 id="developing-and-evaluating-an-anomaly-detection-system">Developing and Evaluating an Anomaly Detection System</h3>
+
+<p>The importance of real-number evaluation, when developing a learning algorithm, learning decisions is much easier if we have a way of evaluating our learning algorithm. Assume we have some labeled data of anomalous and non-anomalous examples. ($y = 0$ if normal and $y = 1$ as anomalous).</p>
+
+<p>Training set: $x^{(1)}, x^{(2)}, \dots, x^{(m)} $ (assume that the training set is normal and not anomalous)</p>
+
+<p>Cross validation set: $ (x_{\text{cv}}^{(1)}, y_{\text{cv}}^{(1)}), \dots, (x_{\text{cv}}^{(m_{\text{cv}})}, y_{\text{cv}}^{(m_{\text{cv}})}) $</p>
+
+<p>Test set: $(x_{\text{test}}^{(1)}, y_{\text{test}}^{(1)}), \dots, (x_{\text{test}}^{(m_{\text{test}})}, y_{\text{test}}^{(m_{\text{test}})})$</p>
+
+<p>The following would be a reccomended split of training sets and cross validation sets for an aircraft engine monitoring example:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/aircraft_engine_example.png" alt="aircraft_engine_example" /></p>
+
+<p>One can evaluate the algoirthm by using precision and recall, or the $F_1$ score.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/evaluate_anomaly_detection.png" alt="evaluate_anomaly_detection" /></p>
+
+<h3 id="anomaly-detection-vs-supervised-learning">Anomaly Detection vs. Supervised Learning</h3>
+
+<p><strong>Anomaly detection</strong> can be used if there are a very small number of positive examples ($y=1$, a range between zero and twenty is common). Anomaly detection should also have a large number of negative ($y=0$) examples. Anomalies should have many types, it&rsquo;s hard for any algorithm to learn what anomalies look like, as future anomalies may look nothing like what we have seen so far.</p>
+
+<ul>
+<li>Fraud Detection</li>
+<li>Manufacturing (eg aircraft engines)</li>
+<li>Monitoring machines in a data center</li>
+</ul>
+
+<p><strong>Supervised learning</strong> should be used when there are a large number of positive and negative ezamples. There are enough positive examples for the algorithm to get a sense of what positive examples are like. Future positive examples are likely to be similar to the ones in the training set.</p>
+
+<ul>
+<li>Email/Spam classification</li>
+<li>Weather prediction (sunny/rainy/etc)</li>
+<li>Cancer classification</li>
+</ul>
+
+<h3 id="choosing-what-features-to-use">Choosing What Features to Use</h3>
+
+<p>One thing that we have done was plotting the features to see if the features fall into a normal (gaussian) distribution. Given a dataset that does not look gaussian, it might be useful to transform the features to look more gaussian. There are multiple different functions one can play with to make the data look more gaussian.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/transform_data_to_gaussian.png" alt="transform_data_to_gaussian" /></p>
+
+<p>Error analysis for anomaly detection- we want $p(x)$ to be large for normal examples and $p(x)$ to be small for anomalous examples.</p>
+
+<p>How do we fix the common problem where $p(x)$ is comparable for both normal and anomalous examples? This is still a manual process, look at the anomalous examples and distinguish features that make the irregular example anomalous.</p>
+
+<p>Choose features that might take on unusually large or small values in the event of an anomaly.</p>
+
+<h2 id="multivariate-gaussian-distribution">Multivariate Gaussian Distribution</h2>
+
+<h3 id="algorithm-1">Algorithm</h3>
+
+<p>Multivariate Gaussian Distribution can be useful if there are correlation between the features that need to be accounted for when determining anomalies.</p>
+
+<p>It may be useful to not model $p(x_1), p(x_2)$ separately. Model $p(x)$ all in one go. Parameters are $\mu \in \mathbb{R}^n$, $\Sigma \in \mathbb{R}^{n\times n}$.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/multivariate_gaussian_formula.png" alt="multivariate_gaussian_formula" />
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week9/multivariate_gaussian_distribution.png" alt="multivariate_gaussian_distribution" /></p>
+
+<p>Here are some examples of multivariate gaussian examples with varying sigma:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/multivariate_gaussian_examples.png" alt="multivariate_gaussian_examples" />
+<img src="https://alexander-wong.com/img/coursera-machine-learning-week9/multivariate_gaussian_examples_2.png" alt="multivariate_gaussian_examples_2" /></p>
+
+<p>To perform parameter fitting, plug in the follwing formula:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/multivariate_gaussian_parameter_fitting.png" alt="multivariate_gaussian_parameter_fitting" /></p>
+
+<h1 id="reccomender-systems">Reccomender Systems</h1>
+
+<h2 id="predicting-movie-ratings">Predicting Movie Ratings</h2>
+
+<h3 id="problem-forumulation">Problem Forumulation</h3>
+
+<p>Imagine you are a company that sells or rents out movies. You allow users to rate different movies from zero to five stars. You have a matrix of users, their sparsely populated rated movies, and you want to find out what they would also rate similarly according to existing data.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/reccomender_system_problem_formulation.png" alt="reccomender_system_problem_formulation" /></p>
+
+<h3 id="content-based-recommendations">Content Based Recommendations</h3>
+
+<p>If the movies have features associated to the movie, they can be represented with a feature vector.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/content_based_recommendations.png" alt="content_based_recommendations" /></p>
+
+<p>To learn $\theta^{(j)}$, refer to the following problem formulation:</p>
+
+<p>$$ \theta^{(j)} = \min\limits_{\theta^{(j)}} \dfrac{1}{2} \sum\limits_{i:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum\limits_{k=1}^n (\theta_k^{(j)})^2 $$</p>
+
+<p>To learn $\theta^{(1)}, \theta^{(2)}, \dots, \theta^{(n_u)} $:</p>
+
+<p>$$ J(\theta^{(1)}, \dots, \theta^{(n_u)}) = \min\limits_{\theta^{(1)}, \dots, \theta^{(n_u)}} \dfrac{1}{2} \sum\limits_{j=1}^{n_u} \sum\limits_{i:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum\limits_{j=1}^{n_u} \sum\limits_{k=1}^n (\theta_k^{(j)})^2 $$</p>
+
+<p>Gradient Descent:</p>
+
+<p>$$ \theta_k^{(j)} := \theta_k^{(j)} - \alpha \sum\limits_{i:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})x_k^{(i)} \hspace{1em} \text{for } k=0 $$
+$$ \theta_k^{(j)} := \theta_k^{(j)} - \alpha (\sum\limits_{i:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})x_k^{(i)} + \lambda\theta_k^{(j)} ) \hspace{1em} \text{for } k \neq 0 $$</p>
+
+<h2 id="collaborative-filtering">Collaborative Filtering</h2>
+
+<h3 id="collaborative-filtering-algorithm">Collaborative Filtering Algorithm</h3>
+
+<p>This algorithm learns what features to use for an existing data set. It can be very difficult to determine how &lsquo;romantic&rsquo; a movie is, or how much &lsquo;action&rsquo; a movie has. Suppose we have a data set where we do not know the features of our movies.</p>
+
+<p>The assumption here is that the users pre-specify what genres of movies they like.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/collaborative_filtering.png" alt="collaborative_filtering" /></p>
+
+<p>Given $\theta^{(1)}, \dots, \theta^{(n_u)}$ to learn $x^{(i)}$:</p>
+
+<p>$$ x^{(i)} = \min\limits_{x^{(i)}} \dfrac{1}{2} \sum\limits_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum\limits_{k=1}^{n}(x_k^{(i)})^2 $$</p>
+
+<p>Given $\theta^{(1)}, \dots, \theta^{(n_u)}$ to learn $x^{(1)}, \dots, x^{(n_m)}$:</p>
+
+<p>$$ \min\limits_{x^{(i)}} \dfrac{1}{2} \sum\limits_{i=1}^{n_m} \sum\limits_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum\limits_{i=1}^{n_m} \sum\limits_{k=1}^{n}(x_k^{(i)})^2 $$</p>
+
+<ol>
+<li><p>Initialize $x^{(1)}, \dots, x^{(n_m)}$ and $\theta^{(1)}, \dots, \theta^{(n_u)}$ to random small values.</p></li>
+
+<li><p>Minimize $J(x^{(1)}, \dots, x^{(n_m)}, \theta^{(1)}, \dots, \theta^{(n_u)})$ using gradient descent (or an advanced optimization algorithm).</p></li>
+
+<li><p>For a user with parameters $\theta$ and a movie with (learned) features $x$ predict a star rating of $\theta^Tx$.</p></li>
+</ol>
+
+<h2 id="low-rank-matrix-factorization">Low Rank Matrix Factorization</h2>
+
+<h3 id="vectorization-low-rank-matrix-factorization">Vectorization: Low Rank Matrix Factorization</h3>
+
+<p>The vectorized implementation for the reccomender system can be visualized as the following:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/low_rank_matrix_factorization.png" alt="low_rank_matrix_factorization" /></p>
+
+<p>Movies can be related if the feature vectors between the movies are small.</p>
+
+<h3 id="implementational-detail-mean-normalization">Implementational Detail: Mean Normalization</h3>
+
+<p>For users who have not rated any movies, the only term that effects the user is the regularization term.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/before_mean_normalization.png" alt="before_mean_normalization" /></p>
+
+<p>This does not help us perform reccomendations as the value of all predicted stars will be 0 for the user who has not rated any movies. One way to address this is to apply mean normalization to the input data and pretend the normalized data is the new data to perform prediction with.</p>
+
+<p>This allows us to perform reccomendations even though a user has not rated any movies, because we have the average rating of a movie based on all users.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week9/after_mean_normalization.png" alt="after_mean_normalization" /></p>
+
+<hr />
+
+<p>Week 10 TBD</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
