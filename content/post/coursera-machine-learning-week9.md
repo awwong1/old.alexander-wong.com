@@ -219,4 +219,4 @@ This allows us to perform reccomendations even though a user has not rated any m
 
 ---
 
-Week 10 TBD
+Move on to [Week 10]({{% relref "coursera-machine-learning-week10.md" %}}).
