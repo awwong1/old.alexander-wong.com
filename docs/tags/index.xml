@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sun, 22 Oct 2017 14:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 29 Oct 2017 19:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Machine Learning</title>
       <link>https://alexander-wong.com/tags/machine-learning/</link>
-      <pubDate>Sun, 22 Oct 2017 14:21:37 -0600</pubDate>
+      <pubDate>Sun, 29 Oct 2017 19:21:37 -0600</pubDate>
       
       <guid>https://alexander-wong.com/tags/machine-learning/</guid>
       <description></description>

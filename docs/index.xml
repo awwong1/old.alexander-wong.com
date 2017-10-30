@@ -43,6 +43,17 @@ I believe that pursuit of meaning in life is noble and that this is an automatab
     </item>
     
     <item>
+      <title>Machine Learning, Week 10</title>
+      <link>https://alexander-wong.com/post/coursera-machine-learning-week10/</link>
+      <pubDate>Sun, 29 Oct 2017 19:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/coursera-machine-learning-week10/</guid>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 9.
+Table of Contents  Large Scale Machine Learning  Gradient Descent with Large Datasets  Learning With Large Datasets Stochastic Gradient Descent Mini-Batch Gradient Descent Stochastic Gradient Descent Convergence  Advanced Topics  Online Learning Map Reduce and Data Parallelism      Lecture notes:  Lecture17   Large Scale Machine Learning Gradient Descent with Large Datasets Learning With Large Datasets One of the best ways to get a high performance machine learning system is to supply a lot of data into a low bias (overfitting) learning algorithm.</description>
+    </item>
+    
+    <item>
       <title>Machine Learning, Week 9</title>
       <link>https://alexander-wong.com/post/coursera-machine-learning-week9/</link>
       <pubDate>Sun, 22 Oct 2017 14:21:37 -0600</pubDate>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 10</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 9.
+Table of Contents  Large Scale Machine Learning  Gradient Descent with Large Datasets  Learning With Large Datasets Stochastic Gradient Descent Mini-Batch Gradient Descent Stochastic Gradient Descent Convergence  Advanced Topics  Online Learning Map Reduce and Data Parallelism      Lecture notes:  Lecture17   Large Scale Machine Learning Gradient Descent with Large Datasets Learning With Large Datasets One of the best ways to get a high performance machine learning system is to supply a lot of data into a low bias (overfitting) learning algorithm." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 10" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 9.
+Table of Contents  Large Scale Machine Learning  Gradient Descent with Large Datasets  Learning With Large Datasets Stochastic Gradient Descent Mini-Batch Gradient Descent Stochastic Gradient Descent Convergence  Advanced Topics  Online Learning Map Reduce and Data Parallelism      Lecture notes:  Lecture17   Large Scale Machine Learning Gradient Descent with Large Datasets Learning With Large Datasets One of the best ways to get a high performance machine learning system is to supply a lot of data into a low bias (overfitting) learning algorithm." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week10/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 10</h1>
+      <p class="post-meta">@Alexander Wong · Oct 29, 2017 · 4 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week9/">Week 9</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#large-scale-machine-learning">Large Scale Machine Learning</a>
+<ul>
+<li><a href="#gradient-descent-with-large-datasets">Gradient Descent with Large Datasets</a>
+<ul>
+<li><a href="#learning-with-large-datasets">Learning With Large Datasets</a></li>
+<li><a href="#stochastic-gradient-descent">Stochastic Gradient Descent</a></li>
+<li><a href="#mini-batch-gradient-descent">Mini-Batch Gradient Descent</a></li>
+<li><a href="#stochastic-gradient-descent-convergence">Stochastic Gradient Descent Convergence</a></li>
+</ul></li>
+<li><a href="#advanced-topics">Advanced Topics</a>
+<ul>
+<li><a href="#online-learning">Online Learning</a></li>
+<li><a href="#map-reduce-and-data-parallelism">Map Reduce and Data Parallelism</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week10/Lecture17.pdf">Lecture17</a></li>
+</ul></li>
+</ul>
+
+<h1 id="large-scale-machine-learning">Large Scale Machine Learning</h1>
+
+<h2 id="gradient-descent-with-large-datasets">Gradient Descent with Large Datasets</h2>
+
+<h3 id="learning-with-large-datasets">Learning With Large Datasets</h3>
+
+<p>One of the best ways to get a high performance machine learning system is to supply a lot of data into a low bias (overfitting) learning algorithm. The gradient descent algorithm can run very slowly if the training set is large, because a summation needs to be performed across all training examples to perform one step of gradient descent.</p>
+
+<p>$$ h_\theta(x) = \sum\limits_{j=0}^n \theta_jx_j $$
+$$ J_\text{train}(\theta) = \dfrac{1}{2m}\sum\limits_{i=1}^m(h_\theta(x^{(i)})-y^{(i)})^2 $$
+$$ \theta_j := \theta_j - \alpha \dfrac{1}{m}\sum\limits_{i=1}^m (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)} $$</p>
+
+<ul>
+<li>What if $m$ were 100,000,000? $\dfrac{1}{m}\sum\limits_{i=1}^m (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}$ becomes very expensive.</li>
+<li>Could we do a sanity check by running gradient descent with 1000 randomly selected examples?
+
+<ul>
+<li>One way to verify this is to plot a learning curve for a range of values of m (say 100, 10,000, 1,000,000) and verify that the algorithm has high variance (overfitting) when m is small.</li>
+</ul></li>
+</ul>
+
+<h3 id="stochastic-gradient-descent">Stochastic Gradient Descent</h3>
+
+<p>Rather than running gradient descent on the entire training set, one can run gradient descent on one training set at a time. The following is the Stochastic Gradient Descent algorithm:</p>
+
+<p>$$ \text{cost}(\theta, (x^{(i)}, y^{(i)})) = \dfrac{1}{2}(h_\theta(x^{(i)})-y^{(i)})^2 $$
+$$ J_\text{train}(\theta) = \dfrac{1}{2m}\sum\limits_{i=1}^m\text{cost}(\theta, (x^{(i)}, y^{(i)})) $$</p>
+
+<ol>
+<li>Randomly shuffle or reorder the dataset.</li>
+<li>Repeat {
+for i = 1, &hellip;, m {
+$$ \theta_j := \theta_j - \alpha(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} $$
+for j = 0, &hellip;, n
+}
+}
+Rather than waiting to sum up all of the training sets before taking a step, we can take a step on a single training example.</li>
+</ol>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week10/stochastic_gradient_descent.png" alt="stochastic_gradient_descent" /></p>
+
+<ul>
+<li>Repeat the outer loop somewhere between 1 and 10 times. The inner loop would require iterating through all of your training examples.</li>
+</ul>
+
+<h3 id="mini-batch-gradient-descent">Mini-Batch Gradient Descent</h3>
+
+<p>Mini-Batch Gradient Descent is a variation of Stochastic Gradient Descent except rather than using a single example in each iteration, it uses $b$ examples in each iteration where $b$ is the mini-batch size. A typical choice for $b$ is 10, where $b$ ranges between 2-100.</p>
+
+<p>b = 10 example:</p>
+
+<p>$$ (x^{(i)}, y^{(i)}), \dots, (x^{(i+9)}, y^{(i+9)}) $$
+$$ \theta_j := \theta_j - \alpha\dfrac{1}{10} \sum\limits_{k=1}^{i+9}(h_\theta(x^{(k)})-y^{(k)})x_j^{(k)}$$
+Increment $i$ by 10 and repeat until all training examples are used</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week10/mini_batch_gradient_descent.png" alt="mini_batch_gradient_descent" /></p>
+
+<p>This algorithm becomes the same as normal batch gradient descent if $b = m$.</p>
+
+<h3 id="stochastic-gradient-descent-convergence">Stochastic Gradient Descent Convergence</h3>
+
+<p>Stochastic gradient descent does not converge nicely like Batch gradient descent. In Batch gradient descent, the cost function would decrease as the number of iterations of gradient descent increased. In Stochastic gradient descent, this is not certain.</p>
+
+<p>$$ \text{cost}(\theta, (x^{(i)}, y^{(i)})) = \dfrac{1}{2}(h_\theta(x^{(i)} - y^{(i)}))^2 $$
+During learning, compute $\text{cost}(\theta, (x^{(i)}, y^{(i)}))$ before updating $\theta$ using $(x^{(i)}, y^{(i)})$. Every 1000 iterations (approximately, depends on your use case), plot $\text{cost}(\theta, (x^{(i)}, y^{(i)}))$ averaged over the last 1000 examples processed by the algorithm.</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week10/stochastic_convergence.png" alt="stochastic_convergence" /></p>
+
+<p>The learning rate should be sufficiently small. Additionally, when the stochasti gradient descent nears a minima, one way to make it converge is to slowly make the learning rate $\alpha$ decrease over time.</p>
+
+<p>One example of doing this is to make $\alpha = \dfrac{\text{const1}}{\text{iterationNumber} + \text{const2}}$. The constants are application dependent.</p>
+
+<h2 id="advanced-topics">Advanced Topics</h2>
+
+<h3 id="online-learning">Online Learning</h3>
+
+<p>Online learning allows one to model problems where data is commin in as a continuous stream. Your training set is infinite.
+One way to handle this is to update your models whenever the training data is given to you (one step of Stochastic Gradient Descent), and then use the resulting trained model.</p>
+
+<h3 id="map-reduce-and-data-parallelism">Map Reduce and Data Parallelism</h3>
+
+<p>Map Reduce and Data Parallelism are ways to break up multiple chunks of data into smaller, parallelizable parts.
+Take the following use case of Batch Gradient Descent:</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week10/map_reduce_example.png" alt="map_reduce_example" /></p>
+
+<p>Whenever your learning algorithm can be expressed as computing sums of functions over the training set, map reduce may offer you some better optimization. There is also a benefit if your single machine has multiple cores, as each of the cores can perform parallelised computation.</p>
+
+<hr />
+
+<p>Week 11 TBD
+<!-- Move on to [Week 11](). --></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
