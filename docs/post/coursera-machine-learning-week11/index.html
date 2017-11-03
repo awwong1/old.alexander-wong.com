@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Machine Learning, Week 11</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 10.
+Table of Contents  Application Example: Photo OCR  Photo OCR  Problem Description and Pipeline Sliding Windows Getting Lots of Data and Artificial Data Ceiling Analysis: What Part of the Pipeline to Work on Next      Lecture notes:  Lecture18   Application Example: Photo OCR Photo OCR Problem Description and Pipeline Photo OCR (Object Character Recognition) is the task of trying to recognize objects, characters (words and digits) given an image." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Machine Learning, Week 11" />
+    <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 10.
+Table of Contents  Application Example: Photo OCR  Photo OCR  Problem Description and Pipeline Sliding Windows Getting Lots of Data and Artificial Data Ceiling Analysis: What Part of the Pipeline to Work on Next      Lecture notes:  Lecture18   Application Example: Photo OCR Photo OCR Problem Description and Pipeline Photo OCR (Object Character Recognition) is the task of trying to recognize objects, characters (words and digits) given an image." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week11/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.1/video-js.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.1/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/2014.01.31/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.0/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Machine Learning, Week 11</h1>
+      <p class="post-meta">@Alexander Wong · Nov 3, 2017 · 3 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week10/">Week 10</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#application-example-photo-ocr">Application Example: Photo OCR</a>
+<ul>
+<li><a href="#photo-ocr">Photo OCR</a>
+<ul>
+<li><a href="#problem-description-and-pipeline">Problem Description and Pipeline</a></li>
+<li><a href="#sliding-windows">Sliding Windows</a></li>
+<li><a href="#getting-lots-of-data-and-artificial-data">Getting Lots of Data and Artificial Data</a></li>
+<li><a href="#ceiling-analysis-what-part-of-the-pipeline-to-work-on-next">Ceiling Analysis: What Part of the Pipeline to Work on Next</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<ul>
+<li>Lecture notes:
+
+<ul>
+<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week11/Lecture18.pdf">Lecture18</a></li>
+</ul></li>
+</ul>
+
+<h1 id="application-example-photo-ocr">Application Example: Photo OCR</h1>
+
+<h2 id="photo-ocr">Photo OCR</h2>
+
+<h3 id="problem-description-and-pipeline">Problem Description and Pipeline</h3>
+
+<p>Photo OCR (Object Character Recognition) is the task of trying to recognize objects, characters (words and digits) given an image. This can be done as a type of machine learning pipeline where the different stages of the image recognition algorithm are broken out into various learning algorithm steps.</p>
+
+<p>For example, a pipeline could be:</p>
+
+<ol>
+<li>Detect bounding boxes of text in an image</li>
+<li>Perform character segmentation within the bounding box of text</li>
+<li>Classify the individual character into some ASCII value</li>
+<li>Perform spelling correction on the cummulative classified word</li>
+</ol>
+
+<h3 id="sliding-windows">Sliding Windows</h3>
+
+<p>Example problem; pedestrial detection in an image.</p>
+
+<p>Given an image, create a small window (for instace, your image is 800x300, and you use a window size of 80x30). Starting at the top left corner of the image, run that patch through your classifier to determine if the object is human or not. Then, move the window to the right by some step size (stride) and run that patch through the classifier again. When the window reaches the right of the screen, start again from the left side of the screen with the window moved slightly lower than before.</p>
+
+<p>Once the whole image is completed, perform the same thing with a larger image patch. eg. 100x40</p>
+
+<h3 id="getting-lots-of-data-and-artificial-data">Getting Lots of Data and Artificial Data</h3>
+
+<p>How do you get a lot of data to train your OCR algorithm?</p>
+
+<p>For text recognition, you can generate input data by using a variety of fonts and backgrounds. Create an application that outputs many images with text, random backgrounds, random fonts. Another way would be to use existing images of text and apply distortions (blur, warping).</p>
+
+<p>For something like audio, you could modify your original audio clip to have some background noises (beeps, noisy crowds) in order to create more input data.</p>
+
+<p>The distortions you use should be similar to some examples you want to classify. If you have random distortions that are not relevant to your classification, it would be meaningless noise and would be less likely to be useful.</p>
+
+<ol>
+<li>Make sure you have a low bias classifier before expanding your data set. Keep increasing the number of features/number of hidden units in your neural network until you have a low bias classifier.</li>
+<li>Ask: &ldquo;How much work would it be to get 10x the amount of data as we currently have?&rdquo;
+
+<ul>
+<li>artificial data synthesis</li>
+<li>distort existing examples</li>
+<li>collect data, label it yourself</li>
+<li>crowd source (eg. &ldquo;Amazon Mechanical Turk&rdquo;)</li>
+</ul></li>
+</ol>
+
+<h3 id="ceiling-analysis-what-part-of-the-pipeline-to-work-on-next">Ceiling Analysis: What Part of the Pipeline to Work on Next</h3>
+
+<p>What part of the pipeline should we work on improving?</p>
+
+<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week11/ceiling_analysis.png" alt="ceiling_analysis" /></p>
+
+<p>At each part of the pipeline, take that individual step and maximize that portion of the pipeline manually. See how much the overall performance of the system improves. This can give insight into which portion of the pipeline can give the highest improvement.</p>
+
+<hr />
+
+<p>Coursera Machine Learning course finished.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

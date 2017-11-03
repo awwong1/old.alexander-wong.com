@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sun, 29 Oct 2017 19:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 03 Nov 2017 11:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Machine Learning, Week 11</title>
+      <link>https://alexander-wong.com/post/coursera-machine-learning-week11/</link>
+      <pubDate>Fri, 03 Nov 2017 11:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/coursera-machine-learning-week11/</guid>
+      <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 10.
+Table of Contents  Application Example: Photo OCR  Photo OCR  Problem Description and Pipeline Sliding Windows Getting Lots of Data and Artificial Data Ceiling Analysis: What Part of the Pipeline to Work on Next      Lecture notes:  Lecture18   Application Example: Photo OCR Photo OCR Problem Description and Pipeline Photo OCR (Object Character Recognition) is the task of trying to recognize objects, characters (words and digits) given an image.</description>
+    </item>
     
     <item>
       <title>Machine Learning, Week 10</title>
