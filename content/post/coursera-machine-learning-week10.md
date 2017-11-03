@@ -96,4 +96,4 @@ Whenever your learning algorithm can be expressed as computing sums of functions
 
 ---
 
-Week 11 TBD
+Move on to [Week 11]({{% relref "coursera-machine-learning-week11.md" %}}).
