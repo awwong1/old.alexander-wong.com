@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>Hello World</title>
+  <title>Neural Networks and Deep Learning, Week 1</title>
 
   
   
@@ -15,14 +15,16 @@
 
   
   <meta name="author" content="Alexander Wong" />
-  <meta name="description" content="Although as individuals we are always in transition, I believe it is necesary to have static markers representing our current state in reference to the universe. We are mortal, we were born into this world, and inevitably we will eventually die. Consider this post to mark the beginning of a quarter life transition. I figure that the best way to measure and document this is to have an open, publicly available record of my goals and my journey in pursuing meaning in life." />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization." />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Hello World" />
-    <meta name="twitter:description" content="Although as individuals we are always in transition, I believe it is necesary to have static markers representing our current state in reference to the universe. We are mortal, we were born into this world, and inevitably we will eventually die. Consider this post to mark the beginning of a quarter life transition. I figure that the best way to measure and document this is to have an open, publicly available record of my goals and my journey in pursuing meaning in life." />
+    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 1" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization." />
     <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
   
 
@@ -32,7 +34,7 @@
 <meta name="generator" content="Hugo 0.26" />
 
 
-<link rel="canonical" href="https://alexander-wong.com/post/hello-world/" />
+<link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/" />
 <link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
 
 
@@ -193,45 +195,88 @@
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">Hello World</h1>
-      <p class="post-meta">@Alexander Wong · Aug 12, 2017 · 2 min read</p>
+      <h1 class="post-title">Neural Networks and Deep Learning, Week 1</h1>
+      <p class="post-meta">@Alexander Wong · Nov 11, 2017 · 2 min read</p>
     </header>
-    <article class="post-content"><p>Although as individuals we are always in transition, I believe it is necesary to have static markers representing our current state in reference to the universe. We are mortal, we were born into this world, and inevitably we will eventually die. Consider this post to mark the beginning of a quarter life transition. I figure that the best way to measure and document this is to have an open, publicly available record of my goals and my journey in pursuing meaning in life.</p>
+    <article class="post-content">
 
-<p>I have the following high priority goals, and I will revisit these goals as I progress forward with my life.</p>
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Neural Networks and Deep Learning</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
 
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
 <ul>
-<li>Continue to build and iterate on my personal web application, <a href="https://www.udia.ca">UDIA</a>.
-
+<li><a href="#introduction-to-deep-learning">Introduction to Deep Learning</a>
 <ul>
-<li>This application is the software component of my pursuit of meaning in life. It is the understanding that the Universe Dreams, I&rsquo;m Aware. It is solipsism taken to it&rsquo;s extreme, it is the act of bringing focus to self reflection.</li>
-<li><strong>Deadline</strong>: not set, software will always evolve.</li>
-</ul></li>
-<li>Expand my machine learning knowledge.
-
-<ul>
-<li>This will be accomplished by taking and completing the <a href="https://www.coursera.org/learn/machine-learning">Andrew Ng&rsquo;s Machine Learning course on Coursera</a>.</li>
-<li>This course begins on August 21st and ends sometime late November. I will post updates on this blog as I progress with that course.</li>
-<li><strong>Deadline:</strong> Course begins on August 21st. Continue as per syllabus instructions.</li>
-</ul></li>
-<li>Apply to the University of Alberta&rsquo;s Computing Science Master&rsquo;s degree program.
-
-<ul>
-<li>The application acceptance start date is October 3rd, 2017 for the Fall 2018 term. (<a href="https://www.ualberta.ca/computing-science/graduate-studies/programs-and-admissions/applications-and-admissions">Application Information</a>)</li>
-<li>This will further enhance my machine learning knowledge and allow me to stay relevant in the global landscape.</li>
-<li><strong>Deadline:</strong> January 15th, 2018 is the Fall 2018 application deadline.</li>
+<li><a href="#what-is-a-neural-network">What is a Neural Network</a></li>
+<li><a href="#supervised-learning-with-neural-networks">Supervised Learning with Neural Networks</a></li>
+<li><a href="#why-is-deep-learning-taking-off">Why is Deep Learning Taking Off?</a></li>
+<li><a href="#about-this-course">About this Course</a></li>
+<li><a href="#optional-heroes-of-deep-learning-geoffrey-hinton">Optional: Heroes of Deep Learning (Geoffrey Hinton)</a></li>
 </ul></li>
 </ul>
+</nav>
 
-<p>During my pursuit of these goals, I will remain kind to myself and to others. I will adapt to setbacks and mishaps as they occur. Even though the meaning of existence is clear and profound, it is not enough to understand that life is a game- it is necessary to also play.</p>
 
-<p>Hello, world.</p>
+<h1 id="introduction-to-deep-learning">Introduction to Deep Learning</h1>
+
+<p>There are five courses in the Coursera Deep Learning Specialization. (This is course 1.)</p>
+
+<ol>
+<li>Neural Networks and Deep Learning</li>
+<li>Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization</li>
+<li>Structuring your Machine Learning Project</li>
+<li>Convolutional Neural Networks</li>
+<li>Natural Language Processing: Building Sequence Models.</li>
+</ol>
+
+<h2 id="what-is-a-neural-network">What is a Neural Network</h2>
+
+<p>A neural network is a learning algorithm comprised of many stacked neurons. THey are chained together to create representations of functions based on input data.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_example.png" alt="neural_network_example" /></p>
+
+<h2 id="supervised-learning-with-neural-networks">Supervised Learning with Neural Networks</h2>
+
+<p>Supervised learning is when you are given specific inputs and outputs. For instance, in the housing pricing example you can have <code>x: number of bedrooms, size of house, ..., house features</code> map to <code>y: price of house</code>. These types of algorithms can calculate a given <code>y</code> with input <code>x</code>. Typically the machine is trained on data that has both <code>x</code> and <code>y</code> values.</p>
+
+<h2 id="why-is-deep-learning-taking-off">Why is Deep Learning Taking Off?</h2>
+
+<p>Primarily 3 reasons:</p>
+
+<ol>
+<li>Massive increase in collected data</li>
+<li>Increase in computational power</li>
+<li>Algorithm modifications (usually increases computation speed)</li>
+</ol>
+
+<h2 id="about-this-course">About this Course</h2>
+
+<p>This course is broken out into four weeks.</p>
+
+<ul>
+<li>Week 1: Introduction</li>
+<li>Week 2: Basics of Neural Network Programming</li>
+<li>Week 3: One Hidden Layer Neural Networks</li>
+<li>Week 4: Deep Neural Networks</li>
+</ul>
+
+<h2 id="optional-heroes-of-deep-learning-geoffrey-hinton">Optional: Heroes of Deep Learning (Geoffrey Hinton)</h2>
+
+<p>Interview between Andrew Ng and Geoffrey Hinton.</p>
+
+<p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/-eyhCTvrEtE" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+ </div>
+</p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/personal"><span class="tag">Personal</span></a></li>
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
         
       </ul>
       

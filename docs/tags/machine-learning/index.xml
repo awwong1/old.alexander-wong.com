@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Fri, 03 Nov 2017 11:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 11 Nov 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Neural Networks and Deep Learning, Week 1</title>
+      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/</link>
+      <pubDate>Sat, 11 Nov 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization.</description>
+    </item>
     
     <item>
       <title>Machine Learning, Week 11</title>
