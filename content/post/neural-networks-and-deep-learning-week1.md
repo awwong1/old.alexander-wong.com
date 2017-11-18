@@ -53,3 +53,7 @@ This course is broken out into four weeks.
 Interview between Andrew Ng and Geoffrey Hinton.
 
 {{< youtube -eyhCTvrEtE >}}
+
+---
+
+Move on to [Week 2]({{% relref "neural-networks-and-deep-learning-week2.md" %}}).
