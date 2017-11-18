@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 11 Nov 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 18 Nov 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Neural Networks and Deep Learning, Week 2</title>
+      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/</link>
+      <pubDate>Sat, 18 Nov 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 1.
+Table of Contents  Neural Networks Basics  Logistic Regression as a Neural Network  Binary Classification Logistic Regression Logistic Regression Cost Function Gradient Descent Derivatives More Derivatives Examples Computation Graph Derivatives with a Computation Graph Logistic Regression Gradient Descent Gradient Descent on m Examples  Python and Vectorization  Vectorization More Vectorization Examples Vectorizing Logistic Regression Vectorizing Logistic Regression&amp;rsquo;s Gradient Output Broadcasting in Python Note on Python/NumPy Vectors     Neural Networks Basics Logistic Regression as a Neural Network Binary Classification Binary classification is basically answering a yes or no question.</description>
+    </item>
     
     <item>
       <title>Neural Networks and Deep Learning, Week 1</title>
