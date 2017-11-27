@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 18 Nov 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 22 Nov 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Neural Networks and Deep Learning, Week 3</title>
+      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/</link>
+      <pubDate>Wed, 22 Nov 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 2.
+Table of Contents  Shallow Neural Networks  Shallow Neural Network  Neural Networks Overview Neural Network Representation Computing a Neural Network&amp;rsquo;s Output Vectorizing Across Multiple Examples Explanation for Vectorized Implementation Activation Functions Why do you need non-linear activation functions?</description>
+    </item>
     
     <item>
       <title>Neural Networks and Deep Learning, Week 2</title>

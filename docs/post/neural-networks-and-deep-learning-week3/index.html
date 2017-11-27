@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Neural Networks and Deep Learning, Week 3</title>
+
+  
+  
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 2.
+Table of Contents  Shallow Neural Networks  Shallow Neural Network  Neural Networks Overview Neural Network Representation Computing a Neural Network&amp;rsquo;s Output Vectorizing Across Multiple Examples Explanation for Vectorized Implementation Activation Functions Why do you need non-linear activation functions?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 3" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 2.
+Table of Contents  Shallow Neural Networks  Shallow Neural Network  Neural Networks Overview Neural Network Representation Computing a Neural Network&amp;rsquo;s Output Vectorizing Across Multiple Examples Explanation for Vectorized Implementation Activation Functions Why do you need non-linear activation functions?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.26" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+      
+        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Neural Networks and Deep Learning, Week 3</h1>
+      <p class="post-meta">@Alexander Wong · Nov 22, 2017 · 2 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Neural Networks and Deep Learning</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/">Week 2</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#shallow-neural-networks">Shallow Neural Networks</a>
+<ul>
+<li><a href="#shallow-neural-network">Shallow Neural Network</a>
+<ul>
+<li><a href="#neural-networks-overview">Neural Networks Overview</a></li>
+<li><a href="#neural-network-representation">Neural Network Representation</a></li>
+<li><a href="#computing-a-neural-network-s-output">Computing a Neural Network&rsquo;s Output</a></li>
+<li><a href="#vectorizing-across-multiple-examples">Vectorizing Across Multiple Examples</a></li>
+<li><a href="#explanation-for-vectorized-implementation">Explanation for Vectorized Implementation</a></li>
+<li><a href="#activation-functions">Activation Functions</a></li>
+<li><a href="#why-do-you-need-non-linear-activation-functions">Why do you need non-linear activation functions?</a></li>
+<li><a href="#derivatives-of-activation-functions">Derivatives of Activation Functions</a></li>
+<li><a href="#gradient-descent-for-neural-networks">Gradient Descent for Neural Networks</a></li>
+<li><a href="#backpropagation-intuition-optional">Backpropagation Intuition (Optional)</a></li>
+<li><a href="#random-initialization">Random Initialization</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="shallow-neural-networks">Shallow Neural Networks</h1>
+
+<h2 id="shallow-neural-network">Shallow Neural Network</h2>
+
+<h3 id="neural-networks-overview">Neural Networks Overview</h3>
+
+<p>Recall that a neural network is very similar in the logistic regression problem defined last week. A Neural network is a stack of logistic regression calls chained together.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_networks_overview.png" alt="neural_networks_overview" /></p>
+
+<h3 id="neural-network-representation">Neural Network Representation</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/two_layer_neural_network_diagram.png" alt="two_layer_neural_network_diagram" /></p>
+
+<h3 id="computing-a-neural-network-s-output">Computing a Neural Network&rsquo;s Output</h3>
+
+<p>In logistic regression, the output looks like this:</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/logistic_regression_node.png" alt="logistic_regression_node" /></p>
+
+<p>$$ z = w^Tx + b $$
+$$ a = \sigma(z) $$</p>
+
+<p>For a neural network, each layer is broken out into its respective nodes.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_node.png" alt="neural_network_node" /></p>
+
+<p>$$ z^{[1]}_1 = w^{[1]T}_1x + b^{[1]}_1 $$
+$$ a_1^{[1]} = \sigma(x^{[1]}_1) $$</p>
+
+<p>$$ a^{[1] \leftarrow \text{Layer} }_{i \leftarrow \text{Node in layer}} $$
+$$ w^{[1]}_1 \leftarrow \text{is a vector} $$
+$$ (w^{[1]})^T = w^{[1]T} \leftarrow \text{is a vector transposed} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_calculation.png" alt="neural_network_calculation" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_calculation_2.png" alt="neural_network_calculation_2" /></p>
+
+<h3 id="vectorizing-across-multiple-examples">Vectorizing Across Multiple Examples</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/square_vs_round_bracket_notation.png" alt="square_vs_round_bracket_notation" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/vectorized_approach.png" alt="vectorized_approach" /></p>
+
+<h3 id="explanation-for-vectorized-implementation">Explanation for Vectorized Implementation</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/justifcation_of_vectorized_approach.png" alt="justifcation_of_vectorized_approach" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/recap_of_vectorized_approach.png" alt="recap_of_vectorized_approach" /></p>
+
+<h3 id="activation-functions">Activation Functions</h3>
+
+<p>Tanh function may be a better activation function than sigmoid. Pretty the tanh function is almost always superior, except for the output layer.</p>
+
+<p>If $ y \in {0, 1} $ the sigmoid function might be better for the output layer.
+For all other units, ReLU (rectified linear unit) is best, tanh function is better, sigmoid is worst.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/activation_functions.png" alt="activation_functions" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/summary_activation_functions.png" alt="summary_activation_functions" /></p>
+
+<p>Leaky ReLU might be better than ReLU for neural nets.</p>
+
+<h3 id="why-do-you-need-non-linear-activation-functions">Why do you need non-linear activation functions?</h3>
+
+<p>If you do not have non-linear activation functions, the calculation of $x \rightarrow \hat{y}$ is linear.</p>
+
+<p>Linear activation functions eliminate the benefit of hidden layers, as the composite of two linear functions is a linear function.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/linear_activation_function.png" alt="linear_activation_function" /></p>
+
+<h3 id="derivatives-of-activation-functions">Derivatives of Activation Functions</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/derivative_sigmoid_activation_function.png" alt="derivative_sigmoid_activation_function" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/derivative_tanh_activation_function.png" alt="derivative_tanh_activation_function" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/derivative_relu_activation_function.png" alt="derivative_relu_activation_function" /></p>
+
+<h3 id="gradient-descent-for-neural-networks">Gradient Descent for Neural Networks</h3>
+
+<p>Formula for computing derivatives in Neural Networks</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_computing_derivatives.png" alt="neural_network_computing_derivatives" /></p>
+
+<h3 id="backpropagation-intuition-optional">Backpropagation Intuition (Optional)</h3>
+
+<ul>
+<li>didn&rsquo;t watch</li>
+</ul>
+
+<h3 id="random-initialization">Random Initialization</h3>
+
+<p>If you initialize all your weights to zero, your neural network won&rsquo;t work because your hidden layer will effectively become a hidden node.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/reason_for_initialized_weights_to_zero.png" alt="reason_for_initialized_weights_to_zero" /></p>
+
+<p><code>W_layer1 = np.random.randn((2, 2)) * 0.01</code>
+<code>b_layer1 = np.zero((2, 1))</code></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/reason_for_initialized_weights_to_rand.png" alt="reason_for_initialized_weights_to_rand" /></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
