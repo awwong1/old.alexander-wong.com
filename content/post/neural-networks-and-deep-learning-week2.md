@@ -298,3 +298,7 @@ print(a)
 ```
 
 Occastionally assert your shape when you're not sure `assert(a.shape == (5, 1))`.
+
+---
+
+Move on to [Week 3]({{% relref "neural-networks-and-deep-learning-week3.md" %}}).
