@@ -111,3 +111,7 @@ If you initialize all your weights to zero, your neural network won't work becau
 `b_layer1 = np.zero((2, 1))`
 
 ![reason_for_initialized_weights_to_rand](/img/deeplearning-ai/reason_for_initialized_weights_to_rand.png)
+
+---
+
+Move on to [Week 4]({{% relref "neural-networks-and-deep-learning-week4.md" %}}).
