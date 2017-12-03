@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Wed, 22 Nov 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 02 Dec 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Neural Networks and Deep Learning, Week 4</title>
+      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/</link>
+      <pubDate>Sat, 02 Dec 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 3.
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?</description>
+    </item>
     
     <item>
       <title>Neural Networks and Deep Learning, Week 3</title>

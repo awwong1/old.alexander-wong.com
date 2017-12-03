@@ -13,6 +13,7 @@
 
 
 
+
   
   <meta name="author" content="Alexander Wong" />
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
@@ -33,7 +34,7 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
 
 
 
-<meta name="generator" content="Hugo 0.26" />
+<meta name="generator" content="Hugo 0.31.1" />
 
 
 <link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week3/" />
@@ -121,13 +122,33 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
       
       
       
-        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
       
     </ul>
   </nav>
@@ -401,18 +422,14 @@ $$ \theta_j := \theta_j - \dfrac{\alpha}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}
 $$\dfrac{\partial}{\partial\theta_j}J(\theta)$$</p>
 
 <p>We can then write a single function that returns both of these:</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">jVal</span> <span class="p">=</span> <span class="p">[...</span> <span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span>
-  <span class="nb">gradient</span> <span class="p">=</span> <span class="p">[...</span><span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span>
-<span class="k">end</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="w"></span><span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w">
+</span><span class="w">  </span><span class="n">jVal</span> <span class="p">=</span> <span class="p">[...</span> <span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span><span class="err">
+</span><span class="err"></span>  <span class="nb">gradient</span> <span class="p">=</span> <span class="p">[...</span><span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span><span class="err">
+</span><span class="err"></span><span class="k">end</span></code></pre></div>
 <p>The we can use octave&rsquo;s <code>fminfunc()</code> optimizatino algorithm with the <code>optimset()</code> function that creates an object containing the options we want to send to <code>fminunc()</code></p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">options</span> <span class="p">=</span> <span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;GradObj&#39;</span><span class="p">,</span> <span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;MaxIter&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-<span class="n">initialTheta</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">[</span><span class="n">optTheta</span><span class="p">,</span> <span class="n">functionVal</span><span class="p">,</span> <span class="n">exitFlag</span><span class="p">]</span> <span class="p">=</span> <span class="n">fminunc</span><span class="p">(@</span><span class="n">costFunction</span><span class="p">,</span> <span class="n">initialTheta</span><span class="p">,</span> <span class="n">options</span><span class="p">);</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">options</span> <span class="p">=</span> <span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;GradObj&#39;</span><span class="p">,</span> <span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;MaxIter&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span><span class="err">
+</span><span class="err"></span><span class="n">initialTheta</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span><span class="err">
+</span><span class="err"></span><span class="p">[</span><span class="n">optTheta</span><span class="p">,</span><span class="k"> function</span><span class="w"></span>Val, exitFlag] <span class="w"></span><span class="p">=</span><span class="w"> </span><span class="nf">fminunc</span><span class="p">(</span>@costFunction, initialTheta, options<span class="p">)</span><span class="w"></span><span class="p">;</span></code></pre></div>
 <p>The function <code>fminunc()</code> is given our cost function, initial theta values, and the options object we created beforehand.</p>
 
 <h2 id="multiclass-classification">Multiclass Classification</h2>

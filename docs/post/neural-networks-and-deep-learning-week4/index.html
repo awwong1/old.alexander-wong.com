@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>Neural Networks and Deep Learning, Week 1</title>
+  <title>Neural Networks and Deep Learning, Week 4</title>
 
   
   
@@ -17,15 +17,17 @@
   
   <meta name="author" content="Alexander Wong" />
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization." />
+Assumes you have knowledge of Week 3.
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?" />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 1" />
+    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 4" />
     <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization." />
+Assumes you have knowledge of Week 3.
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?" />
     <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
   
 
@@ -35,7 +37,7 @@ Table of Contents  Introduction to Deep Learning  What is a Neural Network Super
 <meta name="generator" content="Hugo 0.31.1" />
 
 
-<link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/" />
+<link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/" />
 <link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
 
 
@@ -216,84 +218,158 @@ Table of Contents  Introduction to Deep Learning  What is a Neural Network Super
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">Neural Networks and Deep Learning, Week 1</h1>
-      <p class="post-meta">@Alexander Wong · Nov 11, 2017 · 2 min read</p>
+      <h1 class="post-title">Neural Networks and Deep Learning, Week 4</h1>
+      <p class="post-meta">@Alexander Wong · Dec 2, 2017 · 3 min read</p>
     </header>
     <article class="post-content">
 
 <p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Neural Networks and Deep Learning</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
 
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/">Week 3</a>.</p>
+
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
 <ul>
-<li><a href="#introduction-to-deep-learning">Introduction to Deep Learning</a>
+<li><a href="#deep-neural-networks">Deep Neural Networks</a>
 <ul>
-<li><a href="#what-is-a-neural-network">What is a Neural Network</a></li>
-<li><a href="#supervised-learning-with-neural-networks">Supervised Learning with Neural Networks</a></li>
-<li><a href="#why-is-deep-learning-taking-off">Why is Deep Learning Taking Off?</a></li>
-<li><a href="#about-this-course">About this Course</a></li>
-<li><a href="#optional-heroes-of-deep-learning-geoffrey-hinton">Optional: Heroes of Deep Learning (Geoffrey Hinton)</a></li>
+<li><a href="#deep-neural-network">Deep Neural Network</a>
+<ul>
+<li><a href="#deep-l-layer-neural-network">Deep L-layer neural network</a></li>
+<li><a href="#forward-propagation-in-a-deep-network">Forward Propagation in a Deep Network</a></li>
+<li><a href="#getting-your-matrix-dimensions-right">Getting your matrix dimensions right</a></li>
+<li><a href="#why-deep-representations">Why deep representations?</a></li>
+<li><a href="#building-blocks-of-deep-neural-networks">Building blocks of deep neural networks</a></li>
+<li><a href="#forward-and-backward-propagation">Forward and Backward Propagation</a></li>
+<li><a href="#parameters-vs-hyperparameters">Parameters vs Hyperparameters</a></li>
+<li><a href="#what-does-this-have-to-do-with-the-brain">What does this have to do with the brain?</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
 
 
-<h1 id="introduction-to-deep-learning">Introduction to Deep Learning</h1>
+<h1 id="deep-neural-networks">Deep Neural Networks</h1>
 
-<p>There are five courses in the Coursera Deep Learning Specialization. (This is course 1.)</p>
+<h2 id="deep-neural-network">Deep Neural Network</h2>
 
-<ol>
-<li>Neural Networks and Deep Learning</li>
-<li>Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization</li>
-<li>Structuring your Machine Learning Project</li>
-<li>Convolutional Neural Networks</li>
-<li>Natural Language Processing: Building Sequence Models.</li>
-</ol>
+<h3 id="deep-l-layer-neural-network">Deep L-layer neural network</h3>
 
-<h2 id="what-is-a-neural-network">What is a Neural Network</h2>
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_networks.png" alt="deep_neural_networks" /></p>
 
-<p>A neural network is a learning algorithm comprised of many stacked neurons. THey are chained together to create representations of functions based on input data.</p>
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_network_notation.png" alt="deep_neural_network_notation" /></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_example.png" alt="neural_network_example" /></p>
+<p>Capital $L$ denotes the number of layers in the network. $ L = 4 $</p>
 
-<h2 id="supervised-learning-with-neural-networks">Supervised Learning with Neural Networks</h2>
+<p>We use $n^{[l]}$ to denote number of units in layer $l$.</p>
 
-<p>Supervised learning is when you are given specific inputs and outputs. For instance, in the housing pricing example you can have <code>x: number of bedrooms, size of house, ..., house features</code> map to <code>y: price of house</code>. These types of algorithms can calculate a given <code>y</code> with input <code>x</code>. Typically the machine is trained on data that has both <code>x</code> and <code>y</code> values.</p>
+<p>$$ n^{[0]} = n_x = 3, n^{[1]} = 5, n^{[2]} = 5, n^{[3]} = 3, n^{[4]} = 1, n^{[5]} = 1 $$</p>
 
-<h2 id="why-is-deep-learning-taking-off">Why is Deep Learning Taking Off?</h2>
+<h3 id="forward-propagation-in-a-deep-network">Forward Propagation in a Deep Network</h3>
 
-<p>Primarily 3 reasons:</p>
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_network_forward_propagation.png" alt="deep_neural_network_forward_propagation" /></p>
 
-<ol>
-<li>Massive increase in collected data</li>
-<li>Increase in computational power</li>
-<li>Algorithm modifications (usually increases computation speed)</li>
-</ol>
+<p>$$ Z^{[l]} = W^{[l]} a ^{[l-1]} + b^{[l]} $$
+$$ a^{[l]} = g^{[l]}(Z^{[l]}) $$</p>
 
-<h2 id="about-this-course">About this Course</h2>
+<p>Vectorized:</p>
 
-<p>This course is broken out into four weeks.</p>
+<p>$$ X = A^{[0]} $$
+$$ Z^{[1]} = W^{[1]} X + b^{[l]} $$
+$$ A^{[1]} = g^{[1]}(Z^{[1]}) $$</p>
+
+<h3 id="getting-your-matrix-dimensions-right">Getting your matrix dimensions right</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/parameters_wl_and_bl.png" alt="parameters_wl_and_bl" /></p>
+
+<p>$$ W^{[1]} : (n^{[1]}, n^{[0]}) $$</p>
+
+<p>$$ W^{[l]} : (n^{[l]}, n^{[l-1]}) $$</p>
+
+<p>The shape of $b$ should be $b^{[l]} : (n^{[l]}, 1) $.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/vectorized_matrix_dimensions.png" alt="vectorized_matrix_dimensions" /></p>
+
+<h3 id="why-deep-representations">Why deep representations?</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/intuition_about_deep_representation.png" alt="intuition_about_deep_representation" /></p>
+
+<p>Composing functions of increasing complexity, ie consider a face classifier
+- detect edges -&gt; detect eyes, or noses -&gt; detect groupings of eyes and noses</p>
+
+<p>Circuit theory and deep learning:</p>
+
+<p>Informally: There are functions you can compute with a &ldquo;small&rdquo; L-layer deep neural network that shallower networks require exponentially more hidden units to compute.</p>
+
+<h3 id="building-blocks-of-deep-neural-networks">Building blocks of deep neural networks</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/forwards_and_backwards_functions.png" alt="forwards_and_backwards_functions" />
+Z is cached and used in both forward and back propagation.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/building_blocks_of_deep_neural_networks.png" alt="building_blocks_of_deep_neural_networks" /></p>
+
+<h3 id="forward-and-backward-propagation">Forward and Backward Propagation</h3>
+
+<p>Forward propagation</p>
 
 <ul>
-<li>Week 1: Introduction</li>
-<li>Week 2: Basics of Neural Network Programming</li>
-<li>Week 3: One Hidden Layer Neural Networks</li>
-<li>Week 4: Deep Neural Networks</li>
+<li>input $a^{[l-1]}$</li>
+<li>output $a^{[l]}$, cache $(z^{[l]})$</li>
 </ul>
 
-<h2 id="optional-heroes-of-deep-learning-geoffrey-hinton">Optional: Heroes of Deep Learning (Geoffrey Hinton)</h2>
+<p>$$ z^{[l]} = w^{[l]} z^{[l-1]} + b^{[l]} $$
+$$ a^{[l]} = g^{[l]}(z^{[l]}) $$</p>
 
-<p>Interview between Andrew Ng and Geoffrey Hinton.</p>
+<p>Vectorized</p>
 
-<p>
-<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/-eyhCTvrEtE" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0" title="YouTube Video"></iframe>
- </div>
-</p>
+<p>$$ Z^{[l]} = W^{[l]} A^{[l-1]} = b^{[l]} $$
+$$ A^{[l]} = g^{[l]} (Z^{[l]}) $$</p>
 
-<hr />
+<p>Back propagation</p>
 
-<p>Move on to <a href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/">Week 2</a>.</p>
+<ul>
+<li>input $da^{[l]}$</li>
+<li>output $da^{[l-1]}, dW^{[l]}, db^{[l]}$</li>
+</ul>
+
+<p>$$ dz^{[l]} = da^{[l]} \times g^{[l]}&lsquo;(z^{[l]}) $$
+$$ dW^{[l]} = dz^{[l]} \times a^{[l-1]} $$
+$$ db^{[l]} = dz^{[l]} $$
+$$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/backpropagation_summary.png" alt="backpropagation_summary" /></p>
+
+<p>$$ da^{[l]} = -\dfrac{y}{a} + \dfrac{(1-y)}{(1-a)} $$</p>
+
+<h3 id="parameters-vs-hyperparameters">Parameters vs Hyperparameters</h3>
+
+<p>Parameters $ W^{[1]}, b^{[1]}, W^{[2]}, b^{[2]}, \dots $</p>
+
+<p>Hyperparameters:</p>
+
+<ul>
+<li>learning rate $\alpha$</li>
+<li>number of iterations</li>
+<li>number of hidden layers L</li>
+<li>number of hidden units per layer</li>
+<li>choice of activation function per layer</li>
+</ul>
+
+<p>Later hyperparameters</p>
+
+<ul>
+<li>momentum</li>
+<li>minibatch size</li>
+<li>regularizations</li>
+</ul>
+
+<p>Applied deep learning is a very empirical process.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Idea -&gt; Code -&gt; Experiment
+&lt;- Repeat &lt;-</code></pre></div>
+<h3 id="what-does-this-have-to-do-with-the-brain">What does this have to do with the brain?</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/forward_and_backpropagation.png" alt="forward_and_backpropagation" /></p>
+
+<p>Less like brain, more like universal function approximator.</p>
 </article>
     <footer class="post-footer">
       

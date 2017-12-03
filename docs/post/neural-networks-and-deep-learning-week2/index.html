@@ -13,6 +13,7 @@
 
 
 
+
   
   <meta name="author" content="Alexander Wong" />
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
@@ -33,7 +34,7 @@ Table of Contents  Neural Networks Basics  Logistic Regression as a Neural Netwo
 
 
 
-<meta name="generator" content="Hugo 0.26" />
+<meta name="generator" content="Hugo 0.31.1" />
 
 
 <link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/" />
@@ -121,13 +122,33 @@ Table of Contents  Neural Networks Basics  Logistic Regression as a Neural Netwo
       
       
       
-        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
       
     </ul>
   </nav>
@@ -400,7 +421,7 @@ $ db = \dfrac{db}{m} $;</p>
 <p>Vectorization is the art of getting rid of explicit for loops in code.</p>
 
 <p>Example: $ z = w^Tx + b $ where $ w \in \mathbb{R}^{n_x} $ and $ x \in \mathbb{R}^{n_x} $</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="o">//</span> <span class="n">non</span> <span class="n">vectorized</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="o">//</span> <span class="n">non</span> <span class="n">vectorized</span>
 <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">x</span><span class="p">):</span>
   <span class="n">z</span> <span class="o">+=</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -408,11 +429,9 @@ $ db = \dfrac{db}{m} $;</p>
 
 <span class="o">//</span><span class="n">vectorized</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
-</code></pre></div>
-
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span></code></pre></div>
 <p>The following is a vectorization demo.</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
@@ -421,7 +440,7 @@ $ db = \dfrac{db}{m} $;</p>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;vectorized version: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;ms&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;vectorized version: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span> <span class="o">+</span> <span class="sa"></span><span class="s2">&#34;ms&#34;</span><span class="p">)</span>
 <span class="c1"># vectorized version: 14.4419670105ms</span>
 <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -429,16 +448,14 @@ $ db = \dfrac{db}{m} $;</p>
     <span class="n">c</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
 <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;non-vectorized version: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;ms&quot;</span><span class="p">)</span>
-<span class="c1"># non-vectorized version: 428.48610878ms</span>
-</code></pre></div>
-
+<span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;non-vectorized version: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span> <span class="o">+</span> <span class="sa"></span><span class="s2">&#34;ms&#34;</span><span class="p">)</span>
+<span class="c1"># non-vectorized version: 428.48610878ms</span></code></pre></div>
 <p>Vectorization increases performance by allowing the program to take advantage of parallelization. Wherever possible, avoid for loops.</p>
 
 <h3 id="more-vectorization-examples">More Vectorization Examples</h3>
 
 <p>Whenever possible, avoid explicit for-loops.</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># matrix times a vector, vectorized</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># matrix times a vector, vectorized</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c1"># apply exponential operation on every element of a matrix/vector</span>
@@ -449,10 +466,8 @@ $ db = \dfrac{db}{m} $;</p>
 <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="c1"># element wise log</span>
-<span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="c1"># elementwise abs</span>
-<span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># ReLU</span>
-</code></pre></div>
-
+<span class="n">np</span><span class="o">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="c1"># elementwise abs</span>
+<span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># ReLU</span></code></pre></div>
 <h3 id="vectorizing-logistic-regression">Vectorizing Logistic Regression</h3>
 
 <p>We want to calculate:</p>
@@ -467,22 +482,18 @@ $ db = \dfrac{db}{m} $;</p>
 <p>$$ X = \begin{bmatrix} \vdots &amp; \vdots &amp; \vdots &amp; \vdots \newline x^{(1)} &amp; x^{(2)} &amp; \dots &amp; x^{(m)} \newline \vdots &amp; \vdots &amp; \vdots &amp; \vdots \end{bmatrix}  $$</p>
 
 <p>$$ Z = w^TX+b $$</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
 <span class="c1"># Z is a row vector of size m</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
-</code></pre></div>
-
+<span class="n">A</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span></code></pre></div>
 <h3 id="vectorizing-logistic-regression-s-gradient-output">Vectorizing Logistic Regression&rsquo;s Gradient Output</h3>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">db</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dZ</span><span class="p">))</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">db</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dZ</span><span class="p">))</span></code></pre></div>
 <h3 id="broadcasting-in-python">Broadcasting in Python</h3>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">56.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">,</span> <span class="mf">68.0</span><span class="p">],</span>
               <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">104.0</span><span class="p">,</span> <span class="mf">52.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span>
               <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">135.0</span><span class="p">,</span> <span class="mf">99.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]])</span>
-<span class="n">cal</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cal</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">cal</span><span class="p">)</span>
 <span class="c1"># [59.  239.  155.4  76.9]</span>
 
@@ -490,9 +501,7 @@ $ db = \dfrac{db}{m} $;</p>
 <span class="k">print</span><span class="p">(</span><span class="n">percentage</span><span class="p">)</span>
 <span class="c1">#[[ 94.91525424   0.           2.83140283  88.42652796]</span>
 <span class="c1"># [  2.03389831  43.51464435  33.46203346  10.40312094]</span>
-<span class="c1"># [  3.05084746  56.48535565  63.70656371   1.17035111]]</span>
-</code></pre></div>
-
+<span class="c1"># [  3.05084746  56.48535565  63.70656371   1.17035111]]</span></code></pre></div>
 <p>Python does some magic in broadcasting for matrix/array operations:</p>
 
 <p><img src="https://alexander-wong.com/img/deeplearning-ai/python_broadcasting.png" alt="python_broadcasting" /></p>

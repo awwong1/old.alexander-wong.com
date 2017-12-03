@@ -13,6 +13,7 @@
 
 
 
+
   
   <meta name="author" content="Alexander Wong" />
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
@@ -33,7 +34,7 @@ Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation 
 
 
 
-<meta name="generator" content="Hugo 0.26" />
+<meta name="generator" content="Hugo 0.31.1" />
 
 
 <link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week5/" />
@@ -121,13 +122,33 @@ Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation 
       
       
       
-        <li class="menu-item "><a href="https://alexander-wong.com/">Blog</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/about/">About</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/projects/">Projects</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
       
-        <li class="menu-item "><a href="https://alexander-wong.com/chatbot/">Chatbot</a></li>
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
       
     </ul>
   </nav>
@@ -350,16 +371,12 @@ Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation 
 $$ D^{(1)}, D^{(2)}, D^{(3)}, \dots $$</p>
 
 <p>In order to use optimizing functions such as <code>fminunc()</code>, we want to unroll all elements and put them into one long vector.</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">thetaVector</span> <span class="p">=</span> <span class="p">[</span> <span class="n">Theta1</span><span class="p">(:);</span> <span class="n">Theta2</span><span class="p">(:);</span> <span class="n">Theta3</span><span class="p">(:);</span> <span class="p">];</span>
-<span class="n">deltaVector</span> <span class="p">=</span> <span class="p">[</span> <span class="n">D1</span><span class="p">(:);</span> <span class="n">D2</span><span class="p">(:);</span> <span class="n">D3</span><span class="p">(:);</span> <span class="p">];</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">thetaVector</span> <span class="p">=</span> <span class="p">[</span> <span class="n">Theta1</span><span class="p">(:);</span> <span class="n">Theta2</span><span class="p">(:);</span> <span class="n">Theta3</span><span class="p">(:);</span> <span class="p">];</span><span class="err">
+</span><span class="err"></span><span class="n">deltaVector</span> <span class="p">=</span> <span class="p">[</span> <span class="n">D1</span><span class="p">(:);</span> <span class="n">D2</span><span class="p">(:);</span> <span class="n">D3</span><span class="p">(:);</span> <span class="p">];</span></code></pre></div>
 <p>If the dimensions of Theta1 is 10 by 11, Theta2 is 10 by 11, and Theta3 is 1 by 11, we can get back our original matrices from the unrolled versions as follows:</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">Theta1</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">110</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
-<span class="n">Theta2</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">111</span><span class="p">:</span><span class="mi">220</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
-<span class="n">Theta3</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">221</span><span class="p">:</span><span class="mi">231</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">Theta1</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">110</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span><span class="err">
+</span><span class="err"></span><span class="n">Theta2</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">111</span><span class="p">:</span><span class="mi">220</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span><span class="err">
+</span><span class="err"></span><span class="n">Theta3</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">221</span><span class="p">:</span><span class="mi">231</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span></code></pre></div>
 <p>To summarize:</p>
 
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week5/unrolling_parameters.png" alt="unrolling_parameters" /></p>
@@ -377,16 +394,14 @@ $$ D^{(1)}, D^{(2)}, D^{(3)}, \dots $$</p>
 <p>A small value for $\epsilon$ (epsilon) such as $\epsilon = 10^{-4}$ guarantees that the math works out properly. If the value for $\epsilon$ is too small or too large, we can end up with numerical problems.</p>
 
 <p>Hence, we are only adding or subtracting epsilon to the $\Theta_j$ matrix. In octave, we can do that as follows:</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">epsilon</span> <span class="p">=</span> <span class="mf">1e-4</span><span class="p">;</span>
-<span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span>
-    <span class="n">thetaPlus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span>
-    <span class="n">thetaPlus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">epsilon</span><span class="p">;</span>
-    <span class="n">thetaMinus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span>
-    <span class="n">thetaMinus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-=</span> <span class="n">epsilon</span><span class="p">;</span>
-    <span class="n">gradApprox</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">J</span><span class="p">(</span><span class="n">thetaPlus</span><span class="p">)</span> <span class="o">-</span> <span class="n">J</span><span class="p">(</span><span class="n">thetaMinus</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">epsilon</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">epsilon</span> <span class="p">=</span> <span class="mf">1e-4</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="err">
+</span><span class="err"></span>    <span class="n">thetaPlus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>    <span class="n">thetaPlus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">epsilon</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>    <span class="n">thetaMinus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>    <span class="n">thetaMinus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-=</span> <span class="n">epsilon</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>    <span class="n">gradApprox</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">J</span><span class="p">(</span><span class="n">thetaPlus</span><span class="p">)</span> <span class="o">-</span> <span class="n">J</span><span class="p">(</span><span class="n">thetaMinus</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">epsilon</span><span class="p">)</span><span class="err">
+</span><span class="err"></span><span class="k">end</span></code></pre></div>
 <p>We previously saw how to calculate the delta vector. Once we compute our gradApprox vector, we can check that $ \text{gradApprox} \approx \text{deltaVector} $. Once backpropagation is verified to be correct, you do not need to compute gradApprox again. Code to compute gradApprox can be very slow.</p>
 
 <h3 id="random-initialization">Random Initialization</h3>
@@ -396,14 +411,12 @@ $$ D^{(1)}, D^{(2)}, D^{(3)}, \dots $$</p>
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week5/symmetry_breaking.png" alt="symmetry_breaking" /></p>
 
 <p>We initialize each $\Theta_{ij}^{(l)}$ to a random value between $[-\epsilon,\epsilon]$. Using the above formula guarantees that we will get the desired bound. The same procedure applies to all of the $\Theta$&rsquo;s. Below is some working code for experimentation:</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="n">INIT_EPSILON</span> <span class="p">=</span> <span class="mf">1e-2</span><span class="p">;</span>
-<span class="c">% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.</span>
-
-<span class="n">Theta1</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span>
-<span class="n">Theta2</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span>
-<span class="n">Theta3</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">INIT_EPSILON</span> <span class="p">=</span> <span class="mf">1e-2</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="c">% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="n">Theta1</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="n">Theta2</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="n">Theta3</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span></code></pre></div>
 <p>The <code>rand(x,y)</code> function will initialize a matrix of random real numbers between 0 and 1.
 The <code>INIT_EPSILON</code> value is unrelated to the epsilon from Gradient Checking.</p>
 
@@ -432,11 +445,9 @@ The <code>INIT_EPSILON</code> value is unrelated to the epsilon from Gradient Ch
 </ol>
 
 <p>When we perform forward and back propagation, we loop on every training example:</p>
-<div class="highlight"><pre><code class="language-octave" data-lang="octave"><span></span><span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span><span class="p">,</span>
-   <span class="c">% Perform forward propagation and backpropagation using example (x(i),y(i))</span>
-   <span class="c">% (Get activations a(l) and delta terms d(l) for l = 2,...,L)</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span><span class="p">,</span><span class="err">
+</span><span class="err"></span>   <span class="c">% Perform forward propagation and backpropagation using example (x(i),y(i))</span><span class="err">
+</span><span class="err"></span>   <span class="c">% (Get activations a(l) and delta terms d(l) for l = 2,...,L)</span></code></pre></div>
 <p>The following image gives us an intuition of what is happening as we implement the neural network:</p>
 
 <p><img src="https://alexander-wong.com/img/coursera-machine-learning-week5/neural_network_gradient_descent.png" alt="neural_network_gradient_descent" /></p>
