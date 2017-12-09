@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 02 Dec 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 08 Dec 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Improving Deep Neural Networks, Week 1</title>
+      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week1/</link>
+      <pubDate>Fri, 08 Dec 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week1/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Neural Networks and Deep Learning.
+Table of Contents  Practical Aspects of Deep Learning  Setting Up Your Machine Learning Application  Train/Dev/Test Sets Bias/Variance Basic Recipe for Machine Learning  Regularizing your Neural Network  Regularization Why regularization reduces overfitting?</description>
+    </item>
     
     <item>
       <title>Neural Networks and Deep Learning, Week 4</title>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Improving Deep Neural Networks, Week 1</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Neural Networks and Deep Learning.
+Table of Contents  Practical Aspects of Deep Learning  Setting Up Your Machine Learning Application  Train/Dev/Test Sets Bias/Variance Basic Recipe for Machine Learning  Regularizing your Neural Network  Regularization Why regularization reduces overfitting?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Improving Deep Neural Networks, Week 1" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Neural Networks and Deep Learning.
+Table of Contents  Practical Aspects of Deep Learning  Setting Up Your Machine Learning Application  Train/Dev/Test Sets Bias/Variance Basic Recipe for Machine Learning  Regularizing your Neural Network  Regularization Why regularization reduces overfitting?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/improving-deep-neural-networks-week1/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Improving Deep Neural Networks, Week 1</h1>
+      <p class="post-meta">@Alexander Wong · Dec 8, 2017 · 7 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/">Neural Networks and Deep Learning</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#practical-aspects-of-deep-learning">Practical Aspects of Deep Learning</a>
+<ul>
+<li><a href="#setting-up-your-machine-learning-application">Setting Up Your Machine Learning Application</a>
+<ul>
+<li><a href="#train-dev-test-sets">Train/Dev/Test Sets</a></li>
+<li><a href="#bias-variance">Bias/Variance</a></li>
+<li><a href="#basic-recipe-for-machine-learning">Basic Recipe for Machine Learning</a></li>
+</ul></li>
+<li><a href="#regularizing-your-neural-network">Regularizing your Neural Network</a>
+<ul>
+<li><a href="#regularization">Regularization</a></li>
+<li><a href="#why-regularization-reduces-overfitting">Why regularization reduces overfitting?</a></li>
+<li><a href="#dropout-regularization">Dropout Regularization</a></li>
+<li><a href="#understanding-dropout">Understanding Dropout</a></li>
+<li><a href="#other-regularization-methods">Other regularization methods</a></li>
+</ul></li>
+<li><a href="#setting-up-your-optimization-problem">Setting up your optimization problem</a>
+<ul>
+<li><a href="#normalizing-inputs">Normalizing Inputs</a></li>
+<li><a href="#vanishing-exploding-gradients">Vanishing/Exploding Gradients</a></li>
+<li><a href="#weight-initialization-for-deep-networks">Weight Initialization for Deep Networks</a></li>
+<li><a href="#numerical-approximation-of-gradients">Numerical Approximation of Gradients</a></li>
+<li><a href="#gradient-checking">Gradient Checking</a></li>
+<li><a href="#gradient-checking-implementation-notes">Gradient Checking Implementation Notes</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="practical-aspects-of-deep-learning">Practical Aspects of Deep Learning</h1>
+
+<h2 id="setting-up-your-machine-learning-application">Setting Up Your Machine Learning Application</h2>
+
+<h3 id="train-dev-test-sets">Train/Dev/Test Sets</h3>
+
+<p>Recall:</p>
+
+<ul>
+<li><strong>Training set</strong> is used to teach your model how to accomplish tasks</li>
+<li><strong>Dev set</strong> (Cross Validation Set) is used to decide which algorithms and hyperparameters to use in your neural network model.</li>
+<li><strong>Test set</strong> is used to evaluate your model&rsquo;s performance.</li>
+</ul>
+
+<p>Classic old training set divisions were among the range of 60% / 20% / 20%. This may have been fine when there were less than a million training examples</p>
+
+<p>Modern machine learning divisions are much more skewed. Given 1 million training examples, might only allocate 10,000 (1%) to dev and 10,000 (1%) to test. It is not uncommon to use less than a single percent for dev and test given large datasets.</p>
+
+<p><em>Make sure</em> that your development and test sets come from the same distribution!</p>
+
+<p>It might be okay to only have a train and dev set. Test say may be ignored.</p>
+
+<h3 id="bias-variance">Bias/Variance</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/bias_and_variance.png" alt="bias_and_variance" /></p>
+
+<ul>
+<li><p>High Bias. Underfitting. Does not closely match the training data.</p></li>
+
+<li><p>High Variance. Overfitting. Extremely close match to the training data.</p></li>
+</ul>
+
+<h3 id="basic-recipe-for-machine-learning">Basic Recipe for Machine Learning</h3>
+
+<p>After having training your model, evaluate whether or not your algoirthm has high bias. (Observe the training data performance.)</p>
+
+<ul>
+<li>If it does have high bias, perhaps make a bigger network, or train longer. (Maybe change your neural network architecture?).</li>
+<li>Increasing the network size pretty much always reduces your bias. (This does not effect your variance.)</li>
+</ul>
+
+<p>Once the high bias propblem is solved, check if you have high variance (evaluate your dev set performance.)</p>
+
+<ul>
+<li>If it does have high variance, perhaps get more data, or perform regularization.</li>
+<li>Getting more data will pretty much always lower your variance. (This does not negatively effect your bias, usually)</li>
+</ul>
+
+<h2 id="regularizing-your-neural-network">Regularizing your Neural Network</h2>
+
+<h3 id="regularization">Regularization</h3>
+
+<p>If you have a high variance problem (your model is overfitting and performing really well on your training data, but not on your dev set), regularization is one way to help.</p>
+
+<p>In logistic regression, recall:</p>
+
+<p>$$ J(w, b) = \dfrac{1}{m} \sum\limits^{m}_{i=1} \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) + \dfrac{\lambda}{2m} ||w||^2_2 $$</p>
+
+<p><strong>L2 Regularization</strong></p>
+
+<p>$$ ||w||^2_2 = \sum\limits^{n_x}_{j=1} w_j^2 = w^Tw$$</p>
+
+<p><strong>L1 Regularization</strong></p>
+
+<p>$$ \dfrac{\lambda}{m} \sum\limits^{n_x}_{j=1}|w_j| = \dfrac{\lambda}{m}||w||_1 $$</p>
+
+<p>In L1 regularization, $w$ will be sparse.</p>
+
+<p>The Lambda $\lambda$ is known as the regularization parameter. This is another hyperparameter that one needs to tune.</p>
+
+<p>For Neural Networks, regularization looks more like:</p>
+
+<p>$$ J(w^{[1]}, b^{[1]}, \dots, w^{[L]}, b^{[L]}) = \dfrac{1}{m} \sum\limits^{m}_{i=1} \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) + \dfrac{\lambda}{2m} \sum\limits^{L}_{l=1} ||w^{[l]}||^2_F $$</p>
+
+<p>$$ ||w^{[l]}||^2_F = \sum\limits^{n^{[l-1]}}_{i=1} \sum\limits^{n^{[l]}}_{j=1} (w^{[l]}_{ij})^2 $$</p>
+
+<p>Recall the shape of w is $(n^{[l]}, n^{[l-1]})$. This matrix norm is called the <em>Forbenius Norm</em>.</p>
+
+<p>$$ || \cdot || ^2_2 \rightarrow || \cdot ||^2_F$$</p>
+
+<p>This is also known as <em>weight decay</em>.</p>
+
+<p>$$ W^{[l]} = W^{[l]} - \alpha[(\text{From Backprop}) + \dfrac{\lambda}{m}W^{[l]}] $$
+$$ (1-\dfrac{\alpha\lambda}{m})W^{[l]} = W^{[l]} - \dfrac{\alpha\lambda}{m} W^{[l]} - \alpha(\text{From Backprop}) $$</p>
+
+<h3 id="why-regularization-reduces-overfitting">Why regularization reduces overfitting?</h3>
+
+<p>Regularization reduces the impact of your weights in your neural network.</p>
+
+<p>If your activation function is $g(z) = tanh(z)$, regularizing puts your values close to zero, allowing it to be effected by the linear portion of the tanh function.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/regularization_param.png" alt="regularization_param" /></p>
+
+<p>Make sure you plot the correct value of J with the regularization parameter.</p>
+
+<h3 id="dropout-regularization">Dropout Regularization</h3>
+
+<p>Dropout regularization is going through each of the layers in a neural network and for each node randomly remove a node. (For instance, each node has a 50% chance of being removed.)</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/dropout_regularization.png" alt="dropout_regularization" /></p>
+
+<p>Implementing dropout for layer <code>l=3</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">keep_prob</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">d3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">a3</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a3</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">keep_prob</span>
+<span class="n">a3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a3</span><span class="p">,</span> <span class="n">d3</span><span class="p">)</span>
+<span class="n">a3</span> <span class="o">/=</span> <span class="n">keep_prob</span></code></pre></div>
+<p>If you had 50 units, you probably have around 10 units shut off.</p>
+
+<p>$$ Z^{[4]} = W^{[4]}a^{[3]}+b^{[4]} $$
+$$ a^{[3]} \leftarrow \text{ has been reduced by } 20% $$
+the <code>/= 0.8</code> increases the weight back.</p>
+
+<p>On each iteration of gradient descent, you zero out different patterns of your hidden units.</p>
+
+<p>At Test Time, do not use dropout. Dropoout is primarily most effective during training. When testing, you don&rsquo;t want your output to be random.</p>
+
+<h3 id="understanding-dropout">Understanding Dropout</h3>
+
+<p>Drop out works because you can&rsquo;t rely on any one feature, therefore you should spread out your weights. This serves to shrink the weights in your neural network.</p>
+
+<p>You do not have to drop out each layer. Drop out can be layer specific.</p>
+
+<p>Drop out is really effective for computer vision problems</p>
+
+<p>One caveat is that this makes the cost function less defined as your nodes are being randomly killed each iteration.</p>
+
+<h3 id="other-regularization-methods">Other regularization methods</h3>
+
+<p>What you can do is augment your training set. For instance, if your training set has a bunch of photos, it might be valid to double your training set by flipping it horizontally. Might also be good to take random distortions (rotations, cropping), to make more &lsquo;fake&rsquo; training samples.</p>
+
+<p>Early Stopping might also be another way to minimize the effects of high variance.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/early_stopping.png" alt="early_stopping" /></p>
+
+<p>The downside of early stopping is you&rsquo;re not performing the two step process of optimizing the cost function J and second step of not overfitting.</p>
+
+<p>L2 Regularization might be better than early stopping, at the price of more computation.</p>
+
+<h2 id="setting-up-your-optimization-problem">Setting up your optimization problem</h2>
+
+<h3 id="normalizing-inputs">Normalizing Inputs</h3>
+
+<p>Normalizing your inputs corresponds to two steps</p>
+
+<ol>
+<li>subtract out the mean</li>
+<li>normalize the variances</li>
+</ol>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/normalize_training_set.png" alt="normalize_training_set" /></p>
+
+<p>You should also use the same values for $\mu$ and $\sigma$ on the dev/test set.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/why_normalize_inputs.png" alt="why_normalize_inputs" /></p>
+
+<p>When the scale is more uniform, gradient descent perfroms better and your learning rate does not have to be extremely small.</p>
+
+<h3 id="vanishing-exploding-gradients">Vanishing/Exploding Gradients</h3>
+
+<p>Given a very deep network, it is possible to have slightly greater than one weights make the activtions explode to be very high.</p>
+
+<p>It is also possible to have slightly less than one weights make the activations shrink to be some extremely small value.</p>
+
+<p>To combat this, a partial solution is one must carefully initialize the weights.</p>
+
+<h3 id="weight-initialization-for-deep-networks">Weight Initialization for Deep Networks</h3>
+
+<p>One reasonable thing to do is to set the variance of $w_i$ to be equal to $\dfrac{1}{n}$.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">w_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">n_last_l</span><span class="p">)</span></code></pre></div>
+<p>This is perfectly fine for ReLU.</p>
+
+<p>Might also use Xavier initialization, for tanh. Look up research for weight initialization.</p>
+
+<h3 id="numerical-approximation-of-gradients">Numerical Approximation of Gradients</h3>
+
+<p>Given your point, add an epsilon and subtract an epsilon. Calculate the triangle given these two points, and compare with the derivative computed from the point afterwards.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/checking_derivative_calculation.png" alt="checking_derivative_calculation" /></p>
+
+<h3 id="gradient-checking">Gradient Checking</h3>
+
+<p>Gradient checking is a technique to verify that your implementation of backpropagation is correct.</p>
+
+<p>Take all of your parameters $W^{[1]}, b^{[1]}, \dots, W^{[L]}, b^{[L]} $ and reshape them into a big vector $\theta$</p>
+
+<p>Take all of your parameter derivatives $dW^{[1]}, db^{[1]}, \dots, dW^{[L]}, db^{[L]} $ and reshape them into a big vector $d\theta$</p>
+
+<p>Gradient Checking (Grad Check)</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">each</span> <span class="n">i</span><span class="p">:</span>
+    <span class="n">dThetaApprox</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">theta3</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">e</span><span class="p">])</span> <span class="o">-</span> 
+      <span class="n">J</span><span class="p">(</span><span class="n">theta1</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">theat</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">e</span><span class="p">])</span></code></pre></div>
+<p>In practice, it might he useful to set epsilon to be $10^{-7}$.</p>
+
+<h3 id="gradient-checking-implementation-notes">Gradient Checking Implementation Notes</h3>
+
+<ul>
+<li>Don&rsquo;t use gradient checking in training, only to debug.</li>
+<li>If an algorithm fails grad check, look at components to try to identify bug.</li>
+<li>Remember to use your regularization terms.</li>
+<li>Gradient checking implementation does not work with drop out.</li>
+<li>Run at random intiailization; then run it again after some training.</li>
+</ul>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
