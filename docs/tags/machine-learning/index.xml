@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Fri, 08 Dec 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 17 Dec 2017 15:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Improving Deep Neural Networks, Week 2</title>
+      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week2/</link>
+      <pubDate>Sun, 17 Dec 2017 15:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week2/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 1.
+Table of Contents  Optimization Algorithms  Mini-Batch Gradient Descent Understanding Mini-batch Gradient Descent Exponentially Weighted Averages Understanding Exponentially Weighted Averages Bias Correction in Exponentially Weighted Averages Gradient Descent with Momentum RMSprop Adam Optimization Algorithm Learning Rate Decay The Problem of Local Optima    Optimization Algorithms Mini-Batch Gradient Descent Rather than training on your entire training set during each step of gradient descent, break out your examples into groups.</description>
+    </item>
     
     <item>
       <title>Improving Deep Neural Networks, Week 1</title>

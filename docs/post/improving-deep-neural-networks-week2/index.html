@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Improving Deep Neural Networks, Week 2</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 1.
+Table of Contents  Optimization Algorithms  Mini-Batch Gradient Descent Understanding Mini-batch Gradient Descent Exponentially Weighted Averages Understanding Exponentially Weighted Averages Bias Correction in Exponentially Weighted Averages Gradient Descent with Momentum RMSprop Adam Optimization Algorithm Learning Rate Decay The Problem of Local Optima    Optimization Algorithms Mini-Batch Gradient Descent Rather than training on your entire training set during each step of gradient descent, break out your examples into groups." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Improving Deep Neural Networks, Week 2" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 1.
+Table of Contents  Optimization Algorithms  Mini-Batch Gradient Descent Understanding Mini-batch Gradient Descent Exponentially Weighted Averages Understanding Exponentially Weighted Averages Bias Correction in Exponentially Weighted Averages Gradient Descent with Momentum RMSprop Adam Optimization Algorithm Learning Rate Decay The Problem of Local Optima    Optimization Algorithms Mini-Batch Gradient Descent Rather than training on your entire training set during each step of gradient descent, break out your examples into groups." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/improving-deep-neural-networks-week2/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Improving Deep Neural Networks, Week 2</h1>
+      <p class="post-meta">@Alexander Wong · Dec 17, 2017 · 4 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/improving-deep-neural-networks-week1/">Improving Deep Neural Networks, Week 1</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#optimization-algorithms">Optimization Algorithms</a>
+<ul>
+<li><a href="#mini-batch-gradient-descent">Mini-Batch Gradient Descent</a></li>
+<li><a href="#understanding-mini-batch-gradient-descent">Understanding Mini-batch Gradient Descent</a></li>
+<li><a href="#exponentially-weighted-averages">Exponentially Weighted Averages</a></li>
+<li><a href="#understanding-exponentially-weighted-averages">Understanding Exponentially Weighted Averages</a></li>
+<li><a href="#bias-correction-in-exponentially-weighted-averages">Bias Correction in Exponentially Weighted Averages</a></li>
+<li><a href="#gradient-descent-with-momentum">Gradient Descent with Momentum</a></li>
+<li><a href="#rmsprop">RMSprop</a></li>
+<li><a href="#adam-optimization-algorithm">Adam Optimization Algorithm</a></li>
+<li><a href="#learning-rate-decay">Learning Rate Decay</a></li>
+<li><a href="#the-problem-of-local-optima">The Problem of Local Optima</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="optimization-algorithms">Optimization Algorithms</h1>
+
+<h2 id="mini-batch-gradient-descent">Mini-Batch Gradient Descent</h2>
+
+<p>Rather than training on your entire training set during each step of gradient descent, break out your examples into groups.</p>
+
+<p>For instance, if you had 5,000,000 training examples, it might be useful to do 5000 batches of 1000 examples each.</p>
+
+<p>New notation for each training batch should use curly brace super scripts.</p>
+
+<p>$$ X^{\{t\}}, Y^{\{t\}} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/mini_batch_gradient_descent.png" alt="mini_batch_gradient_descent" /></p>
+
+<p>Using Mini-Batch Gradient Descent (5000 batches of 1000 examples each)</p>
+
+<p>For each batch, perform forward prop on $ X^{\{t\}} $.</p>
+
+<p>Then compute the cost:</p>
+
+<p>$$ J^{\{t\}} = \dfrac{1}{1000} \sum\limits^{l}_{i=1}\mathcal{L}(\hat{y}^{(i)}, y^{(i)}) + \frac{\lambda}{2 * 1000} \sum ||W^{[l]}||^2_F $$</p>
+
+<p>Backprop to compute the gradient with respect to $J^{\{t\}} $ (using $X^{\{t\}}, Y^{\{t\}}$)</p>
+
+<p>One epoch means running through your entire training set.</p>
+
+<h2 id="understanding-mini-batch-gradient-descent">Understanding Mini-batch Gradient Descent</h2>
+
+<p>Training using mini-batch gradient descent does not show a smooth curve with constantly decreasing cost. It is a little bit more jumpy. It should show a slightly nosier trend downward.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/training_with_mini_batch_gradient_descent.png" alt="training_with_mini_batch_gradient_descent" /></p>
+
+<p>If your mini-batch size is $m$, then you&rsquo;re just doing Batch gradient descent. This has the problem of taking too long per iteration.</p>
+
+<p>If your mini-batch size is 1, then you&rsquo;re doing Stochastic gradient descent. Every example is its own mini-batch. Stochastic gradient descent never converges. This has the problem of losing all of the speedup from vectorization.</p>
+
+<p>In practice, the mini-batch size used is somewhere inbetween 1 and m. This should give you the fastest learning. (Bonuses of Vectorization while making progress without needing to wait until the entire training set is processed.)</p>
+
+<p><strong>Takeaways</strong></p>
+
+<p>If you have a small training set (m &lt; 2000), just use batch gradient descent.</p>
+
+<p>Typical mini-batch sizes are 64-1024 (make it a power of 2).</p>
+
+<p>Make sure your mini-batch fits in CPU/GPU memory! ($ X^{\{t\}}, Y^{\{t\}} $)</p>
+
+<h2 id="exponentially-weighted-averages">Exponentially Weighted Averages</h2>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/exponentially_weighted_averages.png" alt="exponentially_weighted_averages" /></p>
+
+<p>$$ V_t = \beta V_{t-1} + (1-\beta)\theta_t $$
+$$ \beta = 0.9 \approx \text{ 10 days average temperature} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/weighted_averages_high_beta.png" alt="weighted_averages_high_beta" /></p>
+
+<p>$$ \beta = 0.98 \approx \text{ 50 days average temperature} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/weighted_averages_low_beta.png" alt="weighted_averages_low_beta" /></p>
+
+<p>$$ \beta = 0.5 \approx \text{ 2 days average temperature} $$</p>
+
+<h2 id="understanding-exponentially-weighted-averages">Understanding Exponentially Weighted Averages</h2>
+
+<p>Exponentially weighted averages are a way to sum the averages of all previous values.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/understanding_weighted_averages.png" alt="understanding_weighted_averages" /></p>
+
+<p>$$ V_{100} = 0.1\theta_{100} + 0.1 \cdot 0.9 \cdot \theta_{99} + 0.1 \cdot 0.9^{2} \cdot \theta_{98} + 0.1 \cdot 0.9^{3} \cdot \theta_{97} + \dots $$</p>
+
+<h2 id="bias-correction-in-exponentially-weighted-averages">Bias Correction in Exponentially Weighted Averages</h2>
+
+<p>Slight bias occurs because $V_0 = 0$. Therefore, you get a curve resembling the purple line.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/bias_correction.png" alt="bias_correction" /></p>
+
+<p>Bias Correction by using $\dfrac{V_t}{1-\beta^{t}}$.</p>
+
+<h2 id="gradient-descent-with-momentum">Gradient Descent with Momentum</h2>
+
+<p>Combine the weighted averages with gradient descent.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/gradient_descent_with_momentum.png" alt="gradient_descent_with_momentum" /></p>
+
+<p><strong>Implementation details</strong></p>
+
+<p>On iteration $t$:</p>
+
+<p>Compute $dW, db$ on the current mini-batch</p>
+
+<p>$$ v_{dW} = \beta v_{dW} + (1-\beta)dW $$
+$$ v_{db} = \beta v_{db} + (1-\beta)db $$
+$$ W = W - \alpha v_{dW}, b = b - \alpha v_{db} $$</p>
+
+<h2 id="rmsprop">RMSprop</h2>
+
+<p>Root Means Squared prop.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/rmsprop.png" alt="rmsprop" /></p>
+
+<h2 id="adam-optimization-algorithm">Adam Optimization Algorithm</h2>
+
+<p>Initialize $V_{dW}=0, S_{dW}=0, V_{db}=0, S_{db}=0$.</p>
+
+<p>On iteration t:</p>
+
+<p>Compute dW, db using mini-batch</p>
+
+<p><strong>Momentum $\beta_1$</strong>
+$$ V_{dW} = \beta_{1}V_{dW} + (1-\beta_{1})dW $$
+$$ \hspace{1em} V_{db} =\beta_{1}V_{db} + (1-\beta_1)db $$</p>
+
+<p>$$ V^{\text{corrected}}_{dW} = V_{dW}/(1-\beta_{1}^t) $$
+$$ \hspace{1em} V^{\text{corrected}}_{db} = V_{db}/(1-\beta_1^t) $$</p>
+
+<p><strong>RMSprop $\beta_2$</strong>
+$$ S_{dW} = \beta_{2}S_{dW} + (1-\beta_{2})dW^2 $$
+$$ \hspace{1em} S_{db} = \beta_{2}S_{db} + (1-\beta_2)db $$</p>
+
+<p>$$ S^{\text{corrected}}_{dW} = S_{dW}/(1-\beta_2^t) $$
+$$ S^{\text{corrected}}_{db} = S_{db}/(1-\beta_2^t) $$</p>
+
+<p><strong>Finally</strong></p>
+
+<p>$$  W := W - \alpha \dfrac{V^{\text{corrected}}_{dW}}{\sqrt{S^{\text{corrected}}_{dW}}+\epsilon}$$</p>
+
+<p>$$ b := b - \alpha \dfrac{V^{\text{corrected}}_{db}}{\sqrt{S^{\text{corrected}}_{db}}+\epsilon} $$</p>
+
+<p><strong>Hyperparameters Choice:</strong></p>
+
+<p>$$ \alpha : \text{ needs to be tuned} $$
+$$ \beta_1: 0.9  \leftarrow (dW) $$
+$$ \beta_2: 0.999 \leftarrow (dW^2) $$
+$$ \epsilon: 10^{-8} $$</p>
+
+<p>Adam: adaptive moment estimation.</p>
+
+<h2 id="learning-rate-decay">Learning Rate Decay</h2>
+
+<p>One thing that might help speed up the learning algorithm is to slowly reduce the learning rate $\alpha$ over time.</p>
+
+<p>This allows for faster approach to convergence near the end of the algorithm.</p>
+
+<p>Recall 1 epoch = 1 pass through your entire training set.</p>
+
+<p>$$ \alpha = \dfrac{1}{1 + \text{decay-rate} * \text{epoch-num}} * \alpha_0 $$</p>
+
+<p><strong>Example</strong>
+$$ \alpha_0 = 0.2 $$
+$$ \text{decay-rate} = 1 $$</p>
+
+<table>
+<thead>
+<tr>
+<th>Epoch</th>
+<th>$\alpha$</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>0.1</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>0.67</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>0.5</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>0.4</td>
+</tr>
+</tbody>
+</table>
+
+<p>Many different ways of learning rate decay, like exponential decay, discrete staircase, manual decay.</p>
+
+<h2 id="the-problem-of-local-optima">The Problem of Local Optima</h2>
+
+<p>Low dimensional spaces do not transfer to high dimensional spaces. The problem is of plateaus.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/local_optimum.png" alt="local_optimum" /></p>
+
+<p>You are pretty unlikely to get stuck in local optima</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/plateau.png" alt="plateau" /></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
