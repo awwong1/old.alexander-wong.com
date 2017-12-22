@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Improving Deep Neural Networks, Week 3</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 2.
+Table of Contents  Hyperparameter Tuning, Batch Normalization, and Programming Frameworks  Hyperparameter Tuning  Tuning Process Using an appropriate scale to pick hyperparameters Hyperparameters tuning in practice: Pandas vs Caviar  Batch Normalization  Normalizing activations in a network Fitting Batch Normalization into a neural network Why does Batch Normalization Work?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Improving Deep Neural Networks, Week 3" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 2.
+Table of Contents  Hyperparameter Tuning, Batch Normalization, and Programming Frameworks  Hyperparameter Tuning  Tuning Process Using an appropriate scale to pick hyperparameters Hyperparameters tuning in practice: Pandas vs Caviar  Batch Normalization  Normalizing activations in a network Fitting Batch Normalization into a neural network Why does Batch Normalization Work?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/improving-deep-neural-networks-week3/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Improving Deep Neural Networks, Week 3</h1>
+      <p class="post-meta">@Alexander Wong · Dec 20, 2017 · 7 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/improving-deep-neural-networks-week2/">Improving Deep Neural Networks, Week 2</a>.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#hyperparameter-tuning-batch-normalization-and-programming-frameworks">Hyperparameter Tuning, Batch Normalization, and Programming Frameworks</a>
+<ul>
+<li><a href="#hyperparameter-tuning">Hyperparameter Tuning</a>
+<ul>
+<li><a href="#tuning-process">Tuning Process</a></li>
+<li><a href="#using-an-appropriate-scale-to-pick-hyperparameters">Using an appropriate scale to pick hyperparameters</a></li>
+<li><a href="#hyperparameters-tuning-in-practice-pandas-vs-caviar">Hyperparameters tuning in practice: Pandas vs Caviar</a></li>
+</ul></li>
+<li><a href="#batch-normalization">Batch Normalization</a>
+<ul>
+<li><a href="#normalizing-activations-in-a-network">Normalizing activations in a network</a></li>
+<li><a href="#fitting-batch-normalization-into-a-neural-network">Fitting Batch Normalization into a neural network</a></li>
+<li><a href="#why-does-batch-normalization-work">Why does Batch Normalization Work?</a></li>
+<li><a href="#batch-normalization-at-test-time">Batch Normalization at test time</a></li>
+</ul></li>
+<li><a href="#multi-class-classification">Multi-Class Classification</a>
+<ul>
+<li><a href="#softmax-regression">Softmax Regression</a></li>
+<li><a href="#training-a-softmax-classifier">Training a softmax classifier</a></li>
+</ul></li>
+<li><a href="#introduction-to-programming-frameworks">Introduction to Programming Frameworks</a>
+<ul>
+<li><a href="#deep-learning-frameworks">Deep learning frameworks</a></li>
+<li><a href="#tensorflow">TensorFlow</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="hyperparameter-tuning-batch-normalization-and-programming-frameworks">Hyperparameter Tuning, Batch Normalization, and Programming Frameworks</h1>
+
+<h2 id="hyperparameter-tuning">Hyperparameter Tuning</h2>
+
+<h3 id="tuning-process">Tuning Process</h3>
+
+<p>There are a lot of hyperparameters needed to train your neural network. How do you tune these hyperparameters?</p>
+
+<ul>
+<li>Learning rate $\alpha$</li>
+<li>Momentum term $\beta$</li>
+<li>Hyperparameters for ADAM $\beta_1, \beta_2, \epsilon$</li>
+<li>Number of layers to use</li>
+<li>Number of hidden units per layer</li>
+<li>Learning Rate Decay</li>
+<li>Mini-Batch Size</li>
+</ul>
+
+<p><strong>Order of Importance</strong></p>
+
+<ol>
+<li>Alpha is important to tune.  <strong>must tune</strong></li>
+<li>Momentum is also important $~0.9$.  <strong>should tune</strong></li>
+<li>Mini-Batch Size is important as well  <strong>should tune</strong></li>
+<li># of hidden units.  <strong>should tune</strong></li>
+<li># Layers  <strong>not as important to tune</strong></li>
+<li>Learning Rate Decay  <strong>not as important to tune</strong></li>
+<li>Hyperparameters for ADAM are pretty much always left at defaults $\beta_1 = 0.9, \beta_2 = 0.999, \epsilon = 10^{-8}$  <strong>not as important to tune</strong></li>
+</ol>
+
+<p>Suggested to try random values. Don&rsquo;t use a grid. When using random values, you are trying out more unique values for your parameters rather than a systematic grid approach.</p>
+
+<p>It is difficult to know in advance which hyperparameters are going to be important to your problem.</p>
+
+<p>Another common practice is &lsquo;coarse to fine&rsquo;. Cast a broad range, narrow range for hyper parameters once a more performant region is found.</p>
+
+<h3 id="using-an-appropriate-scale-to-pick-hyperparameters">Using an appropriate scale to pick hyperparameters</h3>
+
+<p>How do you pick the scale for random sampling? (0-100, 0-1, etc.)</p>
+
+<p>Lets say you&rsquo;re trying to find the number of hidden units in a layer.</p>
+
+<p>$$ n^{[l]} = 50, \dots, 100 $$</p>
+
+<p>Lets say you&rsquo;re trying to find the number of layers in your neural network.</p>
+
+<p>$$ \text{# layers} \leftarrow 2 \text{ to } 4 $$</p>
+
+<p>Say you are searching for the hyperparameter alpha.</p>
+
+<p>$$ \alpha = 0.0001, \dots, 1 $$</p>
+
+<p>This is a case where you want to sample uniformly at random on a logarithmic scale.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">r</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="c1"># r between [-4, 0]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">r</span>  <span class="c1"># values of alpha are between 10^-4 and 10^0</span></code></pre></div>
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/hyperparameter_tuning.png" alt="hyperparameter_tuning" /></p>
+
+<p>Say you are trying to sample values for hyperparameter $\beta$ for exponentially weighted averages.</p>
+
+<p>$$ \beta = 0.9 \dots 0.999 $$
+Recall that 0.9 is like the average of last 10, and 0.999 is the average of last 1000.</p>
+
+<p>This is similar to the log method of sampling.</p>
+
+<p>$$ 1- \beta = 0.1 \dots 0.001 $$
+Sample $r \in [-3, -1]$. Set $ 1 - \beta = 10^r$. Then, $\beta = 1-10^r $</p>
+
+<h3 id="hyperparameters-tuning-in-practice-pandas-vs-caviar">Hyperparameters tuning in practice: Pandas vs Caviar</h3>
+
+<p>Remember to re-test your hyperparameters occasionally. Intuitions do get stale. Re-evaluate occasionally.</p>
+
+<p>Two schools of thought:</p>
+
+<ol>
+<li><strong>Panda approach</strong>: Babysit one model. Tune hyperparameters over training. Usually when you&rsquo;re constrained by compute (don&rsquo;t have the capacity to train many models)</li>
+<li><strong>Caviar approach</strong>: Train many models in parallel. Tune hyperparameters for various models? This allows you to try a lot of different hyperparameter settings</li>
+</ol>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/panda_vs_caviar.png" alt="panda_vs_caviar" /></p>
+
+<p>If you have enough compute resources, do caviar.</p>
+
+<h2 id="batch-normalization">Batch Normalization</h2>
+
+<h3 id="normalizing-activations-in-a-network">Normalizing activations in a network</h3>
+
+<p>Recall that normalizing your features can speed up learning. This turns the controus of your learning problem from something that is very elongated into something that is more bowl shaped.</p>
+
+<p>In a deeper model, you have many activation layers. How do you normalize the intermediate layers to help train the hidden layers? Can we normalize the values of something like $a^{[2]}$ so as to train $w^{[3]}, b^{[3]}$ faster?</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/normalize_activation_values.png" alt="normalize_activation_values" /></p>
+
+<p>Given some intermediate values in your neural net (say $z^{(1)} \dots z^{(m)}$)</p>
+
+<p>Compute the mean as follows $\mu = \dfrac{1}{m} \sum\limits_{i}z^{(i)}$</p>
+
+<p>Compute variance $\sigma^2 = \dfrac{1}{m} \sum\limits_{i}(z_{i} - \mu)^2$</p>
+
+<p>Norm $z_{\text{norm}}^{(i)} = \dfrac{z^{(i)}-\mu}{\sqrt{\sigma^2} + \epsilon} $</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/implementing_batch_norm.png" alt="implementing_batch_norm" /></p>
+
+<p><strong>takeaway</strong></p>
+
+<p>Applying normalization in the hidden layers may allow for faster training. Mean and variance are learnable and unlike the input features, may not be centered around 0. It simply ensures that your hidden units have standardized mean and variance.</p>
+
+<h3 id="fitting-batch-normalization-into-a-neural-network">Fitting Batch Normalization into a neural network</h3>
+
+<p>Batch norm is applied to Z. The batch normalization is governed by $\beta \text{ and } \gamma$.</p>
+
+<p>The intuition is that the normalized value of Z ($ \tilde{Z} $) performs better than the un normalized value of Z ($Z$).</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/batch_norm_in_neural_networks.png" alt="batch_norm_in_neural_networks" /></p>
+
+<p>No relation between the beta here and ADAM algorithm betas.</p>
+
+<p>In practice, batch normalization is applied on mini-batches.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/mini_batch_batch_norm.png" alt="mini_batch_batch_norm" /></p>
+
+<h3 id="why-does-batch-normalization-work">Why does Batch Normalization Work?</h3>
+
+<p>Batch Normalization reduces covariate shift. No matter how the values of Z change, the mean and variance of these values will remain the same.</p>
+
+<p>This limits the amount in which updating the parameters of the earlier layers will effect the deeper layer.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_network_batch_norm_intuition.png" alt="neural_network_batch_norm_intuition" /></p>
+
+<ul>
+<li>Each minibatch is scaled by the mean/variance computed on just that mini batch.</li>
+<li>This adds some noise to the value $z^{[l]}$ within that minibatch. Similar to dropout, it adds some noise to each hidden layer&rsquo;s activations.</li>
+<li>This has a slight regulariation effect.</li>
+</ul>
+
+<h3 id="batch-normalization-at-test-time">Batch Normalization at test time</h3>
+
+<p>Recall Batch Normalization Functions</p>
+
+<p>$$ \mu = \dfrac{1}{m} \sum\limits_i z^{(i)} $$
+$$ \sigma ^2 = \dfrac{1}{m} \sum\limits_i (z^{(i)}-\mu)^2 $$
+$$ z_{\text{norm}}^{(i)} = \dfrac{z^{(i)} - \mu}{\sqrt{\sigma^2 + \epsilon}} $$
+$$ \tilde{z}^{(i)} = \gamma z_{\text{norm}}^{(i)} + \beta $$</p>
+
+<p>Estimate $\mu$ and $\sigma^2$ using exponentially weighted average (across mini-batches).</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/batch_norm_during_test_time.png" alt="batch_norm_during_test_time" /></p>
+
+<p><strong>Takeaway</strong></p>
+
+<p>When using batch normalization during test time, it doesn&rsquo;t make sense to calculate mean and variance on a single example.</p>
+
+<p>Therefore, mean and variance are calculated from your training examples.</p>
+
+<p>In practice, exponentially weighted averages are used during training, use these values to perform your tests.</p>
+
+<h2 id="multi-class-classification">Multi-Class Classification</h2>
+
+<h3 id="softmax-regression">Softmax Regression</h3>
+
+<p>$$ C = \text{ # classes you are trying to classify} $$</p>
+
+<p>ie) Image classifier to detect cats, dogs, and birds.</p>
+
+<p>Rather than previous examples of binary classification, the neural network output layer will have $C$ outputs cooresponding the probability that it is one of your classes.</p>
+
+<p>In this example, $C = 4$.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/dogs_cats_and_birds.png" alt="dogs_cats_and_birds" /></p>
+
+<p>Softmax activation function:</p>
+
+<p>$$ t = e^{z^{[l]}} $$
+$$ t \in (4, 1) \leftarrow \text{shape} $$
+$$ a^{[l]} = \dfrac{e^{z^{[l]}}}{\sum\limits^{4}_{j=1}t_i} $$
+$$ a^{[l]}_i = \dfrac{t_i}{\sum\limits_{j=1}^4 t_i} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/softmax_layer.png" alt="softmax_layer" /></p>
+
+<h3 id="training-a-softmax-classifier">Training a softmax classifier</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/understanding_softmax.png" alt="understanding_softmax" /></p>
+
+<p>If $C=2$, then softmax reduces to logistic regression.</p>
+
+<p>How to train a neural network with softmax? What is the loss function?</p>
+
+<p>$$ y = \begin{bmatrix} 0 \newline 1 \newline 0 \newline 0 \end{bmatrix} \leftarrow \text{cat} $$
+$$ a^{[l]} = \hat{y} = \begin{bmatrix} 0.3 \newline 0.2 \newline 0.1 \newline 0.4 \end{bmatrix} \leftarrow \text{cat, but our NN isn&rsquo;t doing well}$$</p>
+
+<p>$$ \mathcal{L}(\hat{y}, y) = -\sum\limits^{4}_{j=1} y_j \log{\hat{y_j}} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/softmax_loss_function.png" alt="softmax_loss_function" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/softmax_backpropagation.png" alt="softmax_backpropagation" /></p>
+
+<h2 id="introduction-to-programming-frameworks">Introduction to Programming Frameworks</h2>
+
+<h3 id="deep-learning-frameworks">Deep learning frameworks</h3>
+
+<p>Many Frameworks!</p>
+
+<ul>
+<li>Caffe/Caffe2</li>
+<li>CNTK</li>
+<li>DL4J</li>
+<li>Keras</li>
+<li>Lasagne</li>
+<li>mxnet</li>
+<li>PaddlePaddle</li>
+<li>TensorFlow</li>
+<li>Theano</li>
+<li>Torch</li>
+</ul>
+
+<p>Choosing deep learning frameworks</p>
+
+<ul>
+<li>Ease of programming (development and deployment)</li>
+<li>Running speed</li>
+<li>Truly open (open source with good governance)</li>
+</ul>
+
+<h3 id="tensorflow">TensorFlow</h3>
+
+<p>Motivating problem:</p>
+
+<p>$$ J(w) = w^2 - 10w + 25 $$
+This is our cost function. We want to minimize $w$.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="c1"># because w is overloaded, you could also do</span>
+<span class="c1"># cost = w**2 - 10*w + 25</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">w</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="o">-</span><span class="mf">10.</span><span class="p">,</span> <span class="n">w</span><span class="p">)),</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+
+<span class="c1"># idiomatic</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+
+<span class="c1"># idiomatic because the above three lines can be written as</span>
+<span class="c1"># with tf.Session() as session:</span>
+<span class="c1">#     session.run(init)</span>
+<span class="c1">#     print(session.run(w))</span></code></pre></div>
+<p>At this point, <code>0.0</code> is printed out.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></code></pre></div>
+<p>At this point, <code>0.1</code> is printed out.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></code></pre></div>
+<p>At this point <code>4.99999</code> is printed out.</p>
+
+<p>How do you get training data into a tensor flow program? The following code is a modification of the above, allowing you to have dynamic coefficients.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+
+<span class="n">coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">25.</span><span class="p">]])</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">w</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">w</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></code></pre></div>
+<p><code>0.0</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">coefficients</span><span class="p">})</span> <span class="c1"># this is how you do it</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></code></pre></div>
+<p><code>0.1</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">coefficients</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></code></pre></div>
+<p><code>4.99999</code></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

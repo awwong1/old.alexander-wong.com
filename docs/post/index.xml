@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sun, 17 Dec 2017 15:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 20 Dec 2017 10:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Improving Deep Neural Networks, Week 3</title>
+      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week3/</link>
+      <pubDate>Wed, 20 Dec 2017 10:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week3/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Improving Deep Neural Networks, Week 2.
+Table of Contents  Hyperparameter Tuning, Batch Normalization, and Programming Frameworks  Hyperparameter Tuning  Tuning Process Using an appropriate scale to pick hyperparameters Hyperparameters tuning in practice: Pandas vs Caviar  Batch Normalization  Normalizing activations in a network Fitting Batch Normalization into a neural network Why does Batch Normalization Work?</description>
+    </item>
     
     <item>
       <title>Improving Deep Neural Networks, Week 2</title>
