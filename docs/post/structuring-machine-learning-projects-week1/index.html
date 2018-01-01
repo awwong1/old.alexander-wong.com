@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Structuring Machine Learning Projects, Week 1</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Structuring Machine Learning Projects course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  ML Strategy  Introduction to ML Strategy  Why ML Strategy Orthogonalization  Setting Up Your Goal  Single Number Evaluation Metric Satisficing and Optimizing Metric Train/Dev/Test Distributions Size of the Dev and Test Sets When to Change Dev/Test Sets and Metrics  Comparing to Human-Level Performance  Why Human-level Performance?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Structuring Machine Learning Projects, Week 1" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Structuring Machine Learning Projects course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  ML Strategy  Introduction to ML Strategy  Why ML Strategy Orthogonalization  Setting Up Your Goal  Single Number Evaluation Metric Satisficing and Optimizing Metric Train/Dev/Test Distributions Size of the Dev and Test Sets When to Change Dev/Test Sets and Metrics  Comparing to Human-Level Performance  Why Human-level Performance?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/structuring-machine-learning-projects-week1/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Structuring Machine Learning Projects, Week 1</h1>
+      <p class="post-meta">@Alexander Wong · Jan 1, 2018 · 6 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Structuring Machine Learning Projects</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#ml-strategy">ML Strategy</a>
+<ul>
+<li><a href="#introduction-to-ml-strategy">Introduction to ML Strategy</a>
+<ul>
+<li><a href="#why-ml-strategy">Why ML Strategy</a></li>
+<li><a href="#orthogonalization">Orthogonalization</a></li>
+</ul></li>
+<li><a href="#setting-up-your-goal">Setting Up Your Goal</a>
+<ul>
+<li><a href="#single-number-evaluation-metric">Single Number Evaluation Metric</a></li>
+<li><a href="#satisficing-and-optimizing-metric">Satisficing and Optimizing Metric</a></li>
+<li><a href="#train-dev-test-distributions">Train/Dev/Test Distributions</a></li>
+<li><a href="#size-of-the-dev-and-test-sets">Size of the Dev and Test Sets</a></li>
+<li><a href="#when-to-change-dev-test-sets-and-metrics">When to Change Dev/Test Sets and Metrics</a></li>
+</ul></li>
+<li><a href="#comparing-to-human-level-performance">Comparing to Human-Level Performance</a>
+<ul>
+<li><a href="#why-human-level-performance">Why Human-level Performance?</a></li>
+<li><a href="#avoidable-bias">Avoidable Bias</a></li>
+<li><a href="#understanding-human-level-performance">Understanding Human-level Performance</a></li>
+<li><a href="#surpassing-human-level-performance">Surpassing Human-level Performance</a></li>
+<li><a href="#improving-your-model-performance">Improving your Model Performance</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="ml-strategy">ML Strategy</h1>
+
+<h2 id="introduction-to-ml-strategy">Introduction to ML Strategy</h2>
+
+<h3 id="why-ml-strategy">Why ML Strategy</h3>
+
+<p>Important to know how to structure your machine learning project. This will prevent time wasted pursuing ineffective optimization.</p>
+
+<p>Ideas:</p>
+
+<ul>
+<li>Collect more data</li>
+<li>Collect more diverse training set</li>
+<li>Train algorithm longer with gradient descent</li>
+<li>Try Adam instead of Gradient Descent</li>
+<li>Try a bigger/smaller network</li>
+<li>Try Dropout</li>
+<li>Add $L_2$ regularization</li>
+<li>Network Architecture
+
+<ul>
+<li>Activation functions</li>
+<li># hidden units</li>
+<li>etc&hellip;</li>
+</ul></li>
+</ul>
+
+<p>These are ways of analyzing your problem to determine what idea to try.</p>
+
+<h3 id="orthogonalization">Orthogonalization</h3>
+
+<p>There are so many things to try and change! Orthogonalization is the understanding of what tuning changes what effect.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/orthogonalization_analogy.png" alt="orthogonalization_analogy" /></p>
+
+<p>Chain of Assumptions in Machine Learning</p>
+
+<ol>
+<li>Fit Training Set Well on Cost Function
+
+<ul>
+<li>Bigger Network</li>
+<li>ADAM instead of Gradient Descent</li>
+</ul></li>
+<li>Fit Dev Set Well on Cost Function
+
+<ul>
+<li>Regularization</li>
+<li>Getting a bigger training set</li>
+</ul></li>
+<li>Fit Test Set Well on Cost Function
+
+<ul>
+<li>Getting a bigger dev set</li>
+</ul></li>
+<li>Performs Well in Real World
+
+<ul>
+<li>Change dev set or cost function</li>
+</ul></li>
+</ol>
+
+<h2 id="setting-up-your-goal">Setting Up Your Goal</h2>
+
+<h3 id="single-number-evaluation-metric">Single Number Evaluation Metric</h3>
+
+<p>Machine Learning is an emperical process. It consistantly iterates between <code>Idea &gt; Code &gt; Experiment</code>.</p>
+
+<p><strong>Dog Classification Example</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Precision</th>
+<th>Recall</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Of examples recognized as dog, what % are actually dogs?</td>
+<td>What % of actual dogs are correctly recognized?</td>
+</tr>
+</tbody>
+</table>
+
+<p>Use an $F_1$ Score. &ldquo;Average&rdquo; of Precision P and Recall R.</p>
+
+<p>$$ \dfrac{2}{(1/p) + (1/r)} \leftarrow \text{&ldquo;Harmonic Mean&rdquo;} $$</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Classifier</th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">F1 Score</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">A</td>
+<td align="left">95%</td>
+<td align="left">90%</td>
+<td align="left">92.4%</td>
+</tr>
+
+<tr>
+<td align="left">B</td>
+<td align="left">98%</td>
+<td align="left">85%</td>
+<td align="left">91.0%</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="satisficing-and-optimizing-metric">Satisficing and Optimizing Metric</h3>
+
+<p>Another classification example. Accuracy may be an F1 Score.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Classifier</th>
+<th align="left">Accuracy</th>
+<th align="left">Running Time</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">A</td>
+<td align="left">90%</td>
+<td align="left">80ms</td>
+</tr>
+
+<tr>
+<td align="left">B</td>
+<td align="left">92%</td>
+<td align="left">95ms</td>
+</tr>
+
+<tr>
+<td align="left">C</td>
+<td align="left">95%</td>
+<td align="left">1500ms</td>
+</tr>
+</tbody>
+</table>
+
+<p>$$ \text{Cost} = \text{Accuracy} - 0.5 * \text{Running Time} $$</p>
+
+<p>Maximize accuracy, subject to running time $\leq$ 100 ms.</p>
+
+<p>In this example, Accuracy is the optimizing metric. Running Time is the satisficing metric.</p>
+
+<p>Given N metrics: Pick 1 optimizing metric, pick N-1 satisficing metrics.</p>
+
+<h3 id="train-dev-test-distributions">Train/Dev/Test Distributions</h3>
+
+<p>Cat classification example development (hold out cross validation set) and test sets.</p>
+
+<p>Example: Regions</p>
+
+<ul>
+<li>US</li>
+<li>UK</li>
+<li>Other Europe</li>
+<li>South America</li>
+<li>India</li>
+<li>China</li>
+<li>Other Asia</li>
+<li>Australia</li>
+</ul>
+
+<p>Make sure your dev and test sets come from the same distribution.</p>
+
+<p>Rather than making dev sets certain regions and test set certain regions, take all of the regions and randomly shuffle the data into the dev/test set.</p>
+
+<p><strong>Takeaway</strong></p>
+
+<p>Chose a dev set and test set to reflect data you expect to get in the future and consider important to do well on.</p>
+
+<h3 id="size-of-the-dev-and-test-sets">Size of the Dev and Test Sets</h3>
+
+<p>Old way of splitting data is approximately 70% Train, 30% Test. (or 60% Train, 20% Dev, 20% Test). Dataset size is around 100, 1000, 10000.</p>
+
+<p>Given a million training examples, might be reasonable to have (98% Train, 1% Dev, 1% Test). Once again, ensure distribution is random.</p>
+
+<p>Set your test set to be big enough to give high condifence in the overall performance of your system.</p>
+
+<h3 id="when-to-change-dev-test-sets-and-metrics">When to Change Dev/Test Sets and Metrics</h3>
+
+<p>Classification Example.</p>
+
+<p>Metric: Classification Error</p>
+
+<ul>
+<li>Algorithm A: 3% error
+
+<ul>
+<li>lets through a lot of pornographic images (classifies boobs as a cat, for instance)</li>
+<li>Even though it&rsquo;s 2% better, it&rsquo;s a worse algorithm</li>
+</ul></li>
+<li>Alforithm B: 5% error</li>
+</ul>
+
+<p>Metric + Dev prefer A. You and Users prefer B.</p>
+
+<p>$$ \text{Error} \rightarrow \dfrac{1}{\text{M}_{\text{dev}}} \sum \limits ^{\text{M}_{\text{dev}}} _ {i=1} \mathcal{L} \{ y^{(i)}_{\text{pred}} \neq y^{(i)} \} $$</p>
+
+<ul>
+<li>Predicted Value is (0/1)</li>
+</ul>
+
+<p>May add a weight value:</p>
+
+<p>$$ \text{Error} \rightarrow \dfrac{1}{\text{M}_{\text{dev}}} \sum \limits ^{\text{M}_{\text{dev}}} _ {i=1} w^{(i)} \mathcal{L} \{ y^{(i)}_{\text{pred}} \neq y^{(i)} \} $$</p>
+
+<p>$w^{(i)}$ is 1 if $x^{(i)}$ is non-porn or set $w^{(i)}$ is 10 if $x^{(i)}$ is porn.</p>
+
+<ol>
+<li>So far we&rsquo;ve only discussed ho to define a metric to evaluate classifiers. (Place the target)</li>
+<li>Worry separately about how to do well on this metric afterwards. (Hit the target.)</li>
+</ol>
+
+<h2 id="comparing-to-human-level-performance">Comparing to Human-Level Performance</h2>
+
+<h3 id="why-human-level-performance">Why Human-level Performance?</h3>
+
+<p>Progress tends to be relatively rapid towards human level performance, then after surpassing human level performance the accuracy gains tend to plateau.</p>
+
+<p>The hope is this achieves theoretical optimal performance (Bayes optimal error). Bayes Optimal Error is the best possible error such that there is no way a function mapping $x \rightarrow y$ exists that can perform better.</p>
+
+<p>Human level performance, for many cases, is usually very close to Bayes optimal error.</p>
+
+<p>Also, below human level performance, you can perform the following:</p>
+
+<ul>
+<li>Get labeled data from humans.</li>
+<li>Gain insight from manual error analysis: Why did a person get this right?</li>
+<li>Better analysis of bias/variance.</li>
+</ul>
+
+<h3 id="avoidable-bias">Avoidable Bias</h3>
+
+<p>Classification Example:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Metric</th>
+<th align="left">Example A</th>
+<th align="left">Example B</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">Humans</td>
+<td align="left">1%</td>
+<td align="left">7.5%</td>
+</tr>
+
+<tr>
+<td align="left">Training Error</td>
+<td align="left">8%</td>
+<td align="left">8%</td>
+</tr>
+
+<tr>
+<td align="left">Dev Error</td>
+<td align="left">10%</td>
+<td align="left">10%</td>
+</tr>
+
+<tr>
+<td align="left">Reccomendation</td>
+<td align="left">Focus on Bias</td>
+<td align="left">Focus on Variance</td>
+</tr>
+</tbody>
+</table>
+
+<p>Example A, learning algorithm isn&rsquo;t even fitting the training data well.</p>
+
+<p>In Example B, learning algorithm performs very close to human performance. Might be a variance problem.</p>
+
+<p>Think of Human-Level error as a proxy, or estimate, for Bayes error.</p>
+
+<ul>
+<li>Difference between Humans (Bayes) and Training Error is <em>Avoidable Bias</em>.
+
+<ul>
+<li>If this value is large, maybe use a bigger neural network?</li>
+</ul></li>
+<li>Difference between Training and Error is <em>Variance</em>.
+
+<ul>
+<li>If this value is large, you&rsquo;re overfitting your training data.</li>
+</ul></li>
+</ul>
+
+<h3 id="understanding-human-level-performance">Understanding Human-level Performance</h3>
+
+<p><strong>Metical Image classification Example</strong></p>
+
+<p>Suppose:</p>
+
+<ol>
+<li>Typical Human: 3% error</li>
+<li>Typical Doctor: 1% error</li>
+<li>Experienced doctor: 0.7% error</li>
+<li>Team of experienced doctors: 0.5% error</li>
+</ol>
+
+<p>What is &ldquo;human-level&rdquo; error? Recall that the &ldquo;human-error&rdquo; is a proxy for Bayes error. It is the team of experienced doctors. $\text{Bayes error} \leq 0.5%$</p>
+
+<p>Use the appropraite metric for your application requirements. Maybe it is sufficent to beat the typical doctor. Maybe you must optimize for the team of experienced doctors.</p>
+
+<h3 id="surpassing-human-level-performance">Surpassing Human-level Performance</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">Metric</th>
+<th align="left">Example A</th>
+<th align="left">Example B</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">Team of Humans</td>
+<td align="left">0.5%</td>
+<td align="left">0.5%</td>
+</tr>
+
+<tr>
+<td align="left">Humans</td>
+<td align="left">1%</td>
+<td align="left">1%</td>
+</tr>
+
+<tr>
+<td align="left">Training Error</td>
+<td align="left">0.6%</td>
+<td align="left">0.3%</td>
+</tr>
+
+<tr>
+<td align="left">Dev Error</td>
+<td align="left">0.8%</td>
+<td align="left">0.4%</td>
+</tr>
+</tbody>
+</table>
+
+<p>In Example B, you don&rsquo;t have enough information to tell if you are overfitting or if you&rsquo;re not fitting enough. No longer have objective metric to determine Bayes error.</p>
+
+<p><strong>Problems where ML significantly surpasses human-level performance</strong></p>
+
+<ul>
+<li>Online advertising</li>
+<li>Product recommendations</li>
+<li>Logistics (predicting transit time)</li>
+<li>Loan approvals</li>
+</ul>
+
+<p>All of these examples learn from structured data. These are not natural perception problems.
+There are some natural perception problems that machines have solved.</p>
+
+<ul>
+<li>Speech recognition</li>
+<li>Some image recognition</li>
+<li>Medical (ECG, Skin Cancer)</li>
+</ul>
+
+<h3 id="improving-your-model-performance">Improving your Model Performance</h3>
+
+<p><strong>The Two Fundamental Assumptions of Supervised Learning</strong></p>
+
+<ul>
+<li>You can fit the training set pretty well. You acheive low avoidable bias.</li>
+<li>The training set performance generalizes pretty well to the dev/test set. (Variance)</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/improving_model_performance.png" alt="improving_model_performance" /></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

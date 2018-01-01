@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Wed, 20 Dec 2017 10:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jan 2018 12:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/deeplearning.ai/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Structuring Machine Learning Projects, Week 1</title>
+      <link>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</link>
+      <pubDate>Mon, 01 Jan 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Structuring Machine Learning Projects course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  ML Strategy  Introduction to ML Strategy  Why ML Strategy Orthogonalization  Setting Up Your Goal  Single Number Evaluation Metric Satisficing and Optimizing Metric Train/Dev/Test Distributions Size of the Dev and Test Sets When to Change Dev/Test Sets and Metrics  Comparing to Human-Level Performance  Why Human-level Performance?</description>
+    </item>
     
     <item>
       <title>Improving Deep Neural Networks, Week 3</title>
