@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Convolutional Neural Networks, Week 1</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Foundations of Convolutional Neural Networks  Convolutional Neural Networks  Computer Vision Edge Detection Example More Edge Detection Padding Strided Convolutions Convolutions Over Volume One Layer of a Convolutional Network Simple Convolutional Network Example Pooling Layers CNN Example  Why Convolutions?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Convolutional Neural Networks, Week 1" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Foundations of Convolutional Neural Networks  Convolutional Neural Networks  Computer Vision Edge Detection Example More Edge Detection Padding Strided Convolutions Convolutions Over Volume One Layer of a Convolutional Network Simple Convolutional Network Example Pooling Layers CNN Example  Why Convolutions?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/convolutional-neural-networks-week-1/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Convolutional Neural Networks, Week 1</h1>
+      <p class="post-meta">@Alexander Wong · Jan 20, 2018 · 3 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Convolutional Neural Networks</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#foundations-of-convolutional-neural-networks">Foundations of Convolutional Neural Networks</a>
+<ul>
+<li><a href="#convolutional-neural-networks">Convolutional Neural Networks</a>
+<ul>
+<li><a href="#computer-vision">Computer Vision</a></li>
+<li><a href="#edge-detection-example">Edge Detection Example</a></li>
+<li><a href="#more-edge-detection">More Edge Detection</a></li>
+<li><a href="#padding">Padding</a></li>
+<li><a href="#strided-convolutions">Strided Convolutions</a></li>
+<li><a href="#convolutions-over-volume">Convolutions Over Volume</a></li>
+<li><a href="#one-layer-of-a-convolutional-network">One Layer of a Convolutional Network</a></li>
+<li><a href="#simple-convolutional-network-example">Simple Convolutional Network Example</a></li>
+<li><a href="#pooling-layers">Pooling Layers</a></li>
+<li><a href="#cnn-example">CNN Example</a></li>
+</ul></li>
+<li><a href="#why-convolutions">Why Convolutions?</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="foundations-of-convolutional-neural-networks">Foundations of Convolutional Neural Networks</h1>
+
+<h2 id="convolutional-neural-networks">Convolutional Neural Networks</h2>
+
+<h3 id="computer-vision">Computer Vision</h3>
+
+<ul>
+<li>image classification</li>
+<li>object detection in images</li>
+<li>neural network style transfer</li>
+</ul>
+
+<h3 id="edge-detection-example">Edge Detection Example</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolution_edge_detection.png" alt="convolution_edge_detection" /></p>
+
+<p>Convolution is when you &lsquo;map&rsquo; a kernel or filter matrix over your original matrix. Starting from the top left, element multiply the filter with the original matrix. Add all of these new elements.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/vertical_edge_detection.png" alt="vertical_edge_detection" /></p>
+
+<h3 id="more-edge-detection">More Edge Detection</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/vertical_and_horizontal_edge_detection.png" alt="vertical_and_horizontal_edge_detection" /></p>
+
+<p>Can use other types of filters.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/learning_edge_detection_filters.png" alt="learning_edge_detection_filters" /></p>
+
+<p>You can make the neural network learn about the filter through backpropagation by treating the filter as a bunch of parameters to be learned.</p>
+
+<h3 id="padding">Padding</h3>
+
+<ul>
+<li>padding solves shrinking output and underutiliziation of edge and corner pixels</li>
+<li>basically add a border to your images.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/padding.png" alt="padding" /></p>
+
+<ul>
+<li>typically pad values are 0</li>
+<li>In above example, padding $p=1$.</li>
+</ul>
+
+<p>$$ n + 2p - f + 1 \text{ by } n + 2p - f + 1 $$</p>
+
+<p>How much to pad? <strong>Valid and Same convolutions.</strong></p>
+
+<ul>
+<li>&ldquo;Valid&rdquo;: $ (n * n) \text{ convlution } (f * f) \rightarrow (n - f + 1 * n - f + 1) $</li>
+<li>&ldquo;Same&rdquo; Pad so that the output size is the same as the input size.</li>
+</ul>
+
+<p>$$ (n + 2p - f + 1 * n + 2p - f + 1) $$
+$ p = \dfrac{f-1}{2} $
+$f$ is usually odd.</p>
+
+<h3 id="strided-convolutions">Strided Convolutions</h3>
+
+<ul>
+<li>striding is the act of skipping over a number of cells during convolution.</li>
+<li>default case is stride of 1, where you move the filter one cell at a time.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/stride.png" alt="stride" /></p>
+
+<ul>
+<li>in the case that the stride puts the filter such that it hangs off of the original dimensions, convention is we simply don&rsquo;t use apply it. (round down)</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/padding_and_stride_summary.png" alt="padding_and_stride_summary" /></p>
+
+<h3 id="convolutions-over-volume">Convolutions Over Volume</h3>
+
+<ul>
+<li>Same operation as a single layer convolution, except both the filter and the input  now have multiple channels.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolution_by_volume.png" alt="convolution_by_volume" /></p>
+
+<ul>
+<li>each cell of filter, multiply by each cell of input. output is the sum of all these values.
+
+<ul>
+<li>That is how a 6x6x3 * 3x3x3 becomes a 4x4x1.</li>
+</ul></li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/detailed_volume_convolution.png" alt="detailed_volume_convolution" /></p>
+
+<ul>
+<li>To handle multiple filters, you simply stack the results together.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/volume_convolution_multiple_filters.png" alt="volume_convolution_multiple_filters" /></p>
+
+<h3 id="one-layer-of-a-convolutional-network">One Layer of a Convolutional Network</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolution_layer_example.png" alt="convolution_layer_example" /></p>
+
+<ul>
+<li>bias for convolutional layer is always a real number</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/how_many_parameters_convolution.png" alt="how_many_parameters_convolution" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolution_notation.png" alt="convolution_notation" /></p>
+
+<h3 id="simple-convolutional-network-example">Simple Convolutional Network Example</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/example_conv_net.png" alt="example_conv_net" /></p>
+
+<h3 id="pooling-layers">Pooling Layers</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/max_pooling.png" alt="max_pooling" /></p>
+
+<ul>
+<li>can also do averages</li>
+<li>for multiple layers, simply apply the same operation on the said layer</li>
+<li>nothing to learn (no parameters)</li>
+</ul>
+
+<h3 id="cnn-example">CNN Example</h3>
+
+<ul>
+<li>example inspired by <a href="http://yann.lecun.com/exdb/lenet/">LeNet5</a></li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/cnn_example.png" alt="cnn_example" />
+<img src="https://alexander-wong.com/img/deeplearning-ai/cnn_example_details.png" alt="cnn_example_details" /></p>
+
+<h2 id="why-convolutions">Why Convolutions?</h2>
+
+<ul>
+<li>Convolutions allow you to reduce the number of parameters to train
+<img src="https://alexander-wong.com/img/deeplearning-ai/parameter_sharing_and_sparsity_of_connections.png" alt="parameter_sharing_and_sparsity_of_connections" /></li>
+<li>Parameter Sharing
+
+<ul>
+<li>parameters are shared across the entire input</li>
+</ul></li>
+<li>Sparsity of Connections
+
+<ul>
+<li>each output value depend on a small number of input values</li>
+</ul></li>
+</ul>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

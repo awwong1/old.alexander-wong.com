@@ -43,6 +43,16 @@ I believe that pursuit of meaning in life is noble and that this is an automatab
     </item>
     
     <item>
+      <title>Convolutional Neural Networks, Week 1</title>
+      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-1/</link>
+      <pubDate>Sat, 20 Jan 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-1/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Foundations of Convolutional Neural Networks  Convolutional Neural Networks  Computer Vision Edge Detection Example More Edge Detection Padding Strided Convolutions Convolutions Over Volume One Layer of a Convolutional Network Simple Convolutional Network Example Pooling Layers CNN Example  Why Convolutions?</description>
+    </item>
+    
+    <item>
       <title>Structuring Machine Learning Projects, Week 1</title>
       <link>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</link>
       <pubDate>Mon, 01 Jan 2018 12:21:37 -0600</pubDate>
