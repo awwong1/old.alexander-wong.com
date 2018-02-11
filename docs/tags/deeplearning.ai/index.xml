@@ -23,6 +23,16 @@ Table of Contents  Foundations of Convolutional Neural Networks  Convolutional N
     </item>
     
     <item>
+      <title>Convolutional Neural Networks, Week 2</title>
+      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</link>
+      <pubDate>Sat, 20 Jan 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs</description>
+    </item>
+    
+    <item>
       <title>Structuring Machine Learning Projects, Week 1</title>
       <link>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</link>
       <pubDate>Mon, 01 Jan 2018 12:21:37 -0600</pubDate>
