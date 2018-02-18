@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Convolutional Neural Networks, Week 3</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Object Detection  Learning Objectives Detection Algorithms  Object Localization Landmark Detection Object Detection Convolutional Implementation of Sliding Windows Bounding Box Predictions Intersection Over Union Non-max Suppression Anchor Boxes YOLO Algorithm (Optional) Region Proposals     Object Detection Learning Objectives  Understand the challenges of Object Localization, Object Detection, Landmark Finding Understand and implement non-max suppression Understand and implement intersection over union Understand how to label a dataset for an object detection application Remember the vocabulary of object detection (landmark, anchor, bounding box, grid)  Detection Algorithms Object Localization Image classification: One object (Is cat or no cat)" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Convolutional Neural Networks, Week 3" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Object Detection  Learning Objectives Detection Algorithms  Object Localization Landmark Detection Object Detection Convolutional Implementation of Sliding Windows Bounding Box Predictions Intersection Over Union Non-max Suppression Anchor Boxes YOLO Algorithm (Optional) Region Proposals     Object Detection Learning Objectives  Understand the challenges of Object Localization, Object Detection, Landmark Finding Understand and implement non-max suppression Understand and implement intersection over union Understand how to label a dataset for an object detection application Remember the vocabulary of object detection (landmark, anchor, bounding box, grid)  Detection Algorithms Object Localization Image classification: One object (Is cat or no cat)" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/convolutional-neural-networks-week-3/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Convolutional Neural Networks, Week 3</h1>
+      <p class="post-meta">@Alexander Wong · Feb 18, 2018 · 2 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Convolutional Neural Networks</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#object-detection">Object Detection</a>
+<ul>
+<li><a href="#learning-objectives">Learning Objectives</a></li>
+<li><a href="#detection-algorithms">Detection Algorithms</a>
+<ul>
+<li><a href="#object-localization">Object Localization</a></li>
+<li><a href="#landmark-detection">Landmark Detection</a></li>
+<li><a href="#object-detection-1">Object Detection</a></li>
+<li><a href="#convolutional-implementation-of-sliding-windows">Convolutional Implementation of Sliding Windows</a></li>
+<li><a href="#bounding-box-predictions">Bounding Box Predictions</a></li>
+<li><a href="#intersection-over-union">Intersection Over Union</a></li>
+<li><a href="#non-max-suppression">Non-max Suppression</a></li>
+<li><a href="#anchor-boxes">Anchor Boxes</a></li>
+<li><a href="#yolo-algorithm">YOLO Algorithm</a></li>
+<li><a href="#optional-region-proposals">(Optional) Region Proposals</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="object-detection">Object Detection</h1>
+
+<h2 id="learning-objectives">Learning Objectives</h2>
+
+<ul>
+<li>Understand the challenges of Object Localization, Object Detection, Landmark Finding</li>
+<li>Understand and implement non-max suppression</li>
+<li>Understand and implement intersection over union</li>
+<li>Understand how to label a dataset for an object detection application</li>
+<li>Remember the vocabulary of object detection (landmark, anchor, bounding box, grid)</li>
+</ul>
+
+<h2 id="detection-algorithms">Detection Algorithms</h2>
+
+<h3 id="object-localization">Object Localization</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/object_localization.png" alt="object_localization" /></p>
+
+<p>Image classification: One object (Is cat or no cat)</p>
+
+<p>Classification with Localization: One object (is cat or not cat), bounding box over the object</p>
+
+<p>Detection: Multiple objects, multiple bounding boxes.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/classification_with_localization.png" alt="classification_with_localization" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/defining_target_label_y.png" alt="defining_target_label_y" /></p>
+
+<p>In practice, you don&rsquo;t have to use squared error. You can use different loss functions for different output values. (mean squared error for bounding box, logistic regression loss for $P_c$)</p>
+
+<h3 id="landmark-detection">Landmark Detection</h3>
+
+<p>Detection of certain points on your image.</p>
+
+<p>Define the landmarks you want to detect in your training set, then set the output parameters in the neural network.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/landmark_detection.png" alt="landmark_detection" /></p>
+
+<h3 id="object-detection-1">Object Detection</h3>
+
+<p>Start with really closely cropped images. Given this labeled training set, train a convnet to return $y=\{0,1\}$.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/conv_net_example.png" alt="conv_net_example" /></p>
+
+<p>Perform a sliding window detection with bounding boxes of increasing sizes.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/sliding_windows_detection.png" alt="sliding_windows_detection" /></p>
+
+<p>This is extremely computationally expensive. Granularity, box size, computational cost, all needs to be taken into account. We can implement this better.</p>
+
+<h3 id="convolutional-implementation-of-sliding-windows">Convolutional Implementation of Sliding Windows</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/fc_to_convolutional_layers.png" alt="fc_to_convolutional_layers" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolution_implementation_of_sliding_windows.png" alt="convolution_implementation_of_sliding_windows" /></p>
+
+<p>You can implement sliding windows convolutionally. This algorithm has a weakness- bounding box predictions aren&rsquo;t too accurate.</p>
+
+<h3 id="bounding-box-predictions">Bounding Box Predictions</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/yolo_algorithm.png" alt="yolo_algorithm" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/specify_the_bounding_boxes.png" alt="specify_the_bounding_boxes" /></p>
+
+<h3 id="intersection-over-union">Intersection Over Union</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/intersection_over_union.png" alt="intersection_over_union" /></p>
+
+<p>The higher the IoU is, the more &lsquo;correct&rsquo; the bounding box. 0.5 is a human chosen convention.</p>
+
+<h3 id="non-max-suppression">Non-max Suppression</h3>
+
+<p>One problem of object detection is the algorithm might detect a single object more than once.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/non_max_suppression.png" alt="non_max_suppression" /></p>
+
+<p>Take the highest probability box from all the overlaps, then suppress the overlapped box with lower probability.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/non_max_suppression_algorithm.png" alt="non_max_suppression_algorithm" /></p>
+
+<h3 id="anchor-boxes">Anchor Boxes</h3>
+
+<p>What if a grid cell wants to detect multiple objects?</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/overlapping_objects.png" alt="overlapping_objects" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/anchor_box_algorithm.png" alt="anchor_box_algorithm" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/anchor_box_example.png" alt="anchor_box_example" /></p>
+
+<p>Example here has two anchor boxes.</p>
+
+<ul>
+<li>This does not handle three objects in the same grid cell.</li>
+<li>This does not handle two same anchor box sizes in the same grid cell.</li>
+</ul>
+
+<h3 id="yolo-algorithm">YOLO Algorithm</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/training_yolo.png" alt="training_yolo" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/making_predictions.png" alt="making_predictions" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/outputting_non_max_suppressed_outputs.png" alt="outputting_non_max_suppressed_outputs" /></p>
+
+<h3 id="optional-region-proposals">(Optional) Region Proposals</h3>
+
+<p>R-CNN (Region Convolutional Neural Network). Run a segmentation algorithm first to determine what could be objects.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/r-cnn_high_level.png" alt="r-cnn_high_level" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/faster_rcnn_algorithms.png" alt="faster_rcnn_algorithms" /></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

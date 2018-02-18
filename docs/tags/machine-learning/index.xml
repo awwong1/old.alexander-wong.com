@@ -7,10 +7,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 20 Jan 2018 12:21:37 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 18 Feb 2018 12:21:37 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Convolutional Neural Networks, Week 3</title>
+      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-3/</link>
+      <pubDate>Sun, 18 Feb 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-3/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Object Detection  Learning Objectives Detection Algorithms  Object Localization Landmark Detection Object Detection Convolutional Implementation of Sliding Windows Bounding Box Predictions Intersection Over Union Non-max Suppression Anchor Boxes YOLO Algorithm (Optional) Region Proposals     Object Detection Learning Objectives  Understand the challenges of Object Localization, Object Detection, Landmark Finding Understand and implement non-max suppression Understand and implement intersection over union Understand how to label a dataset for an object detection application Remember the vocabulary of object detection (landmark, anchor, bounding box, grid)  Detection Algorithms Object Localization Image classification: One object (Is cat or no cat)</description>
+    </item>
+    
+    <item>
+      <title>Convolutional Neural Networks, Week 2</title>
+      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</link>
+      <pubDate>Sun, 11 Feb 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs</description>
+    </item>
     
     <item>
       <title>Convolutional Neural Networks, Week 1</title>
@@ -20,16 +40,6 @@
       <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Foundations of Convolutional Neural Networks  Convolutional Neural Networks  Computer Vision Edge Detection Example More Edge Detection Padding Strided Convolutions Convolutions Over Volume One Layer of a Convolutional Network Simple Convolutional Network Example Pooling Layers CNN Example  Why Convolutions?</description>
-    </item>
-    
-    <item>
-      <title>Convolutional Neural Networks, Week 2</title>
-      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</link>
-      <pubDate>Sat, 20 Jan 2018 12:21:37 -0600</pubDate>
-      
-      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</guid>
-      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs</description>
     </item>
     
     <item>
