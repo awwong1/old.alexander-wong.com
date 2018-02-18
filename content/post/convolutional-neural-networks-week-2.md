@@ -2,7 +2,7 @@
 title: "Convolutional Neural Networks, Week 2"
 author: "Alexander Wong"
 tags: ["Machine Learning", "deeplearning.ai"]
-date: 2018-01-20T12:21:37-06:00
+date: 2018-02-11T12:21:37-06:00
 draft: false
 ---
 
