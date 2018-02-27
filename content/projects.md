@@ -10,7 +10,7 @@ weight: 20
 * Task and Goal tracking application.
   * JavaScript (ReactJS, Redux, Redux-Saga)
   * Python (Django, Django Rest Framework, Django Allauth)
-* [Demo](https://tasks.udia.ca), [Github (server)](https://github.com/udia-software/udia-tasks-server), [Github (client)](https://github.com/udia-software/udia-tasks-client)
+* [Github (server)](https://github.com/udia-software/udia-tasks-server), [Github (client)](https://github.com/udia-software/udia-tasks-client)
 
 ### Atlas (2016)
 * Hackathon project for AngularAttack 2016. Visualize and interact with World Data Bank api.
