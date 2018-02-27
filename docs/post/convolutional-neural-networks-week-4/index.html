@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Convolutional Neural Networks, Week 4</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Special Applications: Face Recognition &amp;amp; Neural Style Transfer  Face Recognition  What is face recognition? One Shot Learning Siamese Network Triplet Loss Face Verification and Binary Classification  Neural Style Transfer  What is neural style transfer?" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Convolutional Neural Networks, Week 4" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Special Applications: Face Recognition &amp;amp; Neural Style Transfer  Face Recognition  What is face recognition? One Shot Learning Siamese Network Triplet Loss Face Verification and Binary Classification  Neural Style Transfer  What is neural style transfer?" />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/convolutional-neural-networks-week-4/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Convolutional Neural Networks, Week 4</h1>
+      <p class="post-meta">@Alexander Wong · Feb 26, 2018 · 3 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Convolutional Neural Networks</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#special-applications-face-recognition-neural-style-transfer">Special Applications: Face Recognition &amp; Neural Style Transfer</a>
+<ul>
+<li><a href="#face-recognition">Face Recognition</a>
+<ul>
+<li><a href="#what-is-face-recognition">What is face recognition?</a></li>
+<li><a href="#one-shot-learning">One Shot Learning</a></li>
+<li><a href="#siamese-network">Siamese Network</a></li>
+<li><a href="#triplet-loss">Triplet Loss</a></li>
+<li><a href="#face-verification-and-binary-classification">Face Verification and Binary Classification</a></li>
+</ul></li>
+<li><a href="#neural-style-transfer">Neural Style Transfer</a>
+<ul>
+<li><a href="#what-is-neural-style-transfer">What is neural style transfer?</a></li>
+<li><a href="#what-are-deep-convnets-learning">What are deep ConvNets learning?</a></li>
+<li><a href="#cost-function">Cost Function</a></li>
+<li><a href="#content-cost-function">Content Cost Function</a></li>
+<li><a href="#style-cost-function">Style Cost Function</a></li>
+<li><a href="#1d-and-3d-generalizations">1D and 3D Generalizations</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="special-applications-face-recognition-neural-style-transfer">Special Applications: Face Recognition &amp; Neural Style Transfer</h1>
+
+<ul>
+<li>Discover how CNNs can be applied to multiple fields, like art generation and face recognition.</li>
+<li>Implement own algorithms to do both.</li>
+</ul>
+
+<h2 id="face-recognition">Face Recognition</h2>
+
+<h3 id="what-is-face-recognition">What is face recognition?</h3>
+
+<ul>
+<li>Training a neural network to detect a face from an input image/video</li>
+</ul>
+
+<p><strong>Verification</strong>
+- Input image, name/ID
+- Output whether the input image is that of the claimed person</p>
+
+<p><strong>Recognition</strong>
+- Has a database of $K$ persons
+- Get an input image
+- Output ID if the image is any of the $K$ persons (or not recognized)</p>
+
+<h3 id="one-shot-learning">One Shot Learning</h3>
+
+<p>You need to be able to recognize a person given just one example of an individual&rsquo;s face.
+Training samples are low, you may only have one picture of the faces you need to recognize.</p>
+
+<ul>
+<li>Learning from one example to recognize the person again.</li>
+</ul>
+
+<p>Instead, need to learn a similarity function.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/similarity_function.png" alt="similarity_function" /></p>
+
+<h3 id="siamese-network">Siamese Network</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/siamese_network_encoding.png" alt="siamese_network_encoding" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/siamese_network_goal.png" alt="siamese_network_goal" /></p>
+
+<h3 id="triplet-loss">Triplet Loss</h3>
+
+<p>Define and apply gradient descent on the triplet loss function.</p>
+
+<p>Must compare pairs of pictures. In the terminology of triplet loss, there&rsquo;s an <code>Anchor</code> image, <code>Positive</code> for match, <code>Negative</code> for mismatch.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/siamese_learning_objective.png" alt="siamese_learning_objective" /></p>
+
+<p>The alpha is added so the trivial output of all zeros is punished.</p>
+
+<p>$$ \mathscr{L}(A, P, N) = \max(||f(A)-f(P)||^2 - ||f(A)-f(N)||^2 + \alpha, 0) $$
+$$ J = \sum\limits^m_{i=1} \mathscr{L}(A^{(i)}, P^{(i)}, N^{(i)}) $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/triplet_loss_function.png" alt="triplet_loss_function" /></p>
+
+<p>Choosing the triplets A,P,N should be difficult to distinguish to more effectively train the neural network.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/triplet_choice.png" alt="triplet_choice" /></p>
+
+<h3 id="face-verification-and-binary-classification">Face Verification and Binary Classification</h3>
+
+<p>Instead of using triplet loss, you can use binary classification.</p>
+
+<p>Compare pairs of pictures. Output is <code>1</code> if the pairs are of the same person, and output is <code>0</code> if the pairs are of different people.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/similarity_function_face_verification.png" alt="similarity_function_face_verification" /></p>
+
+<p>In the siamese network, anchor faces can be pre-computed and stored rather than being computed from the image at runtime.</p>
+
+<h2 id="neural-style-transfer">Neural Style Transfer</h2>
+
+<h3 id="what-is-neural-style-transfer">What is neural style transfer?</h3>
+
+<p>Neural style transfer is taking an image and applying the styles of other image onto it.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_style_transfer.png" alt="neural_style_transfer" /></p>
+
+<h3 id="what-are-deep-convnets-learning">What are deep ConvNets learning?</h3>
+
+<p>Look at what is &lsquo;activated&rsquo; by different layers in your neural network.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/what_is_a_deep_network_learning.png" alt="what_is_a_deep_network_learning" /></p>
+
+<p>Earlier layers see less, but deeper layers see larger image patches.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/visualizing_deep_layers.png" alt="visualizing_deep_layers" /></p>
+
+<h3 id="cost-function">Cost Function</h3>
+
+<p>Content image $C$, Style image $S$, goal is to generate a new image $G$</p>
+
+<p>Cost function $J(G)$ needs to be defined. Need to check content and style.</p>
+
+<p>$$ J(G) = \alpha J_{\text{Content}}(C, G) + \beta J_{\text{Style}}(S, G) $$</p>
+
+<ol>
+<li>Initiate the generated G randomly.</li>
+<li>Use gradient descent to minimize $J(G)$.</li>
+</ol>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/style_transfer_cost_function.png" alt="style_transfer_cost_function" /></p>
+
+<h3 id="content-cost-function">Content Cost Function</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/content_cost_function.png" alt="content_cost_function" /></p>
+
+<h3 id="style-cost-function">Style Cost Function</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/how_correlated_are_the_channels.png" alt="how_correlated_are_the_channels" /></p>
+
+<p>Correlation tells us which high level texture components occur together (or not together) in the image.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/style_matrix.png" alt="style_matrix" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/style_cost_function.png" alt="style_cost_function" /></p>
+
+<h3 id="1d-and-3d-generalizations">1D and 3D Generalizations</h3>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolutions_in_2D_and_1D.png" alt="convolutions_in_2D_and_1D" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/convolutions_in_3D.png" alt="convolutions_in_3D" /></p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>

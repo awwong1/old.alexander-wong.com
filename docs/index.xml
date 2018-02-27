@@ -43,6 +43,16 @@ I believe that pursuit of meaning in life is noble and that this is an automatab
     </item>
     
     <item>
+      <title>Convolutional Neural Networks, Week 4</title>
+      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-4/</link>
+      <pubDate>Mon, 26 Feb 2018 12:21:37 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-4/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Special Applications: Face Recognition &amp;amp; Neural Style Transfer  Face Recognition  What is face recognition? One Shot Learning Siamese Network Triplet Loss Face Verification and Binary Classification  Neural Style Transfer  What is neural style transfer?</description>
+    </item>
+    
+    <item>
       <title>Convolutional Neural Networks, Week 3</title>
       <link>https://alexander-wong.com/post/convolutional-neural-networks-week-3/</link>
       <pubDate>Sun, 18 Feb 2018 12:21:37 -0600</pubDate>
