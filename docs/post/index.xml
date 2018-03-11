@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 03 Mar 2018 14:27:35 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 10 Mar 2018 12:27:35 -0700</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sequence Models, Week 2</title>
+      <link>https://alexander-wong.com/post/sequence-models-week-2/</link>
+      <pubDate>Sat, 10 Mar 2018 12:27:35 -0700</pubDate>
+      
+      <guid>https://alexander-wong.com/post/sequence-models-week-2/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Natural Langauge Processing &amp;amp; Word Embeddings  Introduction to Word Embeddings  Word Representation Using word embeddings Properties of word embeddings Embedding matrix  Learning Word Embeddings: Word2vec &amp;amp; GloVe  Learning word embeddings Word2Vec Negative Sampling GloVe word vectors  Applications using Word Embeddings  Sentiment Classification Debiasing word embeddings     Natural Langauge Processing &amp;amp; Word Embeddings  Learn about how to use deep learning for natraul language processing.</description>
+    </item>
     
     <item>
       <title>Sequence Models, Week 1</title>

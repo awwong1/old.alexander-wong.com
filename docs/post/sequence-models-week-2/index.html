@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Sequence Models, Week 2</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Alexander Wong" />
+  <meta name="description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Natural Langauge Processing &amp;amp; Word Embeddings  Introduction to Word Embeddings  Word Representation Using word embeddings Properties of word embeddings Embedding matrix  Learning Word Embeddings: Word2vec &amp;amp; GloVe  Learning word embeddings Word2Vec Negative Sampling GloVe word vectors  Applications using Word Embeddings  Sentiment Classification Debiasing word embeddings     Natural Langauge Processing &amp;amp; Word Embeddings  Learn about how to use deep learning for natraul language processing." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@FindingUdia" />
+    <meta name="twitter:title" content="Sequence Models, Week 2" />
+    <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Natural Langauge Processing &amp;amp; Word Embeddings  Introduction to Word Embeddings  Word Representation Using word embeddings Properties of word embeddings Embedding matrix  Learning Word Embeddings: Word2vec &amp;amp; GloVe  Learning word embeddings Word2Vec Negative Sampling GloVe word vectors  Applications using Word Embeddings  Sentiment Classification Debiasing word embeddings     Natural Langauge Processing &amp;amp; Word Embeddings  Learn about how to use deep learning for natraul language processing." />
+    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+  
+
+
+
+
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<link rel="canonical" href="https://alexander-wong.com/post/sequence-models-week-2/" />
+<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
+<meta name="msapplication-tooltip" content="Alexander Wong" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Alexander Wong</h2>
+  
+  <p class="subtitle">Incremental iterations towards meaning in life.</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/">Blog</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/about/">About</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/projects/">Projects</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            ">
+            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Sequence Models, Week 2</h1>
+      <p class="post-meta">@Alexander Wong · Mar 10, 2018 · 8 min read</p>
+    </header>
+    <article class="post-content">
+
+<p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Sequence Models</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
+
+<h1>Table of Contents</h1>
+<nav id="TableOfContents">
+<ul>
+<li><a href="#natural-langauge-processing-word-embeddings">Natural Langauge Processing &amp; Word Embeddings</a>
+<ul>
+<li><a href="#introduction-to-word-embeddings">Introduction to Word Embeddings</a>
+<ul>
+<li><a href="#word-representation">Word Representation</a></li>
+<li><a href="#using-word-embeddings">Using word embeddings</a></li>
+<li><a href="#properties-of-word-embeddings">Properties of word embeddings</a></li>
+<li><a href="#embedding-matrix">Embedding matrix</a></li>
+</ul></li>
+<li><a href="#learning-word-embeddings-word2vec-glove">Learning Word Embeddings: Word2vec &amp; GloVe</a>
+<ul>
+<li><a href="#learning-word-embeddings">Learning word embeddings</a></li>
+<li><a href="#word2vec">Word2Vec</a></li>
+<li><a href="#negative-sampling">Negative Sampling</a></li>
+<li><a href="#glove-word-vectors">GloVe word vectors</a></li>
+</ul></li>
+<li><a href="#applications-using-word-embeddings">Applications using Word Embeddings</a>
+<ul>
+<li><a href="#sentiment-classification">Sentiment Classification</a></li>
+<li><a href="#debiasing-word-embeddings">Debiasing word embeddings</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+<h1 id="natural-langauge-processing-word-embeddings">Natural Langauge Processing &amp; Word Embeddings</h1>
+
+<ul>
+<li>Learn about how to use deep learning for natraul language processing.</li>
+<li>Use word vector representations and embedding layers to train recurrent neural networks with great performance.</li>
+<li>Learn to perform sentiment analysis, named entity recognition, machine translation.</li>
+</ul>
+
+<h2 id="introduction-to-word-embeddings">Introduction to Word Embeddings</h2>
+
+<h3 id="word-representation">Word Representation</h3>
+
+<ul>
+<li>So far, words have been represented with a 1-hot vector of a word vocabular list.</li>
+<li>One of the weaknesses of this representation is it treats each word as a thing of it self. It&rsquo;s difficult to generalize across different words.</li>
+<li>The inner product between two one-hot vectors is zero.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/word_representation.png" alt="word_representation" /></p>
+
+<p>It would be better if each word could be represented by features.</p>
+
+<p>For instance, a word could have a gender associated with it.</p>
+
+<p>The word <code>man</code> could have gender <code>-1</code> and the word <code>woman</code> could have gender <code>+1</code> while a word like <code>apple</code> could have gender <code>0</code>.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/featurized_representation_word_embedding.png" alt="featurized_representation_word_embedding" /></p>
+
+<p>Notation is $e_5391$ where the subscript value is the original one hot vector index, but $e$ is referring to the feature vector instead of the one-hot vector.</p>
+
+<p>It&rsquo;s common to visualize word embeddings in a 2D plane (using an algorithm like t-SNE). These are called embeddings, as each word is applied to a point in a multi-dimensional space (each point has it&rsquo;s own space). T-SNE allows you to visualize this in a lower diemsntional space.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/visualizing_word_embeddings.png" alt="visualizing_word_embeddings" /></p>
+
+<h3 id="using-word-embeddings">Using word embeddings</h3>
+
+<p><strong>Named entity recognition</strong>, trying to detect people&rsquo;s names in a sentence.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/named_entity_recognition_example.png" alt="named_entity_recognition_example" /></p>
+
+<p>Word embeddings can look at 1B to 100B words. (this is common)
+Training set can be around 100K words.</p>
+
+<p>This knowledge can be transferred to named entity recognition, as you can train your neural network&rsquo;s word embeddings on text found on the internet.</p>
+
+<ol>
+<li>Learn word embeddings from a large text corpus (1-100B words). Or you can downloda pre-trained embedding online</li>
+<li>Transfer embedding to new task with a smaller training set (say 100k words.) Rather than using a 10,000 one hot vector, you can now use a 300 dimension dense vector.</li>
+<li>Optional: Continue to fine tune the word embeddings with new data.</li>
+</ol>
+
+<p>Finally, word embeddings have an interesting relationship to face encoding.For face recognition, recall the siamese network training for generating encoding for the input image&rsquo;s face. The image encoding is similar to the word embedding, however word embeddings usually have a fixed size dictionary and a unknown variable.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/relation_to_face_encoding.png" alt="relation_to_face_encoding" /></p>
+
+<h3 id="properties-of-word-embeddings">Properties of word embeddings</h3>
+
+<p>Suppose that you are given the question &ldquo;Man is to woman, as King is to ?&rdquo;</p>
+
+<p>Is it possible to have the neural network answer this question using the word embeddings? Yes it is. One interesting property of word embeddings is that the you can subtract the vector $e_{\text{man}} - e_{\text{woman}}$ you can compare that to the vector $e_{\text{king}} - e_{\text{queen}}$.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/word_embedding_ananalogies.png" alt="word_embedding_ananalogies" /></p>
+
+<p>Your algorithm can first subtract the vectors man/woman to calculate the difference for finding a similar analogy for king to ?.</p>
+
+<p>In pictures, perhaps the word embedding is in 300 dimensional space. The vector difference between Man and Woman is very similar to the vector difference between King and Queen. The arrow difference in the slide below represents a difference in gender.</p>
+
+<p>Try to find the word $w$ such that the following equation holds true.
+$$ e_{\text{man}} - e_{\text{woman}} \approx e_{\text{king}} - e_{\text{queen}}$$</p>
+
+<p>Find word w: $ \text{arg} \max\limits_w \text{similarity}(e_w, e_{\text{king}} - e_{\text{man}} + e_{\text{woman}})$</p>
+
+<p>If you learn a set of word embeddings, you can find analogies using word vectors with decent accuracy.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/analogies_using_word_vectors.png" alt="analogies_using_word_vectors" /></p>
+
+<p>The most commonly used similarity function is <strong>Cosine similarity</strong>.</p>
+
+<p>$$\text{similarity}(u, v) = \dfrac{u^Tv}{||u||_2||v||_2} $$</p>
+
+<p>Can also use euclidian distance. $ ||u-v||^2 $.</p>
+
+<p>Things it can learn:</p>
+
+<ul>
+<li>Man:Woman as Boy:Girl</li>
+<li>Ottawa:Canada as Nairobi:Kenya</li>
+<li>Big:Bigger as Tall:Taller</li>
+<li>Yen:Japan as Ruble:Russia</li>
+</ul>
+
+<h3 id="embedding-matrix">Embedding matrix</h3>
+
+<p>When you implement an algorithm to learn an embedding, you&rsquo;re learning an embedding matrix.</p>
+
+<p>Take for instance, a 10,000 word vocaulary. <code>[a, aaron, orange, ... zulu, &lt;UNK&gt;]</code></p>
+
+<p>The let&rsquo;s make this matrix E = 300 by 10,000. If Orange was indexed 6257,</p>
+
+<p>$O_{6257}$ is the one hot vector of 10,000 rows with a 1 at the 6257th position.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/embedding_matrix.png" alt="embedding_matrix" /></p>
+
+<p>$$ E * O_j = e_j $$</p>
+
+<p>Initialize E randomlly, then use gradient descent to learn the parameters of the embedding matrix.</p>
+
+<p>In practice, you use a specialized function to do the multiplication, as matrix multiplication is innefficient with many one hot vectors. Keras has an embedding module that does this for you.</p>
+
+<h2 id="learning-word-embeddings-word2vec-glove">Learning Word Embeddings: Word2vec &amp; GloVe</h2>
+
+<h3 id="learning-word-embeddings">Learning word embeddings</h3>
+
+<p>Lets say you&rsquo;re building a language model. Building a neural language model is a reasonable way to learn word embeddings.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/neural_language_model.png" alt="neural_language_model" /></p>
+
+<p>You can have various context and target pairs.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/other_context_target_pairs.png" alt="other_context_target_pairs" /></p>
+
+<h3 id="word2vec">Word2Vec</h3>
+
+<p>Recall the above <strong>Skip-grams</strong>.
+Let&rsquo;s say you&rsquo;re given the sentence &ldquo;I want a glass of orange juice to go along with my cereal&rdquo;. Rather than having context be the immediate last word, randomly pick a word to be your context word. Then, randomly pick a word within your window (plus or minus four words) to be your target word.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/skip-grams.png" alt="skip-grams" /></p>
+
+<p>Model:</p>
+
+<ul>
+<li>Vocab size = 10,000 words</li>
+<li>Want to learn a mapping from some context c (&ldquo;orange&rdquo;) to some target t (&ldquo;juice&rdquo;)</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/word2vec_model.png" alt="word2vec_model" /></p>
+
+<p>Softmax : $$ p(t|c) = \dfrac{e^{\theta_t^Te_c}}{\sum\limits_{j=1}^{10,000}e^{\theta_j^Te_c}} $$</p>
+
+<p>$$ \theta_t = \text{parameter associated with output t} $$</p>
+
+<p>Loss function:
+$$ \mathcal{L}(\hat{y}, y) = - \sum\limits_{i=1}^{10,000} y_i \log \hat{y}_i $$</p>
+
+<p>Problems with softmax classification:</p>
+
+<ul>
+<li>You need to carry out a sum over your entire vocabulary every time you want to calculate a probability.
+
+<ul>
+<li>use a hiearchical softmax classifier. Think of it as a decision tree with binary/logistic classifier. This scales with log of vocablary size, rather than linear scale with vocablary size.</li>
+</ul></li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/problems_with_softmax_classification.png" alt="problems_with_softmax_classification" /></p>
+
+<p>In practice, $ P( c)$ is not taken uniformly randomly. There are issues of getting a lot of common words &lsquo;and, or, to&rsquo; etc. We choose words more likely to result in a better embedding matrix.</p>
+
+<h3 id="negative-sampling">Negative Sampling</h3>
+
+<p>The downside of the last step is the softmax step is slow to compute. This algorithm is much more efficient.</p>
+
+<p>Define a new learning problem</p>
+
+<ul>
+<li>I want a glass of orange juice to go along with my cereal.</li>
+</ul>
+
+<p>Given a pair of words, orange:juice, determien if it is a context target pair.
+orange:juice returns <code>1</code>, while orange:king returns <code>0</code>.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/define_a_new_learning_problem.png" alt="define_a_new_learning_problem" /></p>
+
+<p>Pick a valid context/word pair, then pick a bunch of random variablse from the dictionary and then set them to be <code>0</code> (random words are usually not content linked.)</p>
+
+<p>Define a logistic regression model.</p>
+
+<p>$$ P(y=1 | c, t)  = \sigma (\theta_t^Te_c) $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/negative_sampling_model.png" alt="negative_sampling_model" /></p>
+
+<p>You are only updating K=1 binary classification probelms rather than updating a 10,000 array. This is called neagtive sampling because you have a positive example, yet you go out and generate a bunch of negative examples afterwards.</p>
+
+<p>How do you choose the negative examples? After choosing the context word &ldquo;orange&rdquo;, how do you choose the negative examples?
+- One thing you can do is sample the candidate target words according to the imperial frequency of words in your corpus. (how often it appears) The problem is it gives you a bunch of words like &ldquo;The, of, and, &hellip;&rdquo;</p>
+
+<p>Imperically, what they though to work best:</p>
+
+<p>$$ p(w_i) = \dfrac{f(w_i)^{3 / 4}}{\sum\limits_{j=1}^{10000} f(w_j)^{3 / 4}} $$</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/selecting_negative_examples.png" alt="selecting_negative_examples" /></p>
+
+<h3 id="glove-word-vectors">GloVe word vectors</h3>
+
+<p>GloVe stands for &ldquo;global vectors for word representation&rdquo;.</p>
+
+<p>&ldquo;I want a glass of orange juice to go along with my cereal.&rdquo;</p>
+
+<p>$$ x_{ij} = \text{ # times i appears in context of j} $$</p>
+
+<ul>
+<li>How often do words appear close with each other?</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/global_vectors_for_word_representation.png" alt="global_vectors_for_word_representation" /></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/glove_model.png" alt="glove_model" /></p>
+
+<p>Minimize:</p>
+
+<p>$$ \sum\limits_{i=1}^{10,000} \sum\limits_{j=1}^{10,000} f(X_{ij})(\Theta_i^Te_j + b_i + b_j&rsquo; - \log{X_{ij}})^2 $$
+$$ f(X_{ij}) = 0 \text{if} X_{ij} = 0 $$
+- $f$ accounts for $0\log{0} = 0 $.
+- $f$ also accounts for frequent words (this, is, of, a) and infrequent words (durian)</p>
+
+<p><strong>Note on the featurization view of word embeddings</strong></p>
+
+<ul>
+<li>features learned using these algorithms do not neatly translate to interperatable features like &lsquo;gender&rsquo;, or &lsquo;royal&rsquo;.</li>
+</ul>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/note_on_word_embeddings.png" alt="note_on_word_embeddings" /></p>
+
+<h2 id="applications-using-word-embeddings">Applications using Word Embeddings</h2>
+
+<h3 id="sentiment-classification">Sentiment Classification</h3>
+
+<p>Task of looking at a piece of text, telling if the text is &ldquo;liked&rdquo; or &ldquo;disliked&rdquo;.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/sentiment_classification_problem.png" alt="sentiment_classification_problem" /></p>
+
+<ul>
+<li>You may not have a huge labeled dataset.</li>
+</ul>
+
+<p><strong>Simple sentiment classification model</strong></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/simple_sentiment_classification_model.png" alt="simple_sentiment_classification_model" /></p>
+
+<ul>
+<li>Take your words as one hot vectors, multiply it by the embedding matrix to extract out your word&rsquo;s embedding vector</li>
+<li>Averaging your embedding vectors, then take the softmax classifier&rsquo;s output as your value</li>
+<li>cons: this ignores word order</li>
+</ul>
+
+<p><strong>RNN for sentiment classification</strong></p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/rnn_for_sentiment_classification.png" alt="rnn_for_sentiment_classification" /></p>
+
+<ul>
+<li>Many to One architecture RNN that takes in your entire sequence and output a softmax output</li>
+</ul>
+
+<h3 id="debiasing-word-embeddings">Debiasing word embeddings</h3>
+
+<p>How to deminish/eliminate bias (gender, race, etc.) in word embeddings.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/the_problem_of_bias_in_word_embeddings.png" alt="the_problem_of_bias_in_word_embeddings" /></p>
+
+<ul>
+<li>Man:Woman as King:Queen</li>
+<li>Man:Computer_Programmer as Woman:Homemaker (probably not right)
+
+<ul>
+<li>Man:Computer_Programmer as Woman:Computer Programmer</li>
+</ul></li>
+<li>Father:Doctor as Mother:Nurse (although Doctor would have been better)</li>
+</ul>
+
+<p>The biases picked up reflects the biases written by people. Difficult to scrub when you train on a lot of historical data.</p>
+
+<p><img src="https://alexander-wong.com/img/deeplearning-ai/addressing_bias_in_word_embeddings.png" alt="addressing_bias_in_word_embeddings" /></p>
+
+<ol>
+<li>Identify the bias direction.</li>
+<li>Neutralize: For every word that is not definitional, project to get rid of bias.</li>
+<li>Equalize pairs.</li>
+<li>Authors trained a classifier to determine which words were definitional and which words were not definitional. This helped detect which words to neutralize (to project out bias direction).</li>
+<li>Number of pairs to equalize is usually very small.</li>
+</ol>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+        
+          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © 2017 Alexander Wong
+      </p>
+    </footer>
+    
+      
+    
+  </section>
+  <footer class="site-footer">
+  <p>© 2017-2018 Alexander Wong</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+</footer>
+
+
+
+<script src="//cdn.bootcss.com/video.js/6.2.1/video.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  })
+</script>
+<script src="https://alexander-wong.com/js/bundle.js"></script>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-37311284-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+  </body>
+</html>
