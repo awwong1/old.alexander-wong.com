@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
-    <lastBuildDate>Sat, 10 Mar 2018 12:27:35 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 17 Mar 2018 12:27:35 -0600</lastBuildDate>
     
 	<atom:link href="https://alexander-wong.com/tags/deeplearning.ai/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sequence Models, Week 3</title>
+      <link>https://alexander-wong.com/post/sequence-models-week-3/</link>
+      <pubDate>Sat, 17 Mar 2018 12:27:35 -0600</pubDate>
+      
+      <guid>https://alexander-wong.com/post/sequence-models-week-3/</guid>
+      <description>Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism.</description>
+    </item>
     
     <item>
       <title>Sequence Models, Week 2</title>
