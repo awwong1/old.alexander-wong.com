@@ -9,95 +9,124 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks." />
+Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks.">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Sequence Models, Week 1" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Sequence Models, Week 1">
     <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks." />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks.">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/sequence-models-week-1/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Sequence Models, Week 1">
+  <meta property="og:description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks.">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/sequence-models-week-1/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/sequence-models-week-1/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -105,14 +134,15 @@ Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why seq
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -121,96 +151,54 @@ Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why seq
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -266,7 +254,7 @@ Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why seq
 
 <h3 id="why-sequence-models">Why sequence models</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/examples_of_sequence_data.png" alt="examples_of_sequence_data" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/examples_of_sequence_data.png" alt="examples_of_sequence_data" /></p>
 
 <ul>
 <li>In speech recognition, you are given an audio clip and asked to output a sentence.</li>
@@ -302,7 +290,7 @@ $$ T_{y} = 9 $$</p>
 
 <p>Might be useful to represent the words as a value.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/representing_words.png" alt="representing_words" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/representing_words.png" alt="representing_words" /></p>
 
 <p>Create a vocabulary dictionary where each word is laid out in an array from A to Z. (Dictionary sizes of up to 100,000 is not uncommon.) The word &lsquo;a&rsquo; could be value 1. The word &lsquo;and&rsquo; could be 367. This allows us to convert our sentence into a matrix of numbers.</p>
 
@@ -317,11 +305,11 @@ $$ T_{y} = 9 $$</p>
 
 <p>Recurrent neural networks are networks where the activations calculated from the first word/sequence item are passed onto the second word/sequence item.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/recurrent_neural_network.png" alt="recurrent_neural_network" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/recurrent_neural_network.png" alt="recurrent_neural_network" /></p>
 
 <p>One weakness of this model (one directional recurrent neural network) is it doesn&rsquo;t use the future sequence items to calculate the initial sequence item&rsquo;s meaning.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/rnn_forward_propagation.png" alt="rnn_forward_propagation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/rnn_forward_propagation.png" alt="rnn_forward_propagation" /></p>
 
 <p>Forward propagation steps:</p>
 
@@ -333,12 +321,12 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{ya}a^{&lt;t&gt;} + b_y) $$</p>
 <p>$$ a^{&lt;t&gt;} = g(W_{a} [a^{&lt;t-1&gt;}, x^{&lt;t&gt;}] + b_a ) $$
 $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/rnn_simplified_notation.png" alt="rnn_simplified_notation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/rnn_simplified_notation.png" alt="rnn_simplified_notation" /></p>
 
 <h3 id="backpropagation-through-time">Backpropagation through time</h3>
 
 <p>Forward propagation recall.
-<img src="https://alexander-wong.com/img/deeplearning-ai/forward_propgation_rnn_graph.png" alt="forward_propgation_rnn_graph" /></p>
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/forward_propgation_rnn_graph.png" alt="forward_propgation_rnn_graph" /></p>
 
 <p>Loss function for a particular element in the sequence:</p>
 
@@ -349,7 +337,7 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 <p>$$ \mathcal{L}(\hat{y}, y) = \sum\limits_{t=1}^{T_y} \mathcal{L}^{&lt;t&gt;}(\hat{y}^{&lt;t&gt;}, y^{&lt;t&gt;}) $$</p>
 
 <p>Name for this is called Backpropagation through time.
-<img src="https://alexander-wong.com/img/deeplearning-ai/backpropagation_through_time.png" alt="backpropagation_through_time" /></p>
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/backpropagation_through_time.png" alt="backpropagation_through_time" /></p>
 
 <h3 id="different-types-of-rnns">Different types of RNNs</h3>
 
@@ -357,7 +345,7 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 
 <p>Inspired by: <a href="https://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural Networks</a></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/examples_of_rnn_architectures.png" alt="examples_of_rnn_architectures" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/examples_of_rnn_architectures.png" alt="examples_of_rnn_architectures" /></p>
 
 <ul>
 <li>Many to Many, where the input length and output length are the same length.</li>
@@ -365,14 +353,14 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 <li>One to one, a standard neural net (not really recurrant)</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/examples_of_rnn_architectures_2.png" alt="examples_of_rnn_architectures_2" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/examples_of_rnn_architectures_2.png" alt="examples_of_rnn_architectures_2" /></p>
 
 <ul>
 <li>One to Many, such as seeding a music generation neural network</li>
 <li>Many to Many, where the input length and output length are different. Network is broken into two parts, an encoder and a decoder.</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/summary_of_rnns.png" alt="summary_of_rnns" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/summary_of_rnns.png" alt="summary_of_rnns" /></p>
 
 <h3 id="language-model-and-sequence-generation">Language model and sequence generation</h3>
 
@@ -381,19 +369,19 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 <p>Language modeler estimates the probability of a sequence of words. Training set requires a large corpus of english text.</p>
 
 <p>Turn a sentence into a token. Turn a sentence into &lsquo;one hot vectors&rsquo;. Another common thing to do is to model the end of sentences. <code>&lt;EOS&gt; token</code>
-<img src="https://alexander-wong.com/img/deeplearning-ai/language_modelling_with_rnn.png" alt="language_modelling_with_rnn" /></p>
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/language_modelling_with_rnn.png" alt="language_modelling_with_rnn" /></p>
 
 <p>The RNN model is trying to determine the next item in the sequence given all of the items provided in the sequence earlier.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/rnn_language_model_sequence_generation.png" alt="rnn_language_model_sequence_generation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/rnn_language_model_sequence_generation.png" alt="rnn_language_model_sequence_generation" /></p>
 
 <h3 id="sampling-novel-sequences">Sampling novel sequences</h3>
 
 <p><strong>Word level language model</strong>
-<img src="https://alexander-wong.com/img/deeplearning-ai/generation_of_random_sentence.png" alt="generation_of_random_sentence" /></p>
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/generation_of_random_sentence.png" alt="generation_of_random_sentence" /></p>
 
 <p><strong>Character level language model</strong>
-<img src="https://alexander-wong.com/img/deeplearning-ai/generation_of_random_sentence_char.png" alt="generation_of_random_sentence_char" />
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/generation_of_random_sentence_char.png" alt="generation_of_random_sentence_char" />
 - no unknown word token
 - more computationally expensive and more difficult to capture longer term patterms</p>
 
@@ -407,14 +395,14 @@ $$ \hat{y}^{&lt;t&gt;} = g(W_{y}a^{&lt;t&gt;} + b_{y}) $$</p>
 
 <p>How do you capture the long term dependency of <code>cat -&gt; was</code> and <code>cats -&gt; were</code>? The stuff in the middle can be arbitraily long. Difficult for an item in the sequence to be influenced by values much earlier/later in the sequence.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/vanishing_gradients_rnn.png" alt="vanishing_gradients_rnn" />
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/vanishing_gradients_rnn.png" alt="vanishing_gradients_rnn" />
 Apply gradient clipping if your gradient starts to explode. <a href="https://hackernoon.com/gradient-clipping-57f04f0adae">Gradient Clipping</a></p>
 
 <h3 id="gated-recurrent-unit-gru">Gated Recurrent Unit (GRU)</h3>
 
 <p>Improvement to RNN to help capture long term dependencies. For reference, this is the basic recurrent neural network unit.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/basic_rnn_unit.png" alt="basic_rnn_unit" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/basic_rnn_unit.png" alt="basic_rnn_unit" /></p>
 
 <p>GRU (simplified) has a memory cell.</p>
 
@@ -427,16 +415,16 @@ $$ \Gamma_u = \sigma({W_u [c^{&lt;t-1&gt;}, x^{&lt;t&gt;}] + b_u}) $$
 $$ c^{&lt;t&gt;} = \Gamma_u * \tilde{c}^{&lt;t&gt;} + (1 - \Gamma_u) * c^{&lt;t-1&gt;} $$
 - The new memory cell value</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/simplified_gru.png" alt="simplified_gru" />
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/simplified_gru.png" alt="simplified_gru" />
 - Helps the neural network learn very long term dependencies because Gamma is either close to 0 or close to 1.</p>
 
 <p>There is an additional &lsquo;gate&rsquo;, which takes the relevance into question to determine whether or not to update the memory cell.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/full_gru.png" alt="full_gru" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/full_gru.png" alt="full_gru" /></p>
 
 <h3 id="long-short-term-memory-lstm">Long Short Term Memory (LSTM)</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/LSTM_versus_GRU.png" alt="LSTM_versus_GRU" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/LSTM_versus_GRU.png" alt="LSTM_versus_GRU" /></p>
 
 <p><strong>LSTM Functions</strong></p>
 
@@ -454,7 +442,7 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
 <li>LSTM does not equate $a^{&lt;t&gt;} == c^{&lt;t&gt;}$.</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/LSTM_in_pictures.png" alt="LSTM_in_pictures" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/LSTM_in_pictures.png" alt="LSTM_in_pictures" /></p>
 
 <p>There isn&rsquo;t a widespread consensus as to when to use a GRU and when to use an LSTM. Neither algorithm is universally superior. GRU is computationally simplier. LSTM is more powerful and flexible.</p>
 
@@ -462,13 +450,13 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
 
 <p>Bidirectional RNNS allow you to take information from both earlier and later in the sequence.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/getting_information_from_the_future.png" alt="getting_information_from_the_future" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/getting_information_from_the_future.png" alt="getting_information_from_the_future" /></p>
 
 <p>Forward propagation is run once from the sequence starting from the beginning to end. Simultaneously, forward propagation is run once from the sequence starting from the end going to the beginning.</p>
 
 <p>The activation function $g$ is applied on the two blocks at each sequence item.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/bidirectional_rnn.png" alt="bidirectional_rnn" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/bidirectional_rnn.png" alt="bidirectional_rnn" /></p>
 
 <p>Disadvantage of this is the computation is now doubled. Also need to calculate the entire sequence before you can make predictions. When you are doing speech processing, you have to wait until the person stops talking before you can make a prediction.</p>
 
@@ -476,7 +464,7 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
 
 <p>Added notation, square bracket superscript represents layer number.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_rnn_visualization.png" alt="deep_rnn_visualization" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/deep_rnn_visualization.png" alt="deep_rnn_visualization" /></p>
 
 <p>Recurrent Neural Networks can be stacked on top of one another. Three layers is usually plenty enough.</p>
 </article>
@@ -484,14 +472,14 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
-          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander Wong
+        © 2017 Alexander WongThis post was published <strong>310</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -499,7 +487,7 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -523,15 +511,19 @@ $$ a^{&lt;t&gt;} = \Gamma_o * c^{&lt;t&gt;} $$</p>
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

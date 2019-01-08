@@ -2,49 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alexander Wong</title>
-    <link>https://alexander-wong.com/tags/</link>
+    <link>https://old.alexander-wong.com/tags/</link>
     <description>Recent content in Tags on Alexander Wong</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
     <lastBuildDate>Sat, 17 Mar 2018 12:27:35 -0600</lastBuildDate>
     
-	<atom:link href="https://alexander-wong.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://old.alexander-wong.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Deeplearning.ai</title>
-      <link>https://alexander-wong.com/tags/deeplearning.ai/</link>
+      <link>https://old.alexander-wong.com/tags/deeplearning.ai/</link>
       <pubDate>Sat, 17 Mar 2018 12:27:35 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/tags/deeplearning.ai/</guid>
+      <guid>https://old.alexander-wong.com/tags/deeplearning.ai/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning</title>
-      <link>https://alexander-wong.com/tags/machine-learning/</link>
+      <link>https://old.alexander-wong.com/tags/machine-learning/</link>
       <pubDate>Sat, 17 Mar 2018 12:27:35 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/tags/machine-learning/</guid>
+      <guid>https://old.alexander-wong.com/tags/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Personal</title>
-      <link>https://alexander-wong.com/tags/personal/</link>
+      <link>https://old.alexander-wong.com/tags/personal/</link>
       <pubDate>Thu, 05 Oct 2017 21:12:55 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/tags/personal/</guid>
+      <guid>https://old.alexander-wong.com/tags/personal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Udia</title>
-      <link>https://alexander-wong.com/tags/udia/</link>
+      <link>https://old.alexander-wong.com/tags/udia/</link>
       <pubDate>Thu, 05 Oct 2017 21:12:55 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/tags/udia/</guid>
+      <guid>https://old.alexander-wong.com/tags/udia/</guid>
       <description></description>
     </item>
     

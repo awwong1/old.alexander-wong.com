@@ -9,97 +9,127 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 7.
-Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset." />
+Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Machine Learning, Week 8" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Machine Learning, Week 8">
     <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 7.
-Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset." />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week8/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Machine Learning, Week 8">
+  <meta property="og:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 7.
+Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/coursera-machine-learning-week8/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/coursera-machine-learning-week8/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -107,14 +137,15 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -123,96 +154,54 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -225,7 +214,7 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
 
 <p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
 
-<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week7/">Week 7</a>.</p>
+<p>Assumes you have knowledge of <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week7/">Week 7</a>.</p>
 
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
@@ -268,8 +257,8 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
 <li>Lecture notes:
 
 <ul>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week8/Lecture13.pdf">Lecture13</a></li>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week8/Lecture14.pdf">Lecture14</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week8/Lecture13.pdf">Lecture13</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week8/Lecture14.pdf">Lecture14</a></li>
 </ul></li>
 </ul>
 
@@ -281,7 +270,7 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
 
 <p>Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/unsupervised_learning.png" alt="unsupervised_learning" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/unsupervised_learning.png" alt="unsupervised_learning" /></p>
 
 <p>Clustering is good for problems like:</p>
 
@@ -303,11 +292,11 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
 <li>Iterate through step 2 and 3 until convergence.</li>
 </ol>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_1.png" alt="k_means_1" />
-<img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_2.png" alt="k_means_2" />
-<img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_3.png" alt="k_means_3" />
-<img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_4.png" alt="k_means_4" />
-<img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_5.png" alt="k_means_5" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_1.png" alt="k_means_1" />
+<img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_2.png" alt="k_means_2" />
+<img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_3.png" alt="k_means_3" />
+<img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_4.png" alt="k_means_4" />
+<img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_5.png" alt="k_means_5" /></p>
 
 <p><strong>Formal Definition</strong></p>
 
@@ -366,7 +355,7 @@ $$ \min\limits_{c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_K} J(c^{(1)}, \dots, 
 <li>Set $\mu_1, \dots, \mu_K$ equal to these $K$ examples</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/k_means_local_optima.png" alt="k_means_local_optima" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/k_means_local_optima.png" alt="k_means_local_optima" /></p>
 
 <p>The K-Means algorithm may end up in local optima. The way to get around this is to run K-Means multiple times with multiple random initializations. A typical number of times to run K-Means is 50 - 1000 times. Compute the cost function J and pick the clustering that gives the lowest cost.</p>
 
@@ -374,7 +363,7 @@ $$ \min\limits_{c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_K} J(c^{(1)}, \dots, 
 
 <p>Choosing the number of clusters $K$ in K-means is a non trivial problem as clusters may or may not be intuitive. Usually, it is still a manual step where an individual picks the number of clusters by looking at a plot.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/num_clusters.png" alt="num_clusters" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/num_clusters.png" alt="num_clusters" /></p>
 
 <ul>
 <li>are there 2, 3, or 4 clusters? It&rsquo;s ambiguous</li>
@@ -387,7 +376,7 @@ $$ \min\limits_{c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_K} J(c^{(1)}, \dots, 
 <li>Ends up with a curve showing how distortion decreases as the number of clusters increases</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/elbow_method.png" alt="elbow_method" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/elbow_method.png" alt="elbow_method" /></p>
 
 <ul>
 <li>usually the &lsquo;elbow&rsquo; is not clearly defined</li>
@@ -405,23 +394,23 @@ $$ \min\limits_{c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_K} J(c^{(1)}, \dots, 
 
 <p>Given a two features like length in inches and centemeters, with slight roundoff error, there is a lot of redundancy. It would be useful to convert a 2D plot into a 1D vector.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/data_compression.png" alt="data_compression" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/data_compression.png" alt="data_compression" /></p>
 
 <p>Before, we needed two numbers to represent an example. After compression, only one number is necessary to represent the example.</p>
 
 <p>The typical example of dimensionality reduction is from 1000D to 100D.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/3D_data_compression.png" alt="3D_data_compression" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/3D_data_compression.png" alt="3D_data_compression" /></p>
 
 <h3 id="visualization">Visualization</h3>
 
 <p>Dimensionality Reduction also helps us visualize the data better. Suppose we have the following dataset:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/visualization_dataset.png" alt="visualization_dataset" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/visualization_dataset.png" alt="visualization_dataset" /></p>
 
 <p>We want to reduce the features to a two or three dimensional vector in order to better understand the data, rather than attempt to plot a 50 dimension table.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/visualization_analysis.png" alt="visualization_analysis" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/visualization_analysis.png" alt="visualization_analysis" /></p>
 
 <h2 id="principal-component-analysis">Principal Component Analysis</h2>
 
@@ -434,11 +423,11 @@ $$ \min\limits_{c^{(1)}, \dots, c^{(m)}, \mu_1, \dots, \mu_K} J(c^{(1)}, \dots, 
 <li>Standard practice is to perform feature scalining and mean normalization before scaling the data.</li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/pca_problem_formulation.png" alt="pca_problem_formulation" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/pca_problem_formulation.png" alt="pca_problem_formulation" /></p>
 
 <p><strong>PCA is not linear regression</strong></p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/pca_not_linear_regression.png" alt="pca_not_linear_regression" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/pca_not_linear_regression.png" alt="pca_not_linear_regression" /></p>
 
 <ul>
 <li>In linear regression, we are minimizing the point and the value predicted b the hypothesis</li>
@@ -473,9 +462,9 @@ $$ \Sigma = \dfrac{1}{m} \sum\limits_{i=1}^{n} (x^{(i)})(x^{(i)})^T $$</li>
 </span><span class="err"></span>  <span class="c">% svd stands for singular value decomposition</span><span class="err">
 </span><span class="err"></span>  <span class="c">% another function that does this is the eig(Sigma) function</span><span class="err">
 </span><span class="err"></span>  <span class="c">% svd(Sigma) returns an n * n matrix</span></code></pre></div>
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/eigenvectors_to_pca.png" alt="eigenvectors_to_pca" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/eigenvectors_to_pca.png" alt="eigenvectors_to_pca" /></p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/pca_algorithm.png" alt="pca_algorithm" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/pca_algorithm.png" alt="pca_algorithm" /></p>
 
 <h2 id="applying-pca">Applying PCA</h2>
 
@@ -483,7 +472,7 @@ $$ \Sigma = \dfrac{1}{m} \sum\limits_{i=1}^{n} (x^{(i)})(x^{(i)})^T $$</li>
 
 <p>After compression, how do we go back to the higher dimensional state?</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/pca_reconstruction.png" alt="pca_reconstruction" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/pca_reconstruction.png" alt="pca_reconstruction" /></p>
 
 <h3 id="choosing-the-number-of-principal-components">Choosing the Number of Principal Components</h3>
 
@@ -506,7 +495,7 @@ $$ \text{This means that 99% of variance is retained.} $$</p>
 
 <p>This is how to calculate the variance using the <code>svd(Sigma)</code> function return values:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week8/calculate_pca_variance.png" alt="calculate_pca_variance" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week8/calculate_pca_variance.png" alt="calculate_pca_variance" /></p>
 
 <h3 id="advice-for-applying-pca">Advice for Applying PCA</h3>
 
@@ -520,18 +509,18 @@ $$ \text{This means that 99% of variance is retained.} $$</p>
 
 <hr />
 
-<p>Move on to <a href="https://alexander-wong.com/post/coursera-machine-learning-week9/">Week 9</a>.</p>
+<p>Move on to <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week9/">Week 9</a>.</p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander WongThis post was published <strong>154</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © 2017 Alexander WongThis post was published <strong>451</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -539,7 +528,7 @@ $$ \text{This means that 99% of variance is retained.} $$</p>
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -563,15 +552,19 @@ $$ \text{This means that 99% of variance is retained.} $$</p>
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

@@ -9,97 +9,127 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 5.
-Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Machine Learning, Week 6" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Machine Learning, Week 6">
     <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 5.
-Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:" />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week6/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Machine Learning, Week 6">
+  <meta property="og:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 5.
+Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/coursera-machine-learning-week6/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/coursera-machine-learning-week6/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -107,14 +137,15 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -123,96 +154,54 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -225,7 +214,7 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
 
 <p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
 
-<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week5/">Week 5</a>.</p>
+<p>Assumes you have knowledge of <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week5/">Week 5</a>.</p>
 
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
@@ -263,8 +252,8 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
 <li>Lecture notes:
 
 <ul>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week6/Lecture10.pdf">Lecture10</a></li>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week6/Lecture11.pdf">Lecture11</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week6/Lecture10.pdf">Lecture10</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week6/Lecture11.pdf">Lecture11</a></li>
 </ul></li>
 </ul>
 
@@ -353,7 +342,7 @@ Typically, the training set consists of 70% of the data and the test set is the 
 
 <p>This is the summarized figure:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/underfitting_overfitting_costs.png" alt="underfitting_overfitting_costs" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/underfitting_overfitting_costs.png" alt="underfitting_overfitting_costs" /></p>
 
 <h3 id="regularization-and-bias-variance">Regularization and Bias/Variance</h3>
 
@@ -361,7 +350,7 @@ Typically, the training set consists of 70% of the data and the test set is the 
 
 <p>$$ h_\theta(x) = \theta_0 + \theta_1x + \theta_2x^2 + \theta_3x^3 + \theta_4x^4 $$
 $$ J(\theta) = \dfrac{1}{2m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)})^2 + \dfrac{\lambda}{2m} \sum\limits_{j=1}^{n} \theta_j^2 $$
-<img src="https://alexander-wong.com/img/coursera-machine-learning-week6/regularization_in_bias_and_variance.png" alt="regularization_in_bias_and_variance" /></p>
+<img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/regularization_in_bias_and_variance.png" alt="regularization_in_bias_and_variance" /></p>
 
 <p>In the figure above, as $\lambda$ increases, our fit becomes more rigid. On the otherhand, as $\lambda$ approaches 0, we tend to overfit the data. How do we choose our parameter $\lambda$ to get it &lsquo;just right&rsquo;? In order to choose the model and the regularization term $\lambda$, we need to:</p>
 
@@ -393,7 +382,7 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <p>If a learning algorithm is suffering from high bias, getting more training data will not (by itself) help much.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/high_bias.png" alt="high_bias" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/high_bias.png" alt="high_bias" /></p>
 
 <p><strong>Experiencing High Variance:</strong></p>
 
@@ -404,7 +393,7 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <p>If a learning algorithm is suffering from high variance, getting more training data is likely to help.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/high_variance.png" alt="high_variance" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/high_variance.png" alt="high_variance" /></p>
 
 <h3 id="deciding-what-to-do-next">Deciding What to Do Next</h3>
 
@@ -478,7 +467,7 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <p>Given a data set of emails, one could construct a vector for each email. An entry in this vector represents a word. The vector contains 10,000-50,000 entries gathered by finding the most frequently used words in the dataset. If a word is found in the email, we assign its entry as a 1, otherwise the entry would be 0. Once we have our X vectors ready, we train the algorithm and use it to classify if an email is spam or not.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/spam_classifier.png" alt="spam_classifier" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/spam_classifier.png" alt="spam_classifier" /></p>
 
 <p>There are many ways to improve the accuracy of the this classifier.</p>
 
@@ -502,7 +491,7 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <p>For example, assume that we have 500 emails and the algorithm misclassifies 100 of them. Manually analyze the 100 emails and categorize them based on what type of emails they are. Then one could try to come up with new cues and features that woudl help classify these 100 emails correctly. For example, if most of the misclassified emails are those which try to steal passwords, we could find some features that are particular to those emails and add them to our model. We can also see how classifying each word according to its root changes our error rate.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/numerical_evaluation.png" alt="numerical_evaluation" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/numerical_evaluation.png" alt="numerical_evaluation" /></p>
 
 <p>It is important to get error results as a single, numerical value. Otherwise, it is difficult to assess the algorithm&rsquo;s performance.</p>
 
@@ -514,11 +503,11 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <p>The following metric is useful for datasets with very skewed data:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/precision_recall.png" alt="precision_recall" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/precision_recall.png" alt="precision_recall" /></p>
 
 <p>Trade off precision and recall depending on the use case of your classifier. You can compare various precision/recall numbers using a value called an $\text{F}_1$ score.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week6/f_score.png" alt="f_score" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week6/f_score.png" alt="f_score" /></p>
 
 <h3 id="when-to-utilize-large-data-sets">When to Utilize Large Data Sets</h3>
 
@@ -538,18 +527,18 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
 
 <hr />
 
-<p>Move on to <a href="https://alexander-wong.com/post/coursera-machine-learning-week7/">Week 7</a>.</p>
+<p>Move on to <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week7/">Week 7</a>.</p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander WongThis post was published <strong>178</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © 2017 Alexander WongThis post was published <strong>474</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -557,7 +546,7 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -581,15 +570,19 @@ $$ \lambda \in \{0, 0.01, 0.02, 0.04, 0.08, \dots, 10.24 \} $$</li>
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning on Alexander Wong</title>
-    <link>https://alexander-wong.com/tags/machine-learning/</link>
+    <link>https://old.alexander-wong.com/tags/machine-learning/</link>
     <description>Recent content in Machine Learning on Alexander Wong</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2017 Alexander Wong</copyright>
     <lastBuildDate>Sat, 17 Mar 2018 12:27:35 -0600</lastBuildDate>
     
-	<atom:link href="https://alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://old.alexander-wong.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Sequence Models, Week 3</title>
-      <link>https://alexander-wong.com/post/sequence-models-week-3/</link>
+      <link>https://old.alexander-wong.com/post/sequence-models-week-3/</link>
       <pubDate>Sat, 17 Mar 2018 12:27:35 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/sequence-models-week-3/</guid>
+      <guid>https://old.alexander-wong.com/post/sequence-models-week-3/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism.</description>
     </item>
     
     <item>
       <title>Sequence Models, Week 2</title>
-      <link>https://alexander-wong.com/post/sequence-models-week-2/</link>
+      <link>https://old.alexander-wong.com/post/sequence-models-week-2/</link>
       <pubDate>Sat, 10 Mar 2018 12:27:35 -0700</pubDate>
       
-      <guid>https://alexander-wong.com/post/sequence-models-week-2/</guid>
+      <guid>https://old.alexander-wong.com/post/sequence-models-week-2/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Natural Langauge Processing &amp;amp; Word Embeddings  Introduction to Word Embeddings  Word Representation Using word embeddings Properties of word embeddings Embedding matrix  Learning Word Embeddings: Word2vec &amp;amp; GloVe  Learning word embeddings Word2Vec Negative Sampling GloVe word vectors  Applications using Word Embeddings  Sentiment Classification Debiasing word embeddings     Natural Langauge Processing &amp;amp; Word Embeddings  Learn about how to use deep learning for natraul language processing.</description>
     </item>
     
     <item>
       <title>Sequence Models, Week 1</title>
-      <link>https://alexander-wong.com/post/sequence-models-week-1/</link>
+      <link>https://old.alexander-wong.com/post/sequence-models-week-1/</link>
       <pubDate>Sat, 03 Mar 2018 14:27:35 -0700</pubDate>
       
-      <guid>https://alexander-wong.com/post/sequence-models-week-1/</guid>
+      <guid>https://old.alexander-wong.com/post/sequence-models-week-1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Recurrent Neural Networks  Recurrent Neural Networks  Why sequence models Notation Recurrent Neural Network Model Backpropagation through time Different types of RNNs Language model and sequence generation Sampling novel sequences Vanishing gradients with RNNs Gated Recurrent Unit (GRU) Long Short Term Memory (LSTM) Bidirectional RNN Deep RNNs     Recurrent Neural Networks  Learn about recurrent neural networks.</description>
     </item>
     
     <item>
       <title>Convolutional Neural Networks, Week 4</title>
-      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-4/</link>
+      <link>https://old.alexander-wong.com/post/convolutional-neural-networks-week-4/</link>
       <pubDate>Mon, 26 Feb 2018 12:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-4/</guid>
+      <guid>https://old.alexander-wong.com/post/convolutional-neural-networks-week-4/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Special Applications: Face Recognition &amp;amp; Neural Style Transfer  Face Recognition  What is face recognition? One Shot Learning Siamese Network Triplet Loss Face Verification and Binary Classification  Neural Style Transfer  What is neural style transfer?</description>
     </item>
     
     <item>
       <title>Convolutional Neural Networks, Week 3</title>
-      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-3/</link>
+      <link>https://old.alexander-wong.com/post/convolutional-neural-networks-week-3/</link>
       <pubDate>Sun, 18 Feb 2018 12:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-3/</guid>
+      <guid>https://old.alexander-wong.com/post/convolutional-neural-networks-week-3/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Object Detection  Learning Objectives Detection Algorithms  Object Localization Landmark Detection Object Detection Convolutional Implementation of Sliding Windows Bounding Box Predictions Intersection Over Union Non-max Suppression Anchor Boxes YOLO Algorithm (Optional) Region Proposals     Object Detection Learning Objectives  Understand the challenges of Object Localization, Object Detection, Landmark Finding Understand and implement non-max suppression Understand and implement intersection over union Understand how to label a dataset for an object detection application Remember the vocabulary of object detection (landmark, anchor, bounding box, grid)  Detection Algorithms Object Localization Image classification: One object (Is cat or no cat)</description>
     </item>
     
     <item>
       <title>Convolutional Neural Networks, Week 2</title>
-      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</link>
+      <link>https://old.alexander-wong.com/post/convolutional-neural-networks-week-2/</link>
       <pubDate>Sun, 11 Feb 2018 12:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-2/</guid>
+      <guid>https://old.alexander-wong.com/post/convolutional-neural-networks-week-2/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs</description>
     </item>
     
     <item>
       <title>Convolutional Neural Networks, Week 1</title>
-      <link>https://alexander-wong.com/post/convolutional-neural-networks-week-1/</link>
+      <link>https://old.alexander-wong.com/post/convolutional-neural-networks-week-1/</link>
       <pubDate>Sat, 20 Jan 2018 12:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/convolutional-neural-networks-week-1/</guid>
+      <guid>https://old.alexander-wong.com/post/convolutional-neural-networks-week-1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Foundations of Convolutional Neural Networks  Convolutional Neural Networks  Computer Vision Edge Detection Example More Edge Detection Padding Strided Convolutions Convolutions Over Volume One Layer of a Convolutional Network Simple Convolutional Network Example Pooling Layers CNN Example  Why Convolutions?</description>
     </item>
     
     <item>
       <title>Structuring Machine Learning Projects, Week 1</title>
-      <link>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</link>
+      <link>https://old.alexander-wong.com/post/structuring-machine-learning-projects-week1/</link>
       <pubDate>Mon, 01 Jan 2018 12:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/structuring-machine-learning-projects-week1/</guid>
+      <guid>https://old.alexander-wong.com/post/structuring-machine-learning-projects-week1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Structuring Machine Learning Projects course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  ML Strategy  Introduction to ML Strategy  Why ML Strategy Orthogonalization  Setting Up Your Goal  Single Number Evaluation Metric Satisficing and Optimizing Metric Train/Dev/Test Distributions Size of the Dev and Test Sets When to Change Dev/Test Sets and Metrics  Comparing to Human-Level Performance  Why Human-level Performance?</description>
     </item>
     
     <item>
       <title>Improving Deep Neural Networks, Week 3</title>
-      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week3/</link>
+      <link>https://old.alexander-wong.com/post/improving-deep-neural-networks-week3/</link>
       <pubDate>Wed, 20 Dec 2017 10:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week3/</guid>
+      <guid>https://old.alexander-wong.com/post/improving-deep-neural-networks-week3/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Improving Deep Neural Networks, Week 2.
 Table of Contents  Hyperparameter Tuning, Batch Normalization, and Programming Frameworks  Hyperparameter Tuning  Tuning Process Using an appropriate scale to pick hyperparameters Hyperparameters tuning in practice: Pandas vs Caviar  Batch Normalization  Normalizing activations in a network Fitting Batch Normalization into a neural network Why does Batch Normalization Work?</description>
@@ -105,10 +105,10 @@ Table of Contents  Hyperparameter Tuning, Batch Normalization, and Programming F
     
     <item>
       <title>Improving Deep Neural Networks, Week 2</title>
-      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week2/</link>
+      <link>https://old.alexander-wong.com/post/improving-deep-neural-networks-week2/</link>
       <pubDate>Sun, 17 Dec 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week2/</guid>
+      <guid>https://old.alexander-wong.com/post/improving-deep-neural-networks-week2/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Improving Deep Neural Networks, Week 1.
 Table of Contents  Optimization Algorithms  Mini-Batch Gradient Descent Understanding Mini-batch Gradient Descent Exponentially Weighted Averages Understanding Exponentially Weighted Averages Bias Correction in Exponentially Weighted Averages Gradient Descent with Momentum RMSprop Adam Optimization Algorithm Learning Rate Decay The Problem of Local Optima    Optimization Algorithms Mini-Batch Gradient Descent Rather than training on your entire training set during each step of gradient descent, break out your examples into groups.</description>
@@ -116,10 +116,10 @@ Table of Contents  Optimization Algorithms  Mini-Batch Gradient Descent Understa
     
     <item>
       <title>Improving Deep Neural Networks, Week 1</title>
-      <link>https://alexander-wong.com/post/improving-deep-neural-networks-week1/</link>
+      <link>https://old.alexander-wong.com/post/improving-deep-neural-networks-week1/</link>
       <pubDate>Fri, 08 Dec 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/improving-deep-neural-networks-week1/</guid>
+      <guid>https://old.alexander-wong.com/post/improving-deep-neural-networks-week1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Neural Networks and Deep Learning.
 Table of Contents  Practical Aspects of Deep Learning  Setting Up Your Machine Learning Application  Train/Dev/Test Sets Bias/Variance Basic Recipe for Machine Learning  Regularizing your Neural Network  Regularization Why regularization reduces overfitting?</description>
@@ -127,10 +127,10 @@ Table of Contents  Practical Aspects of Deep Learning  Setting Up Your Machine L
     
     <item>
       <title>Neural Networks and Deep Learning, Week 4</title>
-      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/</link>
+      <link>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week4/</link>
       <pubDate>Sat, 02 Dec 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/</guid>
+      <guid>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week4/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Week 3.
 Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?</description>
@@ -138,10 +138,10 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
     
     <item>
       <title>Neural Networks and Deep Learning, Week 3</title>
-      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/</link>
+      <link>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week3/</link>
       <pubDate>Wed, 22 Nov 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/</guid>
+      <guid>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week3/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Week 2.
 Table of Contents  Shallow Neural Networks  Shallow Neural Network  Neural Networks Overview Neural Network Representation Computing a Neural Network&amp;rsquo;s Output Vectorizing Across Multiple Examples Explanation for Vectorized Implementation Activation Functions Why do you need non-linear activation functions?</description>
@@ -149,10 +149,10 @@ Table of Contents  Shallow Neural Networks  Shallow Neural Network  Neural Netwo
     
     <item>
       <title>Neural Networks and Deep Learning, Week 2</title>
-      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/</link>
+      <link>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week2/</link>
       <pubDate>Sat, 18 Nov 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week2/</guid>
+      <guid>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week2/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Week 1.
 Table of Contents  Neural Networks Basics  Logistic Regression as a Neural Network  Binary Classification Logistic Regression Logistic Regression Cost Function Gradient Descent Derivatives More Derivatives Examples Computation Graph Derivatives with a Computation Graph Logistic Regression Gradient Descent Gradient Descent on m Examples  Python and Vectorization  Vectorization More Vectorization Examples Vectorizing Logistic Regression Vectorizing Logistic Regression&amp;rsquo;s Gradient Output Broadcasting in Python Note on Python/NumPy Vectors     Neural Networks Basics Logistic Regression as a Neural Network Binary Classification Binary classification is basically answering a yes or no question.</description>
@@ -160,20 +160,20 @@ Table of Contents  Neural Networks Basics  Logistic Regression as a Neural Netwo
     
     <item>
       <title>Neural Networks and Deep Learning, Week 1</title>
-      <link>https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/</link>
+      <link>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week1/</link>
       <pubDate>Sat, 11 Nov 2017 15:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/neural-networks-and-deep-learning-week1/</guid>
+      <guid>https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week1/</guid>
       <description>Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Table of Contents  Introduction to Deep Learning  What is a Neural Network Supervised Learning with Neural Networks Why is Deep Learning Taking Off? About this Course Optional: Heroes of Deep Learning (Geoffrey Hinton)    Introduction to Deep Learning There are five courses in the Coursera Deep Learning Specialization.</description>
     </item>
     
     <item>
       <title>Machine Learning, Week 11</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week11/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week11/</link>
       <pubDate>Fri, 03 Nov 2017 11:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week11/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week11/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 10.
 Table of Contents  Application Example: Photo OCR  Photo OCR  Problem Description and Pipeline Sliding Windows Getting Lots of Data and Artificial Data Ceiling Analysis: What Part of the Pipeline to Work on Next      Lecture notes:  Lecture18   Application Example: Photo OCR Photo OCR Problem Description and Pipeline Photo OCR (Object Character Recognition) is the task of trying to recognize objects, characters (words and digits) given an image.</description>
@@ -181,10 +181,10 @@ Table of Contents  Application Example: Photo OCR  Photo OCR  Problem Descriptio
     
     <item>
       <title>Machine Learning, Week 10</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week10/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week10/</link>
       <pubDate>Sun, 29 Oct 2017 19:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week10/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week10/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 9.
 Table of Contents  Large Scale Machine Learning  Gradient Descent with Large Datasets  Learning With Large Datasets Stochastic Gradient Descent Mini-Batch Gradient Descent Stochastic Gradient Descent Convergence  Advanced Topics  Online Learning Map Reduce and Data Parallelism      Lecture notes:  Lecture17   Large Scale Machine Learning Gradient Descent with Large Datasets Learning With Large Datasets One of the best ways to get a high performance machine learning system is to supply a lot of data into a low bias (overfitting) learning algorithm.</description>
@@ -192,10 +192,10 @@ Table of Contents  Large Scale Machine Learning  Gradient Descent with Large Dat
     
     <item>
       <title>Machine Learning, Week 9</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week9/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week9/</link>
       <pubDate>Sun, 22 Oct 2017 14:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week9/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week9/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 8.
 Table of Contents  Anomoly Detection  Density Estimation  Problem Motivation Gaussian Distribution Algorithm  Building an Anomaly Detection System  Developing and Evaluating an Anomaly Detection System Anomaly Detection vs. Supervised Learning Choosing What Features to Use  Multivariate Gaussian Distribution  Algorithm   Reccomender Systems  Predicting Movie Ratings  Problem Forumulation Content Based Recommendations  Collaborative Filtering  Collaborative Filtering Algorithm  Low Rank Matrix Factorization  Vectorization: Low Rank Matrix Factorization Implementational Detail: Mean Normalization      Lecture notes:  Lecture15 Lecture16   Anomoly Detection Density Estimation Problem Motivation Imagine being a manufacturor of aircraft engines.</description>
@@ -203,10 +203,10 @@ Table of Contents  Anomoly Detection  Density Estimation  Problem Motivation Gau
     
     <item>
       <title>Machine Learning, Week 8</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week8/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week8/</link>
       <pubDate>Sat, 14 Oct 2017 09:21:37 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week8/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week8/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 7.
 Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algorithm Optimization Objective Random Initialization Choosing the Number of Clusters   Dimensionality Reduction  Motivation  Data Compression Visualization  Principal Component Analysis  Principal Component Analysis Problem Formulation Principal Component Analysis Algorithm  Applying PCA  Reconstruction from Compressed Representation Choosing the Number of Principal Components Advice for Applying PCA      Lecture notes:  Lecture13 Lecture14   Unsupervised Learning Clustering Introduction Unsupervised learning is the class of problem solving where when given a set of data with no labels, find structure in the dataset.</description>
@@ -214,10 +214,10 @@ Table of Contents  Unsupervised Learning  Clustering  Introduction K-Means Algor
     
     <item>
       <title>Machine Learning, Week 7</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week7/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week7/</link>
       <pubDate>Wed, 04 Oct 2017 15:38:02 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week7/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week7/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 6.
 Table of Contents  Support Vector Machines  Large Margin Classification  Optimization Objective Large Margin Intuition  Kernels Source Vector Machines (in Practice)     Lecture notes:  Lecture12   Support Vector Machines Large Margin Classification Optimization Objective We are simplifying the logistic regression cost function by converting the sigmoid function into two straight lines, as shown here:</description>
@@ -225,10 +225,10 @@ Table of Contents  Support Vector Machines  Large Margin Classification  Optimiz
     
     <item>
       <title>Machine Learning, Week 6</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week6/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week6/</link>
       <pubDate>Wed, 20 Sep 2017 15:38:02 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week6/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week6/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 5.
 Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning Algorithm  Evaluating a Hypothesis Model Selection and Train/Validation/Test Sets Diagnosing Bias versus Variance Regularization and Bias/Variance Learning Curves Deciding What to Do Next   Machine Learning System Design  Building a Spam Classifier  Prioritizing What to Work On Error Analysis  Machine Learning Practical Tips  How to Handle Skewed Data When to Utilize Large Data Sets      Lecture notes:  Lecture10 Lecture11   Advice for Applying Machine Learning Evaluating a Learning Algorithm Evaluating a Hypothesis Once we have done some trouble shooting for errors in our predictions by:</description>
@@ -236,10 +236,10 @@ Table of Contents  Advice for Applying Machine Learning  Evaluating a Learning A
     
     <item>
       <title>Machine Learning, Week 5</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week5/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week5/</link>
       <pubDate>Mon, 18 Sep 2017 15:38:02 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week5/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week5/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 4.
 Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation  Cost Function Backpropagation Algorithm Backpropagation Intuition  Backpropagation in Practice  Implementation Note: Unrolling Parameters Gradient Checking Random Initialization Putting it Together  Application of Neural Networks  Autonomous Driving      Lecture notes:  Lecture9   Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&amp;rsquo;s define a few variables that we will need to use.</description>
@@ -247,10 +247,10 @@ Table of Contents  Neural Networks: Learning  Cost Function and Backpropagation 
     
     <item>
       <title>Machine Learning, Week 4</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week4/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week4/</link>
       <pubDate>Tue, 12 Sep 2017 12:47:44 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week4/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week4/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 3.
 Table of Contents  Neural Networks: Representation  Motivations  Non-linear Hypothesis Neurons and the Brain  Neural Networks  Model Representation I Model Representation II  Applications  Examples and Intuitions I Examples and Intuitions II Multiclass Classification      Lecture notes:  Lecture8   Neural Networks: Representation Motivations Non-linear Hypothesis Neural networks are another learning algorithm that exist in addition to linear regression and logistic regression.</description>
@@ -258,10 +258,10 @@ Table of Contents  Neural Networks: Representation  Motivations  Non-linear Hypo
     
     <item>
       <title>Machine Learning, Week 3</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week3/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week3/</link>
       <pubDate>Thu, 07 Sep 2017 00:04:44 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week3/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week3/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 2.
 Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size).</description>
@@ -269,10 +269,10 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
     
     <item>
       <title>Machine Learning, Week 2</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week2/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week2/</link>
       <pubDate>Thu, 31 Aug 2017 14:05:35 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week2/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week2/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 1.
 Table of Contents  Linear Regression with Multiple Variables  Multivariate Linear Regression  Multiple Features Gradient Descent for Multiple Variables Gradient Descent in Practice - Feature Scaling &amp;amp; Mean Normalization Gradient Descent in Practice - Learning Rate Features and Polynomial Regression  Computing Parameters Analytically  Normal Equation Normal Equation Noninvertibility   Optional Octave/MatLab Tutorial  Octave Tutorial  Basic Operations Moving Data Around Computing on Data Plotting Data Functions &amp;amp; Control Statements: for, while, if/elseif/else Vectorization      Lecture notes:  Lecture4 Lecture5   Linear Regression with Multiple Variables Multivariate Linear Regression Multiple Features Linear regression with multiple variables is known as Multivariate Linear Regression.</description>
@@ -280,10 +280,10 @@ Table of Contents  Linear Regression with Multiple Variables  Multivariate Linea
     
     <item>
       <title>Machine Learning, Week 1</title>
-      <link>https://alexander-wong.com/post/coursera-machine-learning-week1/</link>
+      <link>https://old.alexander-wong.com/post/coursera-machine-learning-week1/</link>
       <pubDate>Thu, 31 Aug 2017 10:25:51 -0600</pubDate>
       
-      <guid>https://alexander-wong.com/post/coursera-machine-learning-week1/</guid>
+      <guid>https://old.alexander-wong.com/post/coursera-machine-learning-week1/</guid>
       <description>Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Table of Contents  Introduction  Machine Learning  What is Machine Learning Supervised Learning Unsupervised Learning  Linear Regression with One Variable  Model Representation Cost Function &amp;amp; Intuitions Gradient Descent Gradient Descent for Linear Regression   Optional Linear Algebra  Linear Algebra Review  Matrices and Vectors Matrix Addition and Scalar Operations Matrix-Vector Multiplication Matrix-Matrix Multiplication Matrix Multiplication Properties Inverse and Transpose      Lecture notes:  Lecture1 Lecture2 Lecture3   Introduction Machine Learning What is Machine Learning  Arthur Samuel (1959): The field of study that gives computers the ability to learn without explicitly programmed.</description>
     </item>

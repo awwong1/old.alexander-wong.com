@@ -9,95 +9,124 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism." />
+Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism.">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Sequence Models, Week 3" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Sequence Models, Week 3">
     <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism." />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism.">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/sequence-models-week-3/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Sequence Models, Week 3">
+  <meta property="og:description" content="Taking the Coursera Deep Learning Specialization, Sequence Models course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequence to sequence architectures  Basic Models Picking the most likely sentence Beam search Refinements to Beam Search Error analysis in Beam Search Bleu Score Attention Model Intuition Attention Model  Speech recognition - Audio data  Speech Recognition Trigger Word Detection  Conclusion    Sequence models &amp;amp; Attention mechanism  Sequence models can have an attention mechanism.">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/sequence-models-week-3/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/sequence-models-week-3/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -105,14 +134,15 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -121,96 +151,54 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -266,11 +254,11 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
   - Neural network is made of two parts, an encoder network for the sequence input which outputs a vector
   - A decoder network which takes the vector as input and outputs a sequence as output</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/sequence_to_sequence_model.png" alt="sequence_to_sequence_model" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/sequence_to_sequence_model.png" alt="sequence_to_sequence_model" /></p>
 
 <p>Also effective for image captioning. If the goal is to input an image and output a caption, it is possible to to take an existing architecture (like AlexNet) and instead of outputting the values to a softmax layer, one can feed this to an RNN which generates the caption one word at at time,</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/image_captioning.png" alt="image_captioning" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/image_captioning.png" alt="image_captioning" /></p>
 
 <p>There are some differences between this and generating sequences (last week).</p>
 
@@ -280,15 +268,15 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
 
 <p>There is an encoder network which figures out some representation of the input sentence before attempting to generate the translated output sequence. It is trying to predict the probability of an input sentence (in English, for example), conditioned by the probability of an output sentence (in French, for example).</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/machine_translation_as_conditional_model.png" alt="machine_translation_as_conditional_model" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/machine_translation_as_conditional_model.png" alt="machine_translation_as_conditional_model" /></p>
 
 <p>How do you find the mosy likely translation for a given sentence? You don&rsquo;t want to sample at random. Want to find the english sentence $y$ that maximizes the translation likeliness probability.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/finding_most_likely_translation.png" alt="finding_most_likely_translation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/finding_most_likely_translation.png" alt="finding_most_likely_translation" /></p>
 
 <p>Most common way to find the best sentence is to use an algorithm called <code>Beam search</code>. But why not just take a greedy appraoch (take words by most likeliness)?</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/why_not_greedy_search.png" alt="why_not_greedy_search" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/why_not_greedy_search.png" alt="why_not_greedy_search" /></p>
 
 <p>Greedy search does poorly on maximizing the joint likeliness, because it focuses word as a time. We need to focus on the entire sequence as a whole.</p>
 
@@ -296,13 +284,13 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
 
 <p>Continuing with our sample input sentence &ldquo;Jane visite l&rsquo;Afrique en septembre&rdquo;, how do we search for the best possible English translation? (simplification, all words in lower case)</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_search_step_1.png" alt="beam_search_step_1" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_search_step_1.png" alt="beam_search_step_1" /></p>
 
 <ol>
 <li>Evalue the first most likely word. Beamsearch has a parameter called $B = \text{beam width}$ which allows it to choose three choices for each sequence.</li>
 </ol>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_search_step_2.png" alt="beam_search_step_2" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_search_step_2.png" alt="beam_search_step_2" /></p>
 
 <ol>
 <li>For each choice, consider what the next word is. Evaluate the probablity of the next word. Find likeliness of first and second word as a pair.</li>
@@ -312,7 +300,7 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
 
 <p>Take only the $B$ most likely options. At every step, you instantiate three copies of your network with different choices for your words.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_search_step_3.png" alt="beam_search_step_3" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_search_step_3.png" alt="beam_search_step_3" /></p>
 
 <ol>
 <li>Continue for the rest of the sequence, chaining all the prior words as conditioning, keeping only the top $B$ choices at each step of the sequence. This will be terminated by the <code>&lt;EOS&gt;</code> symbol.</li>
@@ -322,7 +310,7 @@ Table of Contents  Sequence models &amp;amp; Attention mechanism  Various sequen
 
 <h3 id="refinements-to-beam-search">Refinements to Beam Search</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_length_normalization.png" alt="beam_length_normalization" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_length_normalization.png" alt="beam_length_normalization" /></p>
 
 <p>We are trying to find the probability of an output sequence $y$, given an input sequence $x$. This can be expressed as:</p>
 
@@ -354,7 +342,7 @@ $$ \alpha \approx 0.7 $$</p>
 
 <h3 id="error-analysis-in-beam-search">Error analysis in Beam Search</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_search_error_analysis.png" alt="beam_search_error_analysis" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_search_error_analysis.png" alt="beam_search_error_analysis" /></p>
 
 <p>Beam search is an approximate search algorithm. How to check if beam search is making mistakes, or if the RNN model is causing mistakes?</p>
 
@@ -370,7 +358,7 @@ $$ \hat{y} = \text{Jane visited Africa last September.} $$</p>
 
 <p>Your RNN computes $P(y|x)$. To determine error, you should use your RNN to compute $P(y^*|x)$ and $P(\hat{y}|x)$. The value with the higher probability indicates which portion of your learning algorithm needs fine tuning.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/error_analysis_to_beam_search.png" alt="error_analysis_to_beam_search" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/error_analysis_to_beam_search.png" alt="error_analysis_to_beam_search" /></p>
 
 <ul>
 <li>If $ P(y^*|x) \gt P(\hat{y}|x) $, then:
@@ -385,13 +373,13 @@ $$ \hat{y} = \text{Jane visited Africa last September.} $$</p>
 </ul></li>
 </ul>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/beam_search_error_analysis_process.png" alt="beam_search_error_analysis_process" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/beam_search_error_analysis_process.png" alt="beam_search_error_analysis_process" /></p>
 
 <p>Going through your dev set, you can determine which part of your algorithm to focus your attention on.</p>
 
 <h3 id="bleu-score">Bleu Score</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/evaluating_machine_translation.png" alt="evaluating_machine_translation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/evaluating_machine_translation.png" alt="evaluating_machine_translation" /></p>
 
 <p>Given an input sentence, there could be multiple translations that are equally as plausible. How do you evaluate this? You evalue this by using the Blue Score.</p>
 
@@ -408,11 +396,11 @@ $$ \hat{y} = \text{Jane visited Africa last September.} $$</p>
 
 <p>Given an isolated word, count how many times it appears in the generated translation sentence, then count how many times it appears in your human translations. (Take the highest count of all human translation inputs as your numerator, take the count of all the machine translation values as your denominator.)</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/bleu_score_on_bigrams.png" alt="bleu_score_on_bigrams" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/bleu_score_on_bigrams.png" alt="bleu_score_on_bigrams" /></p>
 
 <p>Find all sequential pairs of words (bigrams) in the machine translation output, then calculate the same fraction. Take the sum of all the bigrams found in the clipped human translations and divide it over the total unique bigrams found in the machine translation output.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/bleu_score_on_unigrams.png" alt="bleu_score_on_unigrams" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/bleu_score_on_unigrams.png" alt="bleu_score_on_unigrams" /></p>
 
 <p>The generic formula for your $n\text{-gram}$ is:</p>
 
@@ -420,7 +408,7 @@ $$ \hat{y} = \text{Jane visited Africa last September.} $$</p>
 
 <p>If the machine translation matches the human translation, all $P_n$ values will be equal to $1$.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/bleu_score_details.png" alt="bleu_score_details" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/bleu_score_details.png" alt="bleu_score_details" /></p>
 
 <p>The final Bleu score (if you only care for up to 4 sequences) is calculated by:</p>
 
@@ -435,17 +423,17 @@ $$ \text{BP} = \text{ Brevity Penalty} $$</p>
 
 <p>So far, we have used an encoder/decoder type network for handling a task such as text translation. Attention is an improvement to this architecture. Consider the problem of long sequences.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/the_problem_of_long_sequences.png" alt="the_problem_of_long_sequences" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/the_problem_of_long_sequences.png" alt="the_problem_of_long_sequences" /></p>
 
 <p>A human would not memorize the entire input sentence before beginning the output. Rather, it is more likely that the human would translate the sentence part by part as they progress through the sentence structure.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/attention_model_intuition.png" alt="attention_model_intuition" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/attention_model_intuition.png" alt="attention_model_intuition" /></p>
 
 <p>Using a bi-directional RNN, attempt to perform machine translation for a given sentence. There is a hidden recurrent neural network that takes the output of the first bi-directional RNN. It has takes as input context $c$ which is generated by alpha variables $\alpha^{&lt;1,1&gt;}, \alpha^{&lt;1, 2&gt;}, \dots, \alpha^{&lt;t, t&rsquo;&gt;}$ to create the output sequence.</p>
 
 <h3 id="attention-model">Attention Model</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/attention_model.png" alt="attention_model" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/attention_model.png" alt="attention_model" /></p>
 
 <p>Assume you have an input sentence, and you use a bi-directional RNN (GRU, LSTM) to generate a set of activations (for that timestep).</p>
 
@@ -456,7 +444,7 @@ $$ \text{BP} = \text{ Brevity Penalty} $$</p>
 <p>$$ c^{&lt;1&gt;} = \sum\limits_{t&rsquo;} \alpha^{&lt;1,t&rsquo;&gt;}a^{&lt;t&rsquo;&gt;} $$
 $$ \alpha^{&lt;t, t&rsquo;&gt;} = \text{amount of &lsquo;attention&rsquo; that } y^{&lt;t&gt;} \text{ should pay to } a^{&lt;t&rsquo;&gt;} $$</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/computing_attention.png" alt="computing_attention" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/computing_attention.png" alt="computing_attention" /></p>
 
 <p>$$ a^{&lt;t, t&rsquo;&gt;} = \dfrac{ \exp(e^{&lt;t,t&rsquo;&gt;}) }{\sum\limits_{t&rsquo;=1}^{T_x}\exp(e^{&lt;t,t&rsquo;&gt;}) } $$</p>
 
@@ -473,7 +461,7 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
 
 <h3 id="speech-recognition">Speech Recognition</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/speech_recognition_problem.png" alt="speech_recognition_problem" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/speech_recognition_problem.png" alt="speech_recognition_problem" /></p>
 
 <p>Sequence to sequence models can perform very accurate speech recognition. Speech recognition problem is to take an audio clip $x$ and automatically find a text transcript $y$.</p>
 
@@ -483,7 +471,7 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
 
 <p>Datasets of transcribed audio can range between 300 hours to 3000 hours, etc. Best commercial systems are trained on over 100,000 hours of audio.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/ctc_cost_for_speech_recognition.png" alt="ctc_cost_for_speech_recognition" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/ctc_cost_for_speech_recognition.png" alt="ctc_cost_for_speech_recognition" /></p>
 
 <p>One algorithm for speech recognition can be modeled with a 1000 to 1000 sequence neural network by collapsing repeating charcters.</p>
 
@@ -491,11 +479,11 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
 
 <h3 id="trigger-word-detection">Trigger Word Detection</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/trigger_word_detection_examples.png" alt="trigger_word_detection_examples" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/trigger_word_detection_examples.png" alt="trigger_word_detection_examples" /></p>
 
 <p>There have been more and more devices that &lsquo;wake up&rsquo; on input voice.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/trigger_word_detection_algorithm.png" alt="trigger_word_detection_algorithm" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/trigger_word_detection_algorithm.png" alt="trigger_word_detection_algorithm" /></p>
 
 <p>Literature is still evolving, but this is one example of an algorithm that can be used. Use a recurrent neural network. Input data is audio (maybe preprocessed as a spectrogram), the training data $y$ is set to 1 after the trigger word is spoken and 0 otherwise. (If the training data is too imbalanced, you can pad the time after trigger word is said with more 1&rsquo;s)</p>
 
@@ -515,20 +503,20 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
 
 <p>Do whatever you think is the best you can do for humanity.</p>
 
-<p><img src="https://alexander-wong.com/img/touch-icon-apple.png" alt="udia" /></p>
+<p><img src="https://old.alexander-wong.com/img/touch-icon-apple.png" alt="udia" /></p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
-          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander Wong
+        © 2017 Alexander WongThis post was published <strong>296</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -536,7 +524,7 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -560,15 +548,19 @@ $$ \text{Output of current state of Bi-Directional NN} = a^{&lt;t&rsquo;&gt;} $$
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

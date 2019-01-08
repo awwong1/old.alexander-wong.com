@@ -9,97 +9,127 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 2.
-Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size)." />
+Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size).">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Machine Learning, Week 3" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Machine Learning, Week 3">
     <meta name="twitter:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
 Assumes you have knowledge of Week 2.
-Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size)." />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size).">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/coursera-machine-learning-week3/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Machine Learning, Week 3">
+  <meta property="og:description" content="Taking the Coursera Machine Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng.
+Assumes you have knowledge of Week 2.
+Table of Contents  Logistic Regression  Classification and Representation  Classification Hypothesis Representation Decision Boundary  Logistic Regression Model  Cost Function Simplified Cost Function and Gradient Descent Advanced Optimization  Multiclass Classification  Multiclass Classification: One-vs-all   Regularization  Solving the Problem of Overfitting  The Problem of Overfitting Cost Function Regularized Linear Regression Regularized Logistic Regression      Lecture notes:  Lecture6 Lecture7   Logistic Regression Classification and Representation Classification Recall that classification involves a hypothesis function which returns a discontinuous output (common example was whether or not a tumor was benign or cancerous based on size).">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/coursera-machine-learning-week3/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/coursera-machine-learning-week3/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -107,14 +137,15 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -123,96 +154,54 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -225,7 +214,7 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
 
 <p>Taking the <a href="https://www.coursera.org/learn/machine-learning">Coursera Machine Learning</a> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>.</p>
 
-<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/coursera-machine-learning-week2/">Week 2</a>.</p>
+<p>Assumes you have knowledge of <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week2/">Week 2</a>.</p>
 
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
@@ -267,8 +256,8 @@ Table of Contents  Logistic Regression  Classification and Representation  Class
 <li>Lecture notes:
 
 <ul>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week3/Lecture6.pdf">Lecture6</a></li>
-<li><a href="https://alexander-wong.com/docs/coursera-machine-learning-week3/Lecture7.pdf">Lecture7</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week3/Lecture6.pdf">Lecture6</a></li>
+<li><a href="https://old.alexander-wong.com/docs/coursera-machine-learning-week3/Lecture7.pdf">Lecture7</a></li>
 </ul></li>
 </ul>
 
@@ -298,7 +287,7 @@ $$ g(z) = \dfrac{1}{1 + e^{-z}} $$</p>
 
 <p>This is what the above function looks like:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/sigmoid_function.png" alt="sigmoid_function" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/sigmoid_function.png" alt="sigmoid_function" /></p>
 
 <p>The function $g(z)$ maps any real number to the (0, 1) interval. This is useful in transforming an arbitrary valued function into a function suited for classification.</p>
 
@@ -363,11 +352,11 @@ $$ \text{Cost}(h_\theta(x), y) = -\log(1 - h_\theta(x)) \hspace{1em} \text{if} \
 
 <p>When y = 1, we get the following plot for $J(\theta)$ vs $h_\theta(x)$:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_1.png" alt="logistic_regression_cost_function_y_eq_1" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_1.png" alt="logistic_regression_cost_function_y_eq_1" /></p>
 
 <p>When y = 0, we get the following plot for $J(\theta)$ vs $h_\theta(x)$:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_0.png" alt="logistic_regression_cost_function_y_eq_0" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/logistic_regression_cost_function_y_eq_0.png" alt="logistic_regression_cost_function_y_eq_0" /></p>
 
 <p>This is equivalent to the following:</p>
 
@@ -422,14 +411,14 @@ $$ \theta_j := \theta_j - \dfrac{\alpha}{m} \sum\limits_{i=1}^m(h_\theta(x^{(i)}
 $$\dfrac{\partial}{\partial\theta_j}J(\theta)$$</p>
 
 <p>We can then write a single function that returns both of these:</p>
-<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="w"></span><span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w">
 </span><span class="w">  </span><span class="n">jVal</span> <span class="p">=</span> <span class="p">[...</span> <span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span><span class="err">
 </span><span class="err"></span>  <span class="nb">gradient</span> <span class="p">=</span> <span class="p">[...</span><span class="n">code</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span><span class="p">)...];</span><span class="err">
 </span><span class="err"></span><span class="k">end</span></code></pre></div>
 <p>The we can use octave&rsquo;s <code>fminfunc()</code> optimizatino algorithm with the <code>optimset()</code> function that creates an object containing the options we want to send to <code>fminunc()</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">options</span> <span class="p">=</span> <span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;GradObj&#39;</span><span class="p">,</span> <span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;MaxIter&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span><span class="err">
 </span><span class="err"></span><span class="n">initialTheta</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span><span class="err">
-</span><span class="err"></span><span class="p">[</span><span class="n">optTheta</span><span class="p">,</span><span class="k"> function</span><span class="w"></span>Val, exitFlag] <span class="w"></span><span class="p">=</span><span class="w"> </span><span class="nf">fminunc</span><span class="p">(</span>@costFunction, initialTheta, options<span class="p">)</span><span class="w"></span><span class="p">;</span></code></pre></div>
+</span><span class="err"></span><span class="p">[</span><span class="n">optTheta</span><span class="p">,</span><span class="k"> function</span>Val, exitFlag] <span class="p">=</span><span class="w"> </span><span class="nf">fminunc</span><span class="p">(</span>@costFunction, initialTheta, options<span class="p">);</span></code></pre></div>
 <p>The function <code>fminunc()</code> is given our cost function, initial theta values, and the options object we created beforehand.</p>
 
 <h2 id="multiclass-classification">Multiclass Classification</h2>
@@ -451,7 +440,7 @@ $$ \text{prediction } = \max\limits_i(h_\theta^{(i)}(x)) $$</p>
 
 <p>This image shows an example for how one could classify three classes:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/multiclass_classification_one_vs_all.png" alt="multiclass_classification_one_vs_all" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/multiclass_classification_one_vs_all.png" alt="multiclass_classification_one_vs_all" /></p>
 
 <p><strong>Summary:</strong>
 Train a logistic regression classifier $h_\theta(x)$ for each class to predict the probability that $y = i$. To make a prediction on a new x, pick the class that maximizes $h_\theta(x)$.</p>
@@ -464,7 +453,7 @@ Train a logistic regression classifier $h_\theta(x)$ for each class to predict t
 
 <p>Consider the problem of predicting $y \text{ from } x \in \mathbb{R}$.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/overfitting_example.png" alt="overfitting_example" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/overfitting_example.png" alt="overfitting_example" /></p>
 
 <ul>
 <li>The left most figure shows the result of fitting the straight line. $y = \theta_0 + \theta_1x$ to a dataset. The data doesn&rsquo;t really lie on a straight line, we can see the fit is not good. This figure is <strong>underfitting</strong> because the data clearly shows structure not captured by the model.</li>
@@ -504,7 +493,7 @@ Train a logistic regression classifier $h_\theta(x)$ for each class to predict t
 
 <p>We add two extra terms at the end of the cost function to inflate the cost of $\theta_3$ and $\theta_4$. Now, in order for the cost function to get close to zero, we will need to reduce the values of $\theta_3$ and $\theta_4$ to near zero. This in return reduces the values of $\theta_3x^3$ and $\theta_4x^4$ in the hypothesis function. As seen below, the new hypothesis denoted by the pink curve looks like a quadratic function and fits the data better due to the small terms $\theta_3x^3$ and $\theta_4x^4$.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/cost_function_regularization.png" alt="cost_function_regularization" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/cost_function_regularization.png" alt="cost_function_regularization" /></p>
 
 <p>We can also regularize all of our theta parameters in a single summation.</p>
 
@@ -543,7 +532,7 @@ $$\text{where } L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &
 
 <p>We can regularize logistic regression in a similar way to how we regularize linear regression. The following image shows how the regularized function (dentoted by the pink line) is less likely to overfit than the non-regularized function represented by the blue line.</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/regularized_logistic_regression.png" alt="regularized_logistic_regression" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/regularized_logistic_regression.png" alt="regularized_logistic_regression" /></p>
 
 <p>Recall that the cost function for logistic regression was:</p>
 
@@ -555,22 +544,22 @@ $$\text{where } L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &
 
 <p>This second sum $\sum\limits_{j=1}^n\theta_j^2$ <strong>explicitly excludes $\theta_0$</strong>, the bias term. The $\theta$ vector is indexed from 0 to n (length of n+1, $\theta_0$ through to $\theta_n$). Thus, when computing the equation, we should continuously update the two following equations:</p>
 
-<p><img src="https://alexander-wong.com/img/coursera-machine-learning-week3/gradient_descent_regularized_logistic_regression.png" alt="gradient_descent_regularized_logistic_regression" /></p>
+<p><img src="https://old.alexander-wong.com/img/coursera-machine-learning-week3/gradient_descent_regularized_logistic_regression.png" alt="gradient_descent_regularized_logistic_regression" /></p>
 
 <hr />
 
-<p>Move on to <a href="https://alexander-wong.com/post/coursera-machine-learning-week4/">Week 4</a>.</p>
+<p>Move on to <a href="https://old.alexander-wong.com/post/coursera-machine-learning-week4/">Week 4</a>.</p>
 </article>
     <footer class="post-footer">
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander WongThis post was published <strong>191</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © 2017 Alexander WongThis post was published <strong>488</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -578,7 +567,7 @@ $$\text{where } L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -602,15 +591,19 @@ $$\text{where } L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

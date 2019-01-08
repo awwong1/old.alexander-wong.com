@@ -9,97 +9,127 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Week 3.
-Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?" />
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 4" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Neural Networks and Deep Learning, Week 4">
     <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
 Assumes you have knowledge of Week 3.
-Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?" />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week4/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Neural Networks and Deep Learning, Week 4">
+  <meta property="og:description" content="Taking the Coursera Deep Learning Specialization, Neural Networks and Deep Learning course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Assumes you have knowledge of Week 3.
+Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neural network Forward Propagation in a Deep Network Getting your matrix dimensions right Why deep representations?">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week4/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week4/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -107,14 +137,15 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -123,96 +154,54 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -225,7 +214,7 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
 
 <p>Taking the <a href="https://www.coursera.org/specializations/deep-learning">Coursera Deep Learning Specialization</a>, <strong>Neural Networks and Deep Learning</strong> course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by <a href="http://www.andrewng.org/">Andrew Ng</a>. See <a href="https://www.deeplearning.ai/">deeplearning.ai</a> for more details.</p>
 
-<p>Assumes you have knowledge of <a href="https://alexander-wong.com/post/neural-networks-and-deep-learning-week3/">Week 3</a>.</p>
+<p>Assumes you have knowledge of <a href="https://old.alexander-wong.com/post/neural-networks-and-deep-learning-week3/">Week 3</a>.</p>
 
 <h1>Table of Contents</h1>
 <nav id="TableOfContents">
@@ -254,9 +243,9 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
 
 <h3 id="deep-l-layer-neural-network">Deep L-layer neural network</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_networks.png" alt="deep_neural_networks" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/deep_neural_networks.png" alt="deep_neural_networks" /></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_network_notation.png" alt="deep_neural_network_notation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/deep_neural_network_notation.png" alt="deep_neural_network_notation" /></p>
 
 <p>Capital $L$ denotes the number of layers in the network. $ L = 4 $</p>
 
@@ -266,7 +255,7 @@ Table of Contents  Deep Neural Networks  Deep Neural Network  Deep L-layer neura
 
 <h3 id="forward-propagation-in-a-deep-network">Forward Propagation in a Deep Network</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/deep_neural_network_forward_propagation.png" alt="deep_neural_network_forward_propagation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/deep_neural_network_forward_propagation.png" alt="deep_neural_network_forward_propagation" /></p>
 
 <p>$$ Z^{[l]} = W^{[l]} a ^{[l-1]} + b^{[l]} $$
 $$ a^{[l]} = g^{[l]}(Z^{[l]}) $$</p>
@@ -279,7 +268,7 @@ $$ A^{[1]} = g^{[1]}(Z^{[1]}) $$</p>
 
 <h3 id="getting-your-matrix-dimensions-right">Getting your matrix dimensions right</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/parameters_wl_and_bl.png" alt="parameters_wl_and_bl" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/parameters_wl_and_bl.png" alt="parameters_wl_and_bl" /></p>
 
 <p>$$ W^{[1]} : (n^{[1]}, n^{[0]}) $$</p>
 
@@ -287,11 +276,11 @@ $$ A^{[1]} = g^{[1]}(Z^{[1]}) $$</p>
 
 <p>The shape of $b$ should be $b^{[l]} : (n^{[l]}, 1) $.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/vectorized_matrix_dimensions.png" alt="vectorized_matrix_dimensions" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/vectorized_matrix_dimensions.png" alt="vectorized_matrix_dimensions" /></p>
 
 <h3 id="why-deep-representations">Why deep representations?</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/intuition_about_deep_representation.png" alt="intuition_about_deep_representation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/intuition_about_deep_representation.png" alt="intuition_about_deep_representation" /></p>
 
 <p>Composing functions of increasing complexity, ie consider a face classifier
 - detect edges -&gt; detect eyes, or noses -&gt; detect groupings of eyes and noses</p>
@@ -302,10 +291,10 @@ $$ A^{[1]} = g^{[1]}(Z^{[1]}) $$</p>
 
 <h3 id="building-blocks-of-deep-neural-networks">Building blocks of deep neural networks</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/forwards_and_backwards_functions.png" alt="forwards_and_backwards_functions" />
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/forwards_and_backwards_functions.png" alt="forwards_and_backwards_functions" />
 Z is cached and used in both forward and back propagation.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/building_blocks_of_deep_neural_networks.png" alt="building_blocks_of_deep_neural_networks" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/building_blocks_of_deep_neural_networks.png" alt="building_blocks_of_deep_neural_networks" /></p>
 
 <h3 id="forward-and-backward-propagation">Forward and Backward Propagation</h3>
 
@@ -336,7 +325,7 @@ $$ dW^{[l]} = dz^{[l]} \times a^{[l-1]} $$
 $$ db^{[l]} = dz^{[l]} $$
 $$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/backpropagation_summary.png" alt="backpropagation_summary" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/backpropagation_summary.png" alt="backpropagation_summary" /></p>
 
 <p>$$ da^{[l]} = -\dfrac{y}{a} + \dfrac{(1-y)}{(1-a)} $$</p>
 
@@ -367,7 +356,7 @@ $$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
 &lt;- Repeat &lt;-</code></pre></div>
 <h3 id="what-does-this-have-to-do-with-the-brain">What does this have to do with the brain?</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/forward_and_backpropagation.png" alt="forward_and_backpropagation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/forward_and_backpropagation.png" alt="forward_and_backpropagation" /></p>
 
 <p>Less like brain, more like universal function approximator.</p>
 </article>
@@ -375,14 +364,14 @@ $$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
-          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander WongThis post was published <strong>105</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © 2017 Alexander WongThis post was published <strong>401</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -390,7 +379,7 @@ $$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -414,15 +403,19 @@ $$ dz^{[l-1]} = w^{[l]T} \times dz^{[l]} $$</p>
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 

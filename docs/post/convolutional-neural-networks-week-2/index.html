@@ -9,95 +9,124 @@
 
   
   
-
-
-
-
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  
+  
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
 
   
-  <meta name="author" content="Alexander Wong" />
+
+  
+  <meta name="author" content="Alexander Wong">
   <meta name="description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs" />
+Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs">
 
   
   
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@FindingUdia" />
-    <meta name="twitter:title" content="Convolutional Neural Networks, Week 2" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@FindingUdia">
+    <meta name="twitter:title" content="Convolutional Neural Networks, Week 2">
     <meta name="twitter:description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
-Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs" />
-    <meta name="twitter:image" content="https://alexander-wong.com/img/avatar.jpg" />
+Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs">
+    <meta name="twitter:image" content="/img/avatar.png">
   
 
-
-
-
-<meta name="generator" content="Hugo 0.31.1" />
-
-
-<link rel="canonical" href="https://alexander-wong.com/post/convolutional-neural-networks-week-2/" />
-<link rel="alternative" href="https://alexander-wong.com/index.xml" title="Alexander Wong" type="application/atom+xml" />
-
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no,email=no,adress=no" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-
-
-<meta name="robots" content="index,follow" />
-<meta name="referrer" content="origin-when-cross-origin" />
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Convolutional Neural Networks, Week 2">
+  <meta property="og:description" content="Taking the Coursera Deep Learning Specialization, Convolutional Neural Networks course. Will post condensed notes every week as part of the review process. All material originates from the free Coursera course, taught by Andrew Ng. See deeplearning.ai for more details.
+Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives Case Studies  Why look at case studies Classic Networks Residual Networks (ResNets) Why ResNets Work Networks in Networks and 1x1 Convolutions Inception Network Motivation Inception Network  Practical Advices for using ConvNets  Using Open-Source Implementation Transfer Learning Data Augmentation State of Computer Vision     Deep Convolutional Models: Case Studies Learning Objectives  Understand foundational papers of Convolutional Neural Networks (CNN) Analyze dymensionality reduction of a volume in a very deep network Understand and implement a residual network Build a deep neural network using Keras Implement skip-connection in your network Clone a repository from Github and use transfer learning  Case Studies Why look at case studies Good way to gain intuition about convolutional neural networks is to read existing architectures that utilize CNNs">
+  <meta property="og:url" content="https://old.alexander-wong.com/post/convolutional-neural-networks-week-2/">
+  <meta property="og:image" content="/img/avatar.png">
 
 
 
 
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://old.alexander-wong.com/post/convolutional-neural-networks-week-2/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
 
 
 
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Alexander Wong" />
-<meta name="msapplication-tooltip" content="Alexander Wong" />
-<meta name='msapplication-navbutton-color' content="#5fbf5e" />
-<meta name="msapplication-TileColor" content="#5fbf5e" />
-<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
-<link rel="icon" href="https://alexander-wong.com/img/favicon.ico" />
-<link rel="icon" type="image/png" sizes="16x16" href="https://alexander-wong.com/img/favicon-16x16.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://alexander-wong.com/img/favicon-32x32.png" />
-<link rel="icon" sizes="192x192" href="https://alexander-wong.com/img/touch-icon-android.png" />
-<link rel="apple-touch-icon" href="https://alexander-wong.com/img/touch-icon-apple.png" />
-<link rel="mask-icon" href="https://alexander-wong.com/img/safari-pinned-tab.svg" color="#5fbf5e" />
 
 
 
-<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
 
-<link rel="stylesheet" href="https://alexander-wong.com/css/bundle.css" />
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Alexander Wong">
+<meta name="msapplication-tooltip" content="Alexander Wong">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://old.alexander-wong.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://old.alexander-wong.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://old.alexander-wong.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://old.alexander-wong.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://old.alexander-wong.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://old.alexander-wong.com/manifest.json">
+
+
+<link rel="preload" href="https://old.alexander-wong.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://old.alexander-wong.com/img/avatar.png" as="image">
+<link rel="preload" href="https://old.alexander-wong.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://old.alexander-wong.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
 
 
   
-  <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
-  <![endif]-->
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 11]>
-    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
-  <![endif]-->
-
-
-<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
-
-
-<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
 
 
 </head>
   <body>
     
     <div class="suspension">
-      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
       
         
       
@@ -105,14 +134,15 @@ Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives 
     
     
   <header class="site-header">
-  <img class="avatar" src="https://alexander-wong.com/img/avatar.png" alt="Avatar">
+  <img class="avatar" src="https://old.alexander-wong.com/img/avatar.png" alt="Avatar">
   
   <h2 class="title">Alexander Wong</h2>
   
   <p class="subtitle">Incremental iterations towards meaning in life.</p>
-  <button class="menu-toggle" type="button">
-    <span class="icon icon-menu"></span>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
   </button>
+
   <nav class="site-menu collapsed">
     <h2 class="offscreen">Main Menu</h2>
     <ul class="menu-list">
@@ -121,96 +151,54 @@ Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives 
       
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/">Blog</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/">Blog</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/about/">About</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/about/">About</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/projects/">Projects</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/projects/">Projects</a>
+        </li>
       
         <li class="menu-item
-            
-            
-            ">
-            <a href="https://alexander-wong.com/chatbot/">Chatbot</a>
-          </li>
+          
+          
+          ">
+          <a href="https://old.alexander-wong.com/chatbot/">Chatbot</a>
+        </li>
       
     </ul>
   </nav>
   <nav class="social-menu collapsed">
     <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list">
-
-      
-      <li class="social-item">
-        <a href="mailto:admin@alexander-wong.com" title="Email"><span class="icon icon-email"></span></a>
-      </li>
-
-      
-      <li class="social-item">
-        <a href="//github.com/awwong1" title="GitHub"><span class="icon icon-github"></span></a>
-      </li>
-
-      <li class="social-item">
-        <a href="//twitter.com/FindingUdia" title="Twitter"><span class="icon icon-twitter"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="//www.linkedin.com/in/awwong1" title="Linkedin"><span class="icon icon-linkedin"></span></a>
-      </li>
-
-      
-
-      
-
-      
-
-      <li class="social-item">
-        <a href="https://alexander-wong.com/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
-      </li>
-
-    </ul>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:admin@alexander-wong.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/awwong1" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/FindingUdia" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.linkedin.com/in/awwong1" title="Linkedin" aria-label="Linkedin">
+            <span class="icon icon-linkedin" aria-hidden="true"></span>
+          </a>
+        </li></ul>
   </nav>
 </header>
 
@@ -283,7 +271,7 @@ Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives 
 
 <p><strong>LeNet-5</strong></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/lenet_5_slide.png" alt="lenet_5_slide" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/lenet_5_slide.png" alt="lenet_5_slide" /></p>
 
 <p>Goal was to recognize hand written images.</p>
 
@@ -300,7 +288,7 @@ Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives 
 
 <p><strong>AlexNet</strong></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/alex_net_slide.png" alt="alex_net_slide" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/alex_net_slide.png" alt="alex_net_slide" /></p>
 
 <ol>
 <li>Inputs were 227x227x3</li>
@@ -323,7 +311,7 @@ Table of Contents  Deep Convolutional Models: Case Studies  Learning Objectives 
 <p>Conv = 3x3filter, s=1, same
 Max-Pool = 2x2filter, s=2</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/vgg_16_slide.png" alt="vgg_16_slide" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/vgg_16_slide.png" alt="vgg_16_slide" /></p>
 
 <ol>
 <li>Inputs are 224x224x3</li>
@@ -344,13 +332,13 @@ Max-Pool = 2x2filter, s=2</p>
 
 <h3 id="residual-networks-resnets">Residual Networks (ResNets)</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/residual_block.png" alt="residual_block" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/residual_block.png" alt="residual_block" /></p>
 
 <p>Allow activation layers from earlier in the network to skip additional layers.</p>
 
 <p>Using residual blocks allow you to train much deeper networks.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/residual_network_layers.png" alt="residual_network_layers" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/residual_network_layers.png" alt="residual_network_layers" /></p>
 
 <h3 id="why-resnets-work">Why ResNets Work</h3>
 
@@ -358,39 +346,39 @@ Max-Pool = 2x2filter, s=2</p>
 
 <p>Residual networks usually default to the identity function, so it doesn&rsquo;t make the result worse. (usually can only get better)</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/why_res_nets_work.png" alt="why_res_nets_work" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/why_res_nets_work.png" alt="why_res_nets_work" /></p>
 
 <p>Residual block usually have the same dimensions for shortcutting. Otherwise, a $W
 _s$ matrix needs to be applied.
-<img src="https://alexander-wong.com/img/deeplearning-ai/res_net_example.png" alt="res_net_example" /></p>
+<img src="https://old.alexander-wong.com/img/deeplearning-ai/res_net_example.png" alt="res_net_example" /></p>
 
 <h3 id="networks-in-networks-and-1x1-convolutions">Networks in Networks and 1x1 Convolutions</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/one_by_one_convolution.png" alt="one_by_one_convolution" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/one_by_one_convolution.png" alt="one_by_one_convolution" /></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/using_one_by_one_conv.png" alt="using_one_by_one_conv" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/using_one_by_one_conv.png" alt="using_one_by_one_conv" /></p>
 
 <p>Useful in adding non-linearity to your neural network without utilizing a FC layer (more computing).</p>
 
 <h3 id="inception-network-motivation">Inception Network Motivation</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/inception_network_motivation.png" alt="inception_network_motivation" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/inception_network_motivation.png" alt="inception_network_motivation" /></p>
 
 <p>This is computationally expensive.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/conv_5x5.png" alt="conv_5x5" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/conv_5x5.png" alt="conv_5x5" /></p>
 
 <p>Computational complexity can be reduced by utilizing a 1x1 convolution</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/bottleneck_conv_5x5.png" alt="bottleneck_conv_5x5" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/bottleneck_conv_5x5.png" alt="bottleneck_conv_5x5" /></p>
 
 <h3 id="inception-network">Inception Network</h3>
 
 <p>Inception module takes the previous activation, then applies many convolution and pooling layers on it.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/inception_module.png" alt="inception_module" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/inception_module.png" alt="inception_module" /></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/inception_network.png" alt="inception_network" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/inception_network.png" alt="inception_network" /></p>
 
 <ul>
 <li>Allows you to use the intermediate values in the network to make predictions (seems to have a regularization effect)</li>
@@ -408,7 +396,7 @@ _s$ matrix needs to be applied.
 
 <p>Download weights that someone else has already trained and retrain it using your own dataset.</p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/transfer_learning.png" alt="transfer_learning" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/transfer_learning.png" alt="transfer_learning" /></p>
 
 <p>You can freeze earlier layers and only train the last few layers depending on your data set size.</p>
 
@@ -420,7 +408,7 @@ _s$ matrix needs to be applied.
 
 <h3 id="data-augmentation">Data Augmentation</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/common_augmentations.png" alt="common_augmentations" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/common_augmentations.png" alt="common_augmentations" /></p>
 
 <ol>
 <li>Common augmentation method is <strong>mirroring your dataset</strong>. Preserves whatever you&rsquo;re still trying to recognize in the picture.</li>
@@ -433,9 +421,9 @@ _s$ matrix needs to be applied.
 
 <h3 id="state-of-computer-vision">State of Computer Vision</h3>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/data_vs_hand_engineering.png" alt="data_vs_hand_engineering" /></p>
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/data_vs_hand_engineering.png" alt="data_vs_hand_engineering" /></p>
 
-<p><img src="https://alexander-wong.com/img/deeplearning-ai/computer_vision_tips.png" alt="computer_vision_tips" />
+<p><img src="https://old.alexander-wong.com/img/deeplearning-ai/computer_vision_tips.png" alt="computer_vision_tips" />
 - Ensembling and 10-crop are not usually used for a practical system, but for competitions/benchmarking</p>
 
 <p>Use Open Source Code! Contribute to open source as well.</p>
@@ -444,14 +432,14 @@ _s$ matrix needs to be applied.
       
       <ul class="post-tags">
         
-          <li><a href="https://alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/machine-learning"><span class="tag">Machine Learning</span></a></li>
         
-          <li><a href="https://alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
+          <li><a href="https://old.alexander-wong.com/tags/deeplearning.ai"><span class="tag">Deeplearning.ai</span></a></li>
         
       </ul>
       
       <p class="post-copyright">
-        © 2017 Alexander Wong
+        © 2017 Alexander WongThis post was published <strong>330</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
@@ -459,7 +447,7 @@ _s$ matrix needs to be applied.
     
   </section>
   <footer class="site-footer">
-  <p>© 2017-2018 Alexander Wong</p>
+  <p>© 2017-2019 Alexander Wong</p>
   <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
   
 </footer>
@@ -483,15 +471,19 @@ _s$ matrix needs to be applied.
     }
   })
 </script>
-<script src="https://alexander-wong.com/js/bundle.js"></script>
+<script src="https://old.alexander-wong.com/js/bundle.js"></script>
 
 
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-37311284-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-37311284-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
-<script async src='//www.google-analytics.com/analytics.js'></script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
 
